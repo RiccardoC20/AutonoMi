@@ -1,0 +1,23 @@
+{
+  "name": "autonomi",
+  "version": "1.0.0",
+  "description": "Progetto ingegneria del software, UniTn",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:query": "node scripts/db-query.js"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "nuxt": "^3.20.1"
+  },
+  "dependencies": {
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.3.1"
+  }
+}

@@ -1,0 +1,13 @@
+﻿# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Nuxt
+.nuxt
+.output
+dist
+
+# Node
+node_modules
+*.log
