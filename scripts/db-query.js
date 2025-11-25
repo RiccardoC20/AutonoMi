@@ -9,7 +9,7 @@ dotenv.config();
 const connectDB = async () => {
   try {
     if (!process.env.MONGODB_URI) {
-      console.error('❌ MONGODB_URI non è definita nel file .env');
+      console.error('    MONGODB_URI non è definita nel file .env');
       console.error('   Crea un file .env nella root del progetto con:');
       console.error('   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority');
       return false;
@@ -22,10 +22,10 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
     });
 
-    console.log('✅ MongoDB Connected');
+    console.log('MongoDB Connected');
     return true;
   } catch (error) {
-    console.error('❌ Error connecting to MongoDB:', error.message);
+    console.error('Error connecting to MongoDB:', error.message);
     return false;
   }
 };
@@ -40,7 +40,7 @@ const queryDatabase = async () => {
   try {
     // Esempio: conta tutte le parole
     const count = await Word.countDocuments();
-    console.log(`\n📊 Totale parole nel database: ${count}`);
+    console.log(`\nTotale parole nel database: ${count}`);
 
     // Esempio: mostra le ultime 5 parole
     const recentWords = await Word.find()
@@ -48,7 +48,7 @@ const queryDatabase = async () => {
       .limit(5)
       .exec();
     
-    console.log('\n📝 Ultime 5 parole inserite:');
+    console.log('\nUltime 5 parole inserite:');
     recentWords.forEach((word, index) => {
       console.log(`${index + 1}. "${word.text}" - ${new Date(word.createdAt).toLocaleString('it-IT')}`);
     });
@@ -56,7 +56,7 @@ const queryDatabase = async () => {
     // Esempio: cerca una parola specifica
     // const searchTerm = 'test';
     // const found = await Word.find({ text: { $regex: searchTerm, $options: 'i' } });
-    // console.log(`\n🔍 Parole contenenti "${searchTerm}":`, found);
+    // console.log(`\nParole contenenti "${searchTerm}":`, found);
 
     // Esempio: statistiche
     const stats = await Word.aggregate([
@@ -70,15 +70,15 @@ const queryDatabase = async () => {
     ]);
     
     if (stats.length > 0) {
-      console.log(`\n📈 Statistiche:`);
+      console.log(`\nStatistiche:`);
       console.log(`   - Lunghezza media parole: ${Math.round(stats[0].avgLength)} caratteri`);
     }
 
   } catch (error) {
-    console.error('❌ Errore nella query:', error.message);
+    console.error('Errore nella query:', error.message);
   } finally {
     await mongoose.connection.close();
-    console.log('\n🔌 Connessione chiusa');
+    console.log('\nConnessione chiusa');
     process.exit(0);
   }
 };

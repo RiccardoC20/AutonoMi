@@ -12,7 +12,7 @@
             id="word-input"
             v-model="newWord"
             type="text"
-            placeholder="Inserisci una parola..."
+            placeholder="Inserisci una nuova parola..."
             class="word-input"
             :disabled="loading"
             required
