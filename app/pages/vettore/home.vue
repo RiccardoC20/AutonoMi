@@ -11,8 +11,7 @@ const links = [
 
 <template>
   <div class="d-flex">
-    <SideBar color="#FFC277" :links="links" title="Vettore" />
-
+    <SideBar color="#FFCFA5" :links="links" title="Vettore" />
 
   </div>
 </template>
