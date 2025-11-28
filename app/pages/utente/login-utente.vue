@@ -2,7 +2,9 @@
 
 <template>
   <div>
-    Page: login-utente
+    <form class="floating-form row g-3">
+      
+    </form>
   </div>
 </template>
 
