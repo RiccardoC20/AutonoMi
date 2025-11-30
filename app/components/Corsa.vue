@@ -1,13 +1,16 @@
 <template>
-  <div class="tuple-corsa" :style="{ width: 55 + extra.length * 5 + 'rem' }">
-    <span class="location"> 
-        <i class="bi bi-house-door-fill"></i> 
-          {{ partenza }}  
-      <i class="bi bi-arrow-right"></i>
-        <i class="bi bi-flag-fill"></i> 
+  <div class="tuple-corsa" >
+    <span class="col start-end"> 
+        <span>
+          <i class="bi bi-house-door-fill"></i> 
+          {{ partenza  }}  
+        </span>
+        <span>
+          <i class="bi bi-flag-fill"></i> 
           {{ arrivo }}
+        </span>
     </span>
-    <div class="time-info">
+    <div class="col time-info">
       <span class="item">
         <i class="bi bi-calendar-event"></i>
         {{ data.toLocaleDateString() }}
@@ -18,31 +21,39 @@
         {{ data.toLocaleTimeString() }}
       </span>
     </div>
-    <span>
+    <span class="col">
       {{ stimaKm }} km 
     </span>
-    <span v-for="e in extra">
-      {{ e.Number }}
+    <span class="col extra-container">
+      <span v-for="e in extra">
+        {{ e.Number }}
+      </span>
     </span>
   </div>
 </template>
 
 <style scoped>
 .tuple-corsa {
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 25rem 15rem 7rem  auto; 
   align-items: center;
-  display: flex;
-  flex-direction: row;
+  gap: 1rem;
   padding: 1rem;
   font-size: medium;
+
+  /* rettangolo */
   border: 1.5px solid #ccc;
   background: #e5e5e5; 
   border-radius: 15px;
+  width: fit-content;
 }
 
-.location {
-  font-weight: bold;
-  font-size: 1.1rem;
+.start-end {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 11rem;
+  gap: 1rem;
+
 }
 
 .time-info {
@@ -55,6 +66,14 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+.extra-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 5rem;
+  gap: 1rem;
+}
+
 </style>
 
 <script>
