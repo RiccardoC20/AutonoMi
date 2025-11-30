@@ -1,5 +1,5 @@
 <template>
-  <div class="tuple-card">
+  <div class="tuple-corsa" :style="{ width: 55 + extra.length * 5 + 'rem' }">
     <span class="location"> 
         <i class="bi bi-house-door-fill"></i> 
           {{ partenza }}  
@@ -22,22 +22,22 @@
       {{ stimaKm }} km 
     </span>
     <span v-for="e in extra">
-      {{ e.label }}:  {{ e.Number }}
+      {{ e.Number }}
     </span>
   </div>
 </template>
 
 <style scoped>
-.tuple-card {
-  width: 100%;
-  padding: 1rem;
+.tuple-corsa {
   justify-content: space-between;
   align-items: center;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  font-size: medium;
   border: 1.5px solid #ccc;
   background: #e5e5e5; 
   border-radius: 15px;
-  display: flex;
-  padding: 1rem;
 }
 
 .location {
@@ -47,13 +47,13 @@
 
 .time-info {
   display: flex;
-  gap: 12px;
+  gap: 1rem;
 }
 
 .item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.5rem;
 }
 </style>
 
@@ -68,5 +68,22 @@
       extra: Array
     }
   }
-  
+  //----USE EXAMPLE------
+  /*
+  //tutti di dati che si vogliono aggiungere oltre a quelli già prestabiliti
+  const extra1 =[
+    { Number: "12345"},  //ID utente
+    { Number: "54321"}   //ID vettore
+  ]
+
+  <div>
+    <Corsa 
+      partenza="Via Rosmini"
+      arrivo="Via Francoforte" 
+      :data="new Date('2025-03-12T15:00')" 
+      :stimaKm="12.5"  
+      :extra="extra1" />
+  </div>
+
+  */
 </script>

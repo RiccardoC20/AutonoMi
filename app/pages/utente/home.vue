@@ -6,7 +6,7 @@ const links = [
   { label: "Corse effettuate", to: "/utente/corse-effettuate", icon: "bi bi-check-circle" },
   { label: "Corse prenotate", to: "/utente/corse-prenotate", icon: "bi bi-calendar-check" },
   { label: "Prenotazione", to: "/utente/prenotazione", icon: "bi bi-inbox" },
-  { label: "Invio Candidatura", to: "/utente/invio-candidatura", icon: "bi bi-inbox" },
+  { label: "Invio Candidatura", to: "/utente/invio-candidatura", icon: "bi bi-file-earmark-arrow-up" },
 ]
 </script>
 

@@ -6,8 +6,8 @@ const links = [
   { label: "Abbonamenti", to: "/comune/Abbonamenti", icon: "bi bi-check-circle" },
   { label: "Utenti", to: "/comune/utenti", icon: "bi bi-calendar-check" },
   { label: "Vettori", to: "/comune/vettori", icon: "bi bi-inbox" },
-  { label: "Corse", to: "/comune/corse", icon: "bi bi-house" },
-  { label: "Candidature", to: "/comune/candidature", icon: "bi bi-check-circle" },
+  { label: "Corse", to: "/comune/corse", icon: "bi bi-car-front-fill" },
+  { label: "Candidature", to: "/comune/candidature", icon: "bi bi-file-earmark-arrow-down" },
 ]
 </script>
 
