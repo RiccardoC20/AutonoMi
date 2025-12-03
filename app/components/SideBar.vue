@@ -2,13 +2,11 @@
   <div class="sidebar d-flex flex-column p-3" :style="{ background: color }">
 
     <ul class="nav nav-pills flex-column mb-auto">
-
       <li v-for="link in links" :key="link.to">
           <NuxtLink :to="link.to" class="nav-link link-light">
             <i :class="link.icon"></i> {{ link.label }}
           </NuxtLink>
       </li>
-
     </ul>
 
     <hr class="text-white">
@@ -47,7 +45,7 @@
   width: 450px;
   min-height: 100vh;
   background: #1c1f2b;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0);
 }
 
 .nav-link {
@@ -58,6 +56,6 @@
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0);
 }
 </style>

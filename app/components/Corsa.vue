@@ -1,79 +1,47 @@
 <template>
-  <div class="tuple-corsa" >
-    <span class="col start-end"> 
-        <span>
-          <i class="bi bi-house-door-fill"></i> 
-          {{ partenza  }}  
-        </span>
-        <span>
-          <i class="bi bi-flag-fill"></i> 
-          {{ arrivo }}
-        </span>
-    </span>
-    <div class="col time-info">
-      <span class="item">
+  <div class="tuple-corsa d-flex align-items-center gap-4">
+    <div class="d-grid" style="grid-auto-flow: column; grid-auto-columns: 11rem; gap: 1rem;">
+      <span>
+        <i class="bi bi-house-door-fill"></i>
+        {{ partenza }}
+      </span>
+      <span>
+        <i class="bi bi-flag-fill"></i>
+        {{ arrivo }}
+      </span>
+    </div>
+    <div class="d-flex gap-3">
+      <span class="d-flex align-items-center gap-2">
         <i class="bi bi-calendar-event"></i>
         {{ data.toLocaleDateString() }}
       </span>
 
-      <span class="item">
+      <span class="d-flex align-items-center gap-2">
         <i class="bi bi-clock"></i>
         {{ data.toLocaleTimeString() }}
       </span>
     </div>
-    <span class="col">
-      {{ stimaKm }} km 
-    </span>
-    <span class="col extra-container">
-      <span v-for="e in extra">
+    <div>
+      {{ stimaKm }} km
+    </div>
+    <div class="d-grid" style="grid-auto-flow: column; grid-auto-columns: 5rem; gap: 1rem;">
+      <span v-for="e in extra" class="text-center">
         {{ e.Number }}
       </span>
-    </span>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
 .tuple-corsa {
-  display: grid;
-  grid-template-columns: 25rem 15rem 7rem  auto; 
-  align-items: center;
-  gap: 1rem;
   padding: 1rem;
   font-size: medium;
-
-  /* rettangolo */
   border: 1.5px solid #ccc;
-  background: #e5e5e5; 
+  background: #e5e5e5;
   border-radius: 15px;
   width: fit-content;
 }
-
-.start-end {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 11rem;
-  gap: 1rem;
-
-}
-
-.time-info {
-  display: flex;
-  gap: 1rem;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.extra-container {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 5rem;
-  gap: 1rem;
-}
-
 </style>
 
 <script>
