@@ -4,3 +4,9 @@ COSE DA FARE NEL PROGETTO:
 
 - Capire a cosa serve la cartella pages (che nuxt con crea page fa in automatico oltre a quelle dentro app)
 
+- Controllare di non aver tirato su le .env su github (perché mi arrivavano le mail di segnalazione)
+
+- Nella documentazione definire come devono essere salvate e nominate le variabili d'ambiente
+
+- Senza rendercene conto oltre a Nuxt e Vue ci siamo portati dietro anche Nitro. Va motivato nel D2 questa scelta.
+

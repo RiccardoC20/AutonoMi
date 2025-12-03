@@ -1,0 +1,14 @@
+{
+  "_id": {
+    "$oid": "65123abc7c46394e88c6b001"
+  },
+  "codiceUtente": "123456",
+  "password": "$2b$12$examplehashedpasswordhere", 
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "email": "mario.rossi@gmail.com",
+  "dataNascita": {
+    "$date": "1990-05-15T00:00:00.000Z"
+  },
+  "cellulare": "3345678901"
+}
