@@ -46,7 +46,6 @@ export default defineEventHandler(async (event) => {
       password: passwordHash,
     });
     
-    console.log("passwordPlain di " + nome + " : " + passwordPlain) 
     // Invia email con le credenziali (in background, non blocca la risposta)   
     sendVettoreCredentials(email, codiceVettore, passwordPlain, nome)
       .catch(err => {

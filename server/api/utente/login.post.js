@@ -52,7 +52,8 @@ export default defineEventHandler(async (event) => {
       {
         userId: utente._id.toString(),
         codiceUtente: utente.codiceUtente,
-        email: utente.email
+        email: utente.email,
+        role: 'utente'
       },
       jwtSecret,
       {

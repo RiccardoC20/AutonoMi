@@ -1,7 +1,5 @@
 /**
- * Genera una password temporanea randomica di 8 caratteri
- * Include lettere maiuscole, minuscole e numeri
- * @returns {string} Password generata
+ * Genera una password randomica momentanea per account appena creati
  */
 export function generateRandomPassword(length = 8) {
   const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
