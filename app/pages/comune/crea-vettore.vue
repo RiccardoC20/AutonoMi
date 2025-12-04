@@ -19,7 +19,7 @@ async function handleSubmit() {
     const response = await $fetch<{
       success: boolean;
       vettore: any;
-    }>('/api/vettore/post', {
+    }>('/api/vettore/crea', {
       method: 'POST',
       body: {
         nome: nome.value.trim(),
