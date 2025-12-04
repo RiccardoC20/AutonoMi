@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Genera JWT token
-    const jwtSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    const jwtSecret = process.env.JWT_SECRET;
     const token = jwt.sign(
       {
         userId: utente._id.toString(),

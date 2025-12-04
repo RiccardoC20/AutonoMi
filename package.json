@@ -11,8 +11,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.8",
+    "formidable": "^3.5.4",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.0.0",
     "nuxt": "^4.2.1",
+    "resend": "^3.5.0",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
   }
