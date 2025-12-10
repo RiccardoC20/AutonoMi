@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    console.log("Login con successo di : " + codiceUtente)
     // Genera JWT token
     const jwtSecret = process.env.JWT_SECRET;
     const token = jwt.sign(

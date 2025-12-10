@@ -13,3 +13,5 @@ COSE DA FARE NEL PROGETTO:
 - file .css che segna la palette dei colori di ogni attore
 
 - sistemare email API (creare account di società)
+
+- Creiamo il file con le OpenApi (è consigliato dai prof?)
