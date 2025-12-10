@@ -1,5 +1,4 @@
 <script setup>
-  import { sendEmail } from "../../server/api/comune/sendMail"
 import { ref } from 'vue';
 
 const form = ref({
@@ -12,23 +11,30 @@ const message = ref('');
 
 async function submitForm() {
   try {
-    const response = await fetch('/api/comune/sendEmail', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const token = localStorage.getItem("auth_token");
+
+    const response = await fetch("/api/comune/sendMail", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(form.value)
     });
 
     if (response.ok) {
-      message.value = 'Email inviata con successo!';
-      form.value = { to: '', subject: '', text: '' }; // reset form
+      message.value = "Email inviata con successo!";
+      form.value = { to: "", subject: "", text: "" };
     } else {
-      message.value = 'Errore nell’invio dell’email.';
+      const errorData = await response.json();
+      message.value = `Errore: ${errorData.message || response.statusText}`;
     }
   } catch (err) {
     console.error(err);
-    message.value = 'Errore di connessione.';
+    message.value = "Errore di connessione.";
   }
 }
+
 </script>
 
 <template>
