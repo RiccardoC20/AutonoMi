@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
       },
       jwtSecret,
       {
-        expiresIn: '7d' // Token valido per 7 giorni
+        expiresIn: '7d'
       }
     );
 

@@ -36,11 +36,7 @@ async function handleSubmit() {
       email.value = '';
       numeroTelefono.value = '';
       sede.value = '';
-      
-      // Dopo 2 secondi reindirizza alla lista vettori
-      setTimeout(() => {
-        navigateTo('/comune/vettori');
-      }, 2000);
+      navigateTo("/comune/vettori");
     }
   } catch (err: any) {
     error.value = err.data?.message || 'Errore durante la creazione del vettore';

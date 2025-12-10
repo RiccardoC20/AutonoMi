@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.8",
     "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "mongoose": "^9.0.0",
     "nuxt": "^4.2.1",
     "resend": "^3.5.0",
