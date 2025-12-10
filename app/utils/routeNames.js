@@ -32,9 +32,8 @@ export const ROUTE_NAMES = {
 };
 
 // Mappatura di convenienza per recuperare velocemente il login per ruolo.
-export const LOGIN_ROUTE_BY_ROLE = [
-  ROUTE_NAMES.COMUNE.LOGIN,
-  ROUTE_NAMES.UTENTE.LOGIN,
-  ROUTE_NAMES.VETTORE.LOGIN,
-  ROUTE_NAMES.UTENTE.INVIO_CANDIDATURA
-];
+export const LOGIN_BY_ROLE = {
+  COMUNE: ROUTE_NAMES.COMUNE.LOGIN,
+  UTENTE: ROUTE_NAMES.UTENTE.LOGIN,
+  VETTORE: ROUTE_NAMES.VETTORE.LOGIN,
+};
