@@ -13,7 +13,7 @@ const stats = {
 </script>
 
 <template>
-  <HomeLayout role="comune" page-title="Dashboard Comune">
+  <HomeLayout role="comune">
     <!-- Statistiche principali -->
     <div class="row mb-4">
       <div class="col-md-4 mb-3">
