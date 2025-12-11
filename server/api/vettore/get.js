@@ -1,5 +1,5 @@
 import connectDB from "../../utils/mongo";
-import Vettore from "../../models/vettore.model";
+import Vettore from "../../models/vettori.model";
 
 export default defineEventHandler(async (event) => {
   try {

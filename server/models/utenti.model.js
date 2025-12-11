@@ -29,6 +29,14 @@ const UtenteSchema = new mongoose.Schema({
   cellulare: {
     type: String,
     required: true
+  },
+  codiceFiscale: {
+    type: String,
+    required: true
+  },
+  budget: {
+    type: Number,
+    required: true
   }
 }, {
     collection: "utente",

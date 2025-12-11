@@ -1,5 +1,5 @@
 import connectDB from "../../utils/mongo";
-import Utente from "../../models/utente.model";
+import Utente from "../../models/utenti.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 

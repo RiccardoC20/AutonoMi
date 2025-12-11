@@ -1,5 +1,5 @@
 import connectDB from "../../utils/mongo";
-import Vettore from "../../models/vettore.model";
+import Vettore from "../../models/vettori.model";
 import { getNextSequenceValue } from "../../utils/sequence";
 import { generateRandomPassword } from "../../utils/password";
 import { sendVettoreCredentials } from "../../utils/email";
