@@ -10,10 +10,7 @@ const corseEffettuate = [
     arrivo: 'Corso Como 15',
     data: new Date('2024-12-10T09:15:00'),
     stimaKm: 12.3,
-    costoReale: 18.45,
-    extra: ['Vettore1'],
-    valutazione: 5,
-    commenti: 'Ottimo servizio!'
+    extra: [ '18.45€', 'Vettore1'],
   },
   {
     id: 2,
@@ -21,10 +18,7 @@ const corseEffettuate = [
     arrivo: 'Piazza della Scala',
     data: new Date('2024-12-09T16:45:00'),
     stimaKm: 9.2,
-    costoReale: 13.80,
-    extra: ['Vettore3'],
-    valutazione: 4,
-    commenti: 'Vettore puntuale'
+    extra: [ '13.80€', 'Vettore3'],
   },
   {
     id: 3,
@@ -32,10 +26,7 @@ const corseEffettuate = [
     arrivo: 'Via Paolo Sarpi 8',
     data: new Date('2024-12-08T11:30:00'),
     stimaKm: 15.7,
-    costoReale: 23.55,
-    extra: ['Vettore2'],
-    valutazione: 5,
-    commenti: 'Esperienza eccellente'
+    extra: [ '23.55€', 'Vettore2'],
   },
   {
     id: 4,
@@ -43,10 +34,7 @@ const corseEffettuate = [
     arrivo: 'Corso Italia 45',
     data: new Date('2024-12-07T14:20:00'),
     stimaKm: 8.9,
-    costoReale: 13.35,
-    extra: ['Vettore1'],
-    valutazione: 4,
-    commenti: 'Buon servizio'
+    extra: [ '13.35€', 'Vettore1'],
   },
   {
     id: 5,
@@ -54,10 +42,7 @@ const corseEffettuate = [
     arrivo: 'Via Roma 123',
     data: new Date('2024-12-06T10:00:00'),
     stimaKm: 11.5,
-    costoReale: 17.25,
-    extra: ['Vettore3'],
-    valutazione: 5,
-    commenti: 'Perfetto!'
+    extra: [ '13.35€', 'Vettore3'],
   },
   {
     id: 6,
@@ -65,8 +50,7 @@ const corseEffettuate = [
     arrivo: 'Corso Buenos Aires 20',
     data: new Date('2024-12-05T18:30:00'),
     stimaKm: 15.7,
-    costoReale: 23.55,
-    extra: ['Vettore2']
+    extra: [ '23.55€', 'Vettore2']
   }
 ];
 
@@ -88,10 +72,6 @@ const corseFiltrate = computed(() => {
     switch (sortBy.value) {
       case 'data':
         return new Date(b.data).getTime() - new Date(a.data).getTime();
-      case 'costo':
-        return b.costoReale - a.costoReale;
-      case 'valutazione':
-        return b.valutazione - a.valutazione;
       case 'km':
         return b.stimaKm - a.stimaKm;
       default:
@@ -108,149 +88,96 @@ const statistiche = computed(() => {
   return {
     totaleCorse: corse.length,
     chilometriTotali: corse.reduce((sum, corsa) => sum + corsa.stimaKm, 0),
-    costoTotale: corse.reduce((sum, corsa) => sum + corsa.costoReale, 0),
-    valutazioneMedia: corse.length > 0 ? corse.reduce((sum, corsa) => sum + corsa.valutazione, 0) / corse.length : 0
+    costoTotale: corse.reduce((sum, corsa) => sum + parseFloat(corsa.extra[0] || '0'), 0)
   };
 });
 </script>
 
 <template>
-  <HomeLayout role="utente" page-title="Corse Effettuate">
-    <!-- Statistiche riepilogative -->
-    <div class="row mb-4">
-      <div class="col-md-3 mb-3">
-        <div class="card text-center h-100">
-          <div class="card-body">
-            <div class="fs-2 fw-bold text-primary mb-2">{{ statistiche.totaleCorse }}</div>
-            <div class="text-muted small">Corse Totali</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card text-center h-100">
-          <div class="card-body">
-            <div class="fs-2 fw-bold text-success mb-2">{{ statistiche.chilometriTotali.toFixed(1) }}</div>
-            <div class="text-muted small">Km Percorsi</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card text-center h-100">
-          <div class="card-body">
-            <div class="fs-2 fw-bold text-info mb-2">€{{ statistiche.costoTotale.toFixed(2) }}</div>
-            <div class="text-muted small">Costo Totale</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card text-center h-100">
-          <div class="card-body">
-            <div class="fs-2 fw-bold text-warning mb-2">
-              <i class="bi bi-star-fill me-1"></i>{{ statistiche.valutazioneMedia.toFixed(1) }}
+  <HomeLayout role="utente" >
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+        <h1>Corse Effettuate</h1>
+        <!-- Statistiche riepilogative -->
+        <div class="row mb-4">
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <div class="fs-2 fw-bold text-primary mb-2">{{ statistiche.totaleCorse }}</div>
+                <div class="text-muted small">Corse Totali</div>
+              </div>
             </div>
-            <div class="text-muted small">Valutazione Media</div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Controlli di ricerca e ordinamento -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-8">
-            <input
-              v-model="searchTerm"
-              type="text"
-              class="form-control"
-              placeholder="Cerca per partenza, arrivo o vettore..."
-            >
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <div class="fs-2 fw-bold text-success mb-2">{{ statistiche.chilometriTotali.toFixed(1) }}</div>
+                <div class="text-muted small">Km Percorsi</div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-4">
-            <select v-model="sortBy" class="form-select">
-              <option value="data">Ordina per Data ↓</option>
-              <option value="costo">Ordina per Costo ↓</option>
-              <option value="valutazione">Ordina per Valutazione ↓</option>
-              <option value="km">Ordina per Km ↓</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lista corse effettuate -->
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title mb-0">
-          <i class="bi bi-check-circle me-2"></i>
-          Storico Corse ({{ corseFiltrate.length }})
-        </h5>
-      </div>
-      <div class="card-body">
-        <div v-if="corseFiltrate.length === 0" class="text-center py-5">
-          <i class="bi bi-search text-muted fs-1 mb-2"></i>
-          <p class="text-muted">Nessuna corsa trovata con i filtri selezionati</p>
-        </div>
-
-        <div v-else class="row g-3">
-          <div v-for="corsa in corseFiltrate" :key="corsa.id" class="col-12">
-            <!-- Card estesa per corsa con dettagli aggiuntivi -->
-            <div class="card border-success">
-              <div class="card-body p-3">
-                <div class="row align-items-center">
-                  <!-- Informazioni principali della corsa -->
-                  <div class="col-md-8">
-                    <div class="d-flex align-items-center gap-3 mb-2">
-                      <div class="text-truncate fw-bold" style="width: 10rem;">
-                        <i class="bi bi-house-door-fill me-1"></i>
-                        {{ corsa.partenza }}
-                      </div>
-                      <div class="text-truncate fw-bold" style="width: 10rem;">
-                        <i class="bi bi-flag-fill me-1"></i>
-                        {{ corsa.arrivo }}
-                      </div>
-                      <div class="text-truncate" style="width: 8rem;">
-                        <i class="bi bi-calendar-event me-1"></i>
-                        {{ corsa.data.toLocaleDateString() }}
-                      </div>
-                      <div class="text-truncate" style="width: 6rem;">
-                        <i class="bi bi-clock me-1"></i>
-                        {{ corsa.data.toLocaleTimeString() }}
-                      </div>
-                    </div>
-
-                    <div class="d-flex align-items-center gap-3">
-                      <div class="fw-bold text-primary">
-                        {{ corsa.stimaKm }} km
-                      </div>
-                      <div class="fw-bold text-info">
-                        €{{ corsa.costoReale.toFixed(2) }}
-                      </div>
-                      <div class="d-flex">
-                        <span v-for="e in corsa.extra" class="badge bg-secondary me-1">
-                          {{ e }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Valutazione e commenti -->
-                  <div class="col-md-4">
-                    <div class="text-end">
-                      <div class="mb-1">
-                        <span v-for="star in 5" :key="star" class="text-warning">
-                          <i :class="star <= corsa.valutazione ? 'bi bi-star-fill' : 'bi bi-star'"></i>
-                        </span>
-                        <span class="ms-2 fw-bold">{{ corsa.valutazione }}/5</span>
-                      </div>
-                      <small class="text-muted">{{ corsa.commenti }}</small>
-                    </div>
-                  </div>
-                </div>
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <div class="fs-2 fw-bold text-info mb-2">€{{ statistiche.costoTotale.toFixed(2) }}</div>
+                <div class="text-muted small">Costo Totale</div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Controlli di ricerca e ordinamento -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-8">
+                <input
+                  v-model="searchTerm"
+                  type="text"
+                  class="form-control"
+                  placeholder="Cerca per partenza, arrivo o vettore..."
+                >
+              </div>
+              <div class="col-md-4">
+                <select v-model="sortBy" class="form-select">
+                  <option value="data">Ordina per Data ↓</option>
+                  <option value="costo">Ordina per Costo ↓</option>
+                  <option value="km">Ordina per Km ↓</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista corse effettuate -->
+        <div class="mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="bi bi-calendar-check me-2"></i>
+              Corse effettuate ({{ corseFiltrate.length }})
+            </h5>
+          </div>
+          <div class="card-body">
+            <div v-if="corseFiltrate.length === 0" class="text-center py-4">
+              <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+              <p class="text-muted">Nessuna corsa prenotata</p>
+            </div>
+            <div v-else class="d-flex flex-column gap-3">
+              <Corsa
+                v-for="corsa in corseFiltrate"
+                :key="corsa.id"
+                :partenza="corsa.partenza"
+                :arrivo="corsa.arrivo"
+                :data="corsa.data"
+                :stimaKm="corsa.stimaKm"
+                :extra="corsa.extra"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       </div>
     </div>
   </HomeLayout>

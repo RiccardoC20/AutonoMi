@@ -1,9 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HomeLayout from '../../components/HomeLayout.vue';
+</script>
 
 <template>
-  <div>
-    Page: vettore/home
-  </div>
+  <HomeLayout role="vettore">
+    <!-- Contenuto vuoto - solo sidebar visibile -->
+  </HomeLayout>
 </template>
-
-<style scoped></style>
