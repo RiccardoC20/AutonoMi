@@ -26,6 +26,10 @@ const CandidaturaSchema = new mongoose.Schema({
       type: String,
       required: true
     }
+  },
+  pdfUrl: {
+    type: String,
+    required: true
   }
 }, {
   collection: "candidature",

@@ -20,18 +20,25 @@ export const COMUNE_ENDPOINTS = {
   LOGIN: "/api/comune/login"
 };
 
+// Endpoint per Candidatura
+export const CANDIDATURA_ENDPOINTS = {
+  INVIA: "/api/candidatura/invia"
+};
+
 // Tutti gli endpoint raggruppati
 export const ENDPOINTS = {
   UTENTE: UTENTE_ENDPOINTS,
   VETTORE: VETTORE_ENDPOINTS,
-  COMUNE: COMUNE_ENDPOINTS
+  COMUNE: COMUNE_ENDPOINTS,
+  CANDIDATURA: CANDIDATURA_ENDPOINTS
 };
 
 // Array di endpoint pubblici (non richiedono autenticazione JWT)
 export const publicEndpoints = [
   UTENTE_ENDPOINTS.LOGIN,
   VETTORE_ENDPOINTS.LOGIN,
-  COMUNE_ENDPOINTS.LOGIN
+  COMUNE_ENDPOINTS.LOGIN,
+  CANDIDATURA_ENDPOINTS.INVIA
 ];
 
 // Funzione helper per verificare se un endpoint è pubblico
