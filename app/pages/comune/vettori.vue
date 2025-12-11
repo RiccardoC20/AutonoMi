@@ -59,9 +59,10 @@ function eliminaVettore(vettoreId: number) {
 </script>
 
 <template>
-  <HomeLayout role="comune" page-title="Gestione Vettori">
+  <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
+        <h1>Gestione Vettori</h1>
           <!-- Barra di ricerca -->
           <div class="card mb-4">
             <div class="card-body">

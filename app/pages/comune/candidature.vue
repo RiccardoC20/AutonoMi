@@ -51,9 +51,8 @@ const candidature = [
   }
 ];
 
-// Filtri di ricerca e stato
+// Filtri di ricerca
 const searchTerm = ref('');
-const statusFilter = ref('Tutti');
 
 const candidatureFiltrate = computed(() => {
   return candidature.filter(candidatura => {
@@ -64,9 +63,6 @@ const candidatureFiltrate = computed(() => {
     return matchesSearch;
   });
 });
-
-// Statistiche
-const totaleCandidature = computed(() => candidature.length);
 
 // Funzioni per gestire le candidature
 function visualizzaCandidatura(candidatura: any) {
@@ -94,60 +90,60 @@ function rifiutaCandidatura(candidatura: any) {
 </script>
 
 <template>
-  <HomeLayout role="comune" page-title="Gestione Candidature">
-    <!-- Filtri e ricerca -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <input
-              v-model="searchTerm"
-              type="text"
-              class="form-control"
-              placeholder="Cerca per nome, cognome o codice..."
-            >
-          </div>
-          <div class="col-md-4">
-            <select v-model="statusFilter" class="form-select">
-              <option value="Tutti">Tutti gli stati</option>
-              <option value="In Attesa">In Attesa</option>
-              <option value="Approvata">Approvate</option>
-              <option value="Rifiutata">Rifiutate</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <button class="btn btn-outline-secondary w-100">
-              <i class="bi bi-funnel"></i> Filtra
-            </button>
+  <HomeLayout role="comune">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+        <h1>Gestione Candidature</h1>
+          <!-- Barra di ricerca -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <input
+                    v-model="searchTerm"
+                    type="text"
+                    class="form-control"
+                    placeholder="Cerca per nome, cognome o codice..."
+                  >
+            </div>
           </div>
         </div>
       </div>
-    </div>
+     
 
-    <!-- Lista candidature usando il componente Candidatura -->
-    <div class="mb-4">
-      <h5 class="mb-3">Candidature ({{ candidatureFiltrate.length }})</h5>
-      <div style="width: fit-content;">
-        <div class="d-flex flex-column gap-3">
-          <Candidatura
-            v-for="candidatura in candidatureFiltrate"
-            :key="candidatura.id"
-            :codiceCandidatura="candidatura.codiceCandidatura"
-            :nome="candidatura.nome"
-            :cognome="candidatura.cognome"
-            :email="candidatura.email"
-            :documentazionePdf="candidatura.documentazionePdf"
-            @visualizza="visualizzaCandidatura(candidatura)"
-            @scarica-pdf="scaricaPDF"
-            @approva="approvaCandidatura(candidatura)"
-            @rifiuta="rifiutaCandidatura(candidatura)"
-          />
-          <div v-if="candidatureFiltrate.length === 0" class="text-center py-5">
-            <i class="bi bi-search text-muted fs-1 mb-2"></i>
-            <p class="text-muted">Nessuna candidatura trovata con i filtri selezionati</p>
+      <!-- Lista candidature usando il componente Candidatura -->
+      <div class="mb-4">
+        <h5 class="mb-3">Candidature ({{ candidatureFiltrate.length }})</h5>
+        <div style="width: fit-content;">
+          <div class="d-flex flex-column gap-3">
+            <Candidatura
+              v-for="candidatura in candidatureFiltrate"
+              :key="candidatura.id"
+              :codiceCandidatura="candidatura.codiceCandidatura"
+              :nome="candidatura.nome"
+              :cognome="candidatura.cognome"
+              :email="candidatura.email"
+              :documentazionePdf="candidatura.documentazionePdf"
+              @visualizza="visualizzaCandidatura(candidatura)"
+              @scarica-pdf="scaricaPDF"
+              @approva="approvaCandidatura(candidatura)"
+              @rifiuta="rifiutaCandidatura(candidatura)"
+            />
+            <div v-if="candidatureFiltrate.length === 0" class="text-center py-5">
+              <i class="bi bi-search text-muted fs-1 mb-2"></i>
+              <p class="text-muted">Nessuna candidatura trovata con i filtri selezionati</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </HomeLayout>
 </template>
+
+<style scoped>
+  .content-wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+  </style>

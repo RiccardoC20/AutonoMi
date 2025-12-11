@@ -92,9 +92,10 @@ const corseFiltrate = computed(() => {
 </script>
 
 <template>
-  <HomeLayout role="comune" page-title="Monitoraggio Corse">
+  <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
+        <h1>Monitoraggio Corse</h1>
           <!-- Filtri e ricerca -->
           <div class="card mb-4">
             <div class="card-body">
