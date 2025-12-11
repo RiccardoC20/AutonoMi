@@ -6,7 +6,25 @@
     />
 
     <div class="flex-grow-1 p-3">
-      <h4 class="mb-4">{{ pageTitle }}</h4>
+      <!-- Header con informazioni utente/vettore/comune -->
+      <div class="mb-4">
+        <!-- Comune -->
+        <div v-if="role === 'comune'" class="d-flex align-items-center">
+          <h1 class="mb-0 fw-bold">{{ nomeComune }}</h1>
+        </div>
+
+        <!-- Vettore -->
+        <div v-if="role === 'vettore'" class="d-flex align-items-center">
+          <h1 class="mb-0 fw-bold">{{ nomeVettore }}</h1>
+        </div>
+
+        <!-- Utente -->
+        <div v-if="role === 'utente'" class="d-flex flex-column">
+          <h1 class="mb-0 fw-bold">{{ userInfo.nome }} </h1>
+          <span class="text-muted">#{{ userInfo.codiceUtente }}</span>
+        </div>
+      </div>
+
       <slot />
     </div>
   </div>
@@ -14,6 +32,7 @@
 
 <script>
 import SideBar from './SideBar.vue';
+import { useAuth } from '../../composables/useAuth';
 
 export default {
   name: "HomeLayout",
@@ -26,12 +45,39 @@ export default {
       required: true,
       validator: (value) => ['utente', 'vettore', 'comune'].includes(value)
     },
-    pageTitle: {
-      type: String,
-      required: true
+  },
+  setup() {
+    // Per utente, carica i dati dall'autenticazione
+    const { user, loadUserFromStorage } = useAuth();
+    
+    // Carica dati utente dal localStorage se disponibili
+    if (typeof window !== 'undefined') {
+      loadUserFromStorage();
     }
+
+    return {
+      user
+    };
   },
   computed: {
+    // Nome comune (mock, in produzione verrà da API)
+    nomeComune() {
+      return 'Comune di Trento';
+    },
+    nomeVettore() {
+      return 'Agenzia di Trento';
+    },
+    // Informazioni utente
+    userInfo() {
+      if (this.role === 'utente') {
+        return {
+          nome: 'Mario',
+          cognome: 'Rossi',
+          codiceUtente: '123456'
+        };
+      }
+      return null;
+    },
     navigationLinks() {
       const baseLinks = [
         {
@@ -48,7 +94,8 @@ export default {
             { to: '/utente/prenotazione', label: 'Prenota', icon: 'bi bi-plus' },
             { to: '/utente/corse-prenotate', label: 'Prenotate', icon: 'bi bi-calendar' },
             { to: '/utente/corse-effettuate', label: 'Storico', icon: 'bi bi-clock' },
-            { to: '/utente/invio-candidatura', label: 'Candidatura', icon: 'bi bi-send' }
+            { to: '/utente/invio-candidatura', label: 'Candidatura', icon: 'bi bi-send' },
+            { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' }
           ];
 
         case 'vettore':
@@ -75,7 +122,7 @@ export default {
     sidebarColor() {
       switch (this.role) {
         case 'utente': return '#0066CC';
-        case 'vettore': return '#FFC277';
+        case 'vettore': return '#e6713e';
         case 'comune': return '#00C383';
         default: return '#343a40';
       }

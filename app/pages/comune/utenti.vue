@@ -78,24 +78,31 @@ const utentiFiltrati = computed(() => {
 
     <!-- Lista utenti usando il componente Utente -->
     <div class="mb-4">
-      <h5 class="mb-3">Lista Utenti ({{ utentiFiltrati.length }})</h5>
-      <div style="width: fit-content;">
-        <div class="d-flex flex-column gap-3">
-          <Utente
-            v-for="utente in utentiFiltrati"
-            :key="utente.id"
-            :nome="utente.nome"
-            :cognome="utente.cognome"
-            :codiceUtente="utente.codiceUtente"
-            :statoAbbonamento="utente.statoAbbonamento"
-          />
-          <div v-if="utentiFiltrati.length === 0" class="text-center py-5">
-            <i class="bi bi-search text-muted fs-1 mb-2"></i>
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-people me-2"></i>
+            Lista Utenti ({{ utentiFiltrati.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div v-if="utentiFiltrati.length === 0" class="text-center py-4">
+            <i class="bi bi-people text-muted fs-1 mb-2"></i>
             <p class="text-muted">Nessun utente trovato con la ricerca effettuata</p>
+          </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <Utente
+              v-for="utente in utentiFiltrati"
+              :key="utente.id"
+              :nome="utente.nome"
+              :cognome="utente.cognome"
+              :codiceUtente="utente.codiceUtente"
+              :statoAbbonamento="utente.statoAbbonamento"
+            />
           </div>
         </div>
       </div>
-        </div>
+    </div>
       </div>
     </div>
   </HomeLayout>

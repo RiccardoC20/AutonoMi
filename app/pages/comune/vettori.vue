@@ -81,25 +81,32 @@ function eliminaVettore(vettoreId: number) {
 
     <!-- Lista vettori usando il componente Vettore -->
     <div class="mb-4">
-      <h5 class="mb-3">Lista Vettori ({{ vettoriFiltrati.length }})</h5>
-      <div style="width: fit-content;">
-        <div class="d-flex flex-column gap-3">
-          <Vettore
-            v-for="vettore in vettoriFiltrati"
-            :key="vettore.id"
-            :codiceVettore="vettore.codiceVettore"
-            :nome="vettore.nome"
-            :email="vettore.email"
-            @elimina="eliminaVettore(vettore.id)"
-          />
-          <div v-if="vettoriFiltrati.length === 0" class="text-center py-5">
-            <i class="bi bi-search text-muted fs-1 mb-2"></i>
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-truck me-2"></i>
+            Lista Vettori ({{ vettoriFiltrati.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
+            <i class="bi bi-truck text-muted fs-1 mb-2"></i>
             <p class="text-muted">Nessun vettore trovato con la ricerca effettuata</p>
           </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <Vettore
+              v-for="vettore in vettoriFiltrati"
+              :key="vettore.id"
+              :codiceVettore="vettore.codiceVettore"
+              :nome="vettore.nome"
+              :email="vettore.email"
+              @elimina="eliminaVettore(vettore.id)"
+            />
+          </div>
+        </div>
       </div>
     </div>
       </div>
-    </div>
     </div>
   </HomeLayout>
 </template>

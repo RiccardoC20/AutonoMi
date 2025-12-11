@@ -149,27 +149,34 @@ const corseFiltrate = computed(() => {
           </div>
         </div>
 
-    <!-- Lista corse usando il componente Corsa -->
-    <div class="mb-4">
-      <h5 class="mb-3">Corse Monitorate ({{ corseFiltrate.length }})</h5>
-      <div style="width: fit-content;">
-        <div class="d-flex flex-column gap-3">
-          <Corsa
-            v-for="corsa in corseFiltrate"
-            :key="corsa.id"
-            :partenza="corsa.partenza"
-            :arrivo="corsa.arrivo"
-            :data="corsa.data"
-            :stimaKm="corsa.stimaKm"
-            :extra="corsa.extra"
-          />
-          <div v-if="corseFiltrate.length === 0" class="text-center py-5">
-            <i class="bi bi-search text-muted fs-1 mb-2"></i>
-            <p class="text-muted">Nessuna corsa trovata con la ricerca effettuata</p>
+    <!-- Lista corse-->
+    <div class="mb-4 ">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="bi bi-calendar-check me-2"></i>
+              Corse Effettuate ({{ corseFiltrate.length }})
+            </h5>
+          </div>
+          <div class="card-body">
+            <div v-if="corseFiltrate.length === 0" class="text-center py-4">
+              <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+              <p class="text-muted">Nessuna corsa prenotata</p>
+            </div>
+            <div v-else class="d-flex flex-column gap-3">
+              <Corsa
+                v-for="corsa in corseFiltrate"
+                :key="corsa.id"
+                :partenza="corsa.partenza"
+                :arrivo="corsa.arrivo"
+                :data="corsa.data"
+                :stimaKm="corsa.stimaKm"
+                :extra="corsa.extra"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
       </div>
     </div>
   </HomeLayout>

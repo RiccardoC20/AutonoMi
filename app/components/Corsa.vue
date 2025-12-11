@@ -10,11 +10,11 @@
     <i class="bi bi-flag-fill me-1"></i>
     {{ arrivo }}
   </div>
-  <div class="text-truncate" style="width: 12rem;">
+  <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-calendar-event me-1"></i>
     {{ data?.toLocaleDateString() }}
   </div>
-  <div class="text-truncate" style="width: 10rem;">
+  <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-clock me-1"></i>
     {{ data?.toLocaleTimeString() }}
   </div>
