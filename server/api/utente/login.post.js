@@ -46,17 +46,19 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    console.log("Login con successo di : " + codiceUtente)
     // Genera JWT token
-    const jwtSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    const jwtSecret = process.env.JWT_SECRET;
     const token = jwt.sign(
       {
         userId: utente._id.toString(),
         codiceUtente: utente.codiceUtente,
-        email: utente.email
+        email: utente.email,
+        role: 'utente'
       },
       jwtSecret,
       {
-        expiresIn: '7d' // Token valido per 7 giorni
+        expiresIn: '7d'
       }
     );
 

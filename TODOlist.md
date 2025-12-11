@@ -10,3 +10,8 @@ COSE DA FARE NEL PROGETTO:
 
 - Senza rendercene conto oltre a Nuxt e Vue ci siamo portati dietro anche Nitro. Va motivato nel D2 questa scelta.
 
+- file .css che segna la palette dei colori di ogni attore
+
+- sistemare email API (creare account di società)
+
+- Creiamo il file con le OpenApi (è consigliato dai prof?)

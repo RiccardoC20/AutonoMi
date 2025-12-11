@@ -11,12 +11,21 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@sendgrid/mail": "^8.1.6",
+>>>>>>> login
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.8",
     "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
+=======
+    "jwt-decode": "^4.0.0",
+>>>>>>> login
     "mongoose": "^9.0.0",
     "nuxt": "^4.2.1",
+    "resend": "^3.5.0",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
   }
