@@ -11,4 +11,4 @@ const ComuneSchema = new mongoose.Schema({
   collection: "comune"
 });
 
-export default mongoose.models.Comune || mongoose.model("Comune", ComuneSchema);
+export default mongoose.models.comune || mongoose.model("comune", ComuneSchema);

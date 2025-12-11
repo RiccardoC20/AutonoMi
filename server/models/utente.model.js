@@ -39,10 +39,10 @@ const UtenteSchema = new mongoose.Schema({
     required: true
   }
 }, {
-    collection: "utente",
+    collection: "utenti",
     timestamps: true
 });
 
 
-export default mongoose.models.utente || mongoose.model("utente", UtenteSchema);
+export default mongoose.models.utenti || mongoose.model("utenti", UtenteSchema);
 

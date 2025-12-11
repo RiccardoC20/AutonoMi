@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const VettoreSchema = new mongoose.Schema({
-  codiceVettore: {
+const vettoreSchema = new mongoose.Schema({
+  codicevettore: {
     type: Number,
     required: true,
     unique: true
@@ -12,8 +12,8 @@ const VettoreSchema = new mongoose.Schema({
   sede: { type: String, required: true },
   password: { type: String, required: true },
 }, {
-  collection: "vettore",
+  collection: "vettori",
   timestamps: true
 });
 
-export default mongoose.models.Vettore || mongoose.model("Vettore", VettoreSchema);
+export default mongoose.models.vettori || mongoose.model("vettori", vettoreSchema);
