@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   // 3. Controllo JWT
   const { ok } = await useAuth(event);
-
+  
   if (!ok) {
     throw createError({
       statusCode: 401,
