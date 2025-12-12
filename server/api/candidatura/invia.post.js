@@ -102,10 +102,10 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // genera URL firmato per bucket privato (valido per 10 anni)
+    // genera URL firmato per bucket privato
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from(bucketName)
-      .createSignedUrl(filePath, 315360000); // 10 anni in secondi
+      .createSignedUrl(filePath, 31622400); // 366 giorni (s)
 
     if (signedUrlError) {
       console.error('Errore generazione URL firmato:', signedUrlError);
