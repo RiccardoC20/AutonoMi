@@ -12,7 +12,7 @@ const VettoreSchema = new mongoose.Schema({
   sede: { type: String, required: true },
   password: { type: String, required: true },
 }, {
-  collection: "vettore",
+  collection: "vettori",
   timestamps: true
 });
 
