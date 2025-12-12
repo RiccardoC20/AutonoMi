@@ -1,56 +1,27 @@
 <script setup lang="ts"></script>
 
 <template>
-<div class="tuple-utente">
-  <span class="col nome">{{ nome }}</span>
-  <span class="col cognome">{{ cognome }}</span>
-  <span class="col codice">{{ codiceUtente }}</span>
+<div class="d-flex align-items-center gap-2 gap-md-3 p-2 p-md-3 bg-light border rounded-3 w-100">
+  <!-- Codice Utente - Priorità alta, sempre visibile -->
+  <div class="text-truncate fw-bold flex-shrink-0" style="min-width: 6rem; max-width:12rem;">{{ codiceUtente }}</div>
 
-  <span class="col right-icon">
-    <a href="./infoUtente.vue">
-      <i class="bi bi-info-circle"></i>
+  <!-- Nome e Cognome - Responsive -->
+  <div class="d-flex gap-2 flex-grow-1 min-w-0">
+    <div class="text-truncate" style="min-width: 10rem;">{{ nome }}</div>
+    <div class="text-truncate d-none d-sm-block" style="min-width: 10rem;">{{ cognome }}</div>
+  </div>
+
+  <!-- Azioni - Sempre a destra -->
+  <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto flex-shrink-0">
+    <a href="./infoUtente.vue" class="text-decoration-none">
+      <i class="bi bi-info-circle fs-6 fs-md-5"></i>
     </a>
-    <a href="./modificaUtente.vue">
-      <i class="bi bi-pencil-square"></i>
+    <a href="./modificaUtente.vue" class="text-decoration-none">
+      <i class="bi bi-pencil-square fs-6 fs-md-5"></i>
     </a>
-    <i :class=" statoAbbonamento === 'active'
-          ? 'bi bi-check-circle icon-green'
-          : 'bi bi-ban icon-red' "></i>
-  </span>
+  </div>
 </div>
-
 </template>
-
-<style scoped>
-.tuple-utente {
-  display: grid;
-  grid-template-columns: 10rem 10rem 8rem auto;  
-  align-items: center;
-  gap: 1rem;
-
-  /* rettangolo */
-  padding: 1rem;
-  border: 1.5px solid #ccc;
-  background-color: #e5e5e5;
-  border-radius: 15px;
-  width: fit-content;
-}
-
-.right-icon {
-  display: flex;
-  gap: 1rem;
-  font-size: 1.3rem;
-}
-
-.icon-green {
-  color: #28a745;
-}
-
-.icon-red {
-  color: #d9534f;
-}
-
-</style>
 
 <script>
   export default {
@@ -59,7 +30,6 @@
       nome: String,
       cognome: String,
       codiceUtente: String,
-      statoAbbonamento: String
     }
   }
 </script>

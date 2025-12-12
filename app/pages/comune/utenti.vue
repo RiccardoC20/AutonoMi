@@ -1,9 +1,116 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HomeLayout from '../../components/HomeLayout.vue';
+import Utente from '../../components/Utente.vue';
+
+// Dati mock per gli utenti (solo le proprietà necessarie per il componente Utente)
+const utenti = [
+  {
+    id: 1,
+    codiceUtente: '01',
+    nome: 'Mario',
+    cognome: 'Rossi',
+    statoAbbonamento: 'active'
+  },
+  {
+    id: 2,
+    codiceUtente: '02',
+    nome: 'Laura',
+    cognome: 'Bianchi',
+    statoAbbonamento: 'active'
+  },
+  {
+    id: 3,
+    codiceUtente: '03',
+    nome: 'Giuseppe',
+    cognome: 'Verdi',
+    statoAbbonamento: 'active'
+  },
+  {
+    id: 4,
+    codiceUtente: '04',
+    nome: 'Anna',
+    cognome: 'Neri',
+    statoAbbonamento: 'inactive'
+  },
+  {
+    id: 5,
+    codiceUtente: '05',
+    nome: 'Luca',
+    cognome: 'Gallo',
+    statoAbbonamento: 'active'
+  }
+];
+
+// Barra di ricerca
+const searchTerm = ref('');
+
+// Lista utenti filtrata
+const utentiFiltrati = computed(() => {
+  if (!searchTerm.value) return utenti;
+
+  return utenti.filter(utente =>
+    utente.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    utente.codiceUtente.toLowerCase().includes(searchTerm.value.toLowerCase())
+  );
+});
+</script>
 
 <template>
-  <div>
-    Page: comune/utenti
+  <HomeLayout role="comune">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+        <h1>Gestione Utenti</h1>
+          <!-- Barra di ricerca -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <input
+                    v-model="searchTerm"
+                    type="text"
+                    class="form-control"
+                    placeholder="Cerca per nome o codice utente..."
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <!-- Lista utenti usando il componente Utente -->
+    <div class="mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-people me-2"></i>
+            Lista Utenti ({{ utentiFiltrati.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div v-if="utentiFiltrati.length === 0" class="text-center py-4">
+            <i class="bi bi-people text-muted fs-1 mb-2"></i>
+            <p class="text-muted">Nessun utente trovato con la ricerca effettuata</p>
+          </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <Utente
+              v-for="utente in utentiFiltrati"
+              :key="utente.id"
+              :nome="utente.nome"
+              :cognome="utente.cognome"
+              :codiceUtente="utente.codiceUtente"
+              :statoAbbonamento="utente.statoAbbonamento"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
   </div>
+  </HomeLayout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+</style>

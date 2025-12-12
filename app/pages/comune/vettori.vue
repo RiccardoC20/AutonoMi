@@ -1,117 +1,117 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { navigateTo } from '#app';
+import HomeLayout from '../../components/HomeLayout.vue';
+import Vettore from '../../components/Vettore.vue';
 
-const vettori = ref<any[]>([]);
-const loading = ref(false);
-const error = ref<string | null>(null);
-
-async function loadVettori() {
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      data: any[];
-      count: number;
-    }>('/api/vettore/get');
-
-    if (response.success) {
-      vettori.value = response.data;
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || 'Errore nel caricamento dei vettori';
-    console.error('Errore caricamento vettori:', err);
-  } finally {
-    loading.value = false;
+// Dati mock per i vettori
+const vettori = [
+  {
+    id: 1,
+    codiceVettore: 'V001',
+    nome: 'Mario Rossi Trasporti',
+    email: 'mario.rossi@email.com'
+  },
+  {
+    id: 2,
+    codiceVettore: 'V002',
+    nome: 'Laura Bianchi Delivery',
+    email: 'laura.bianchi@email.com'
+  },
+  {
+    id: 3,
+    codiceVettore: 'V003',
+    nome: 'Giuseppe Verdi Logistics',
+    email: 'giuseppe.verdi@email.com'
+  },
+  {
+    id: 4,
+    codiceVettore: 'V004',
+    nome: 'Anna Neri Transport',
+    email: 'anna.neri@email.com'
+  },
+  {
+    id: 5,
+    codiceVettore: 'V005',
+    nome: 'Luca Gallo Express',
+    email: 'luca.gallo@email.com'
   }
-}
+];
 
-onMounted(() => {
-  loadVettori();
+// Barra di ricerca
+const searchTerm = ref('');
+
+// Lista vettori filtrata
+const vettoriFiltrati = computed(() => {
+  if (!searchTerm.value) return vettori;
+
+  return vettori.filter(vettore =>
+    vettore.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    vettore.codiceVettore.toLowerCase().includes(searchTerm.value.toLowerCase())
+  );
 });
+
+// Funzione mock per eliminare vettore
+function eliminaVettore(vettoreId: number) {
+  // Chiamata API per eliminare il vettore
+  console.log('Eliminazione vettore:', vettoreId);
+}
 </script>
 
 <template>
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1 class="h3 mb-0">Lista Vettori</h1>
-          <button
-            class="btn btn-primary"
-            @click="navigateTo('/comune/crea-vettore')"
-          >
-            <i class="bi bi-plus-circle me-2"></i>
-            Crea Nuovo Vettore
-          </button>
-        </div>
-
-        <!-- Messaggio di errore -->
-        <div
-          v-if="error"
-          class="alert alert-danger alert-dismissible fade show"
-          role="alert"
-        >
-          {{ error }}
-          <button
-            type="button"
-            class="btn-close"
-            @click="error = null"
-            aria-label="Close"
-          ></button>
-        </div>
-
-        <!-- Loading -->
-        <div v-if="loading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-          </div>
-        </div>
-
-        <!-- Tabella vettori -->
-        <div v-else-if="vettori.length > 0" class="card shadow-sm">
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover mb-0">
-                <thead class="table-light">
-                  <tr>
-                    <th>Codice Vettore</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
-                    <th>Sede</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="vettore in vettori" :key="vettore._id">
-                    <td>{{ vettore.codiceVettore }}</td>
-                    <td>{{ vettore.nome }}</td>
-                    <td>{{ vettore.email }}</td>
-                    <td>{{ vettore.numeroTelefono }}</td>
-                    <td>{{ vettore.sede }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Nessun vettore -->
-        <div v-else class="card shadow-sm">
-          <div class="card-body text-center py-5">
-            <p class="text-muted mb-0">Nessun vettore trovato.</p>
-            <button
-              class="btn btn-primary mt-3"
-              @click="navigateTo('/comune/crea-vettore')"
-            >
-              Crea il primo vettore
-            </button>
+  <HomeLayout role="comune">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+        <h1>Gestione Vettori</h1>
+          <!-- Barra di ricerca -->
+          <div class="card mb-4">
+          <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <input
+                    v-model="searchTerm"
+                    type="text"
+                    class="form-control"
+                    placeholder="Cerca per nome o codice vettore..."
+                  >
           </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Lista vettori -->
+    <div class="mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-truck me-2"></i>
+            Lista Vettori ({{ vettoriFiltrati.length }})
+          </h5>
+          </div>
+        <div class="card-body">
+          <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
+            <i class="bi bi-truck text-muted fs-1 mb-2"></i>
+            <p class="text-muted">Nessun vettore trovato con la ricerca effettuata</p>
+          </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <Vettore
+              v-for="vettore in vettoriFiltrati"
+              :key="vettore.id"
+              :codiceVettore="vettore.codiceVettore"
+              :nome="vettore.nome"
+              :email="vettore.email"
+              @elimina="eliminaVettore(vettore.id)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </HomeLayout>
 </template>
 
+<style scoped>
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+</style>
