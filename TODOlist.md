@@ -15,3 +15,22 @@ COSE DA FARE NEL PROGETTO:
 - sistemare email API (creare account di società)
 
 - Creiamo il file con le OpenApi (è consigliato dai prof?)
+
+
+___________________________
+Cosa fare dopo il 19.
+
+- creare tutte le chiamate per far funzionare il FE
+- Da valutare se creare un file .css per i tre colori principali
+- comune login deve avere il suo colore 
+- in comune posso visualizzare gli utenti (e i vettori) ed eliminarli (anche file pdf)
+
+- D2 iniziare seriamente a scriverlo
+- Fare tutto il meccanismo delle corse con relativo branch 
+- maps api
+
+- vedere per i log
+- vedere openApi
+
+
+
