@@ -1,67 +1,174 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
+import { useAuth, type User } from '../../../composables/useAuth';
 
-// Dati dell'utente
-const chilometriTotali = 1000;
-const chilometriUtilizzati = 750;
-const chilometriRimanenti = chilometriTotali - chilometriUtilizzati;
+// Interfaccia per Corsa temporanea
+interface CorsaType {
+  id: number;
+  partenza: string;
+  arrivo: string;
+  data: Date | string;
+  stimaKm: number;
+  kmEffettivi?: number;
+  prezzo?: number;
+  codiceUtente?: string;
+  codiceVettore?: string;
+  nomeVettore?: string;
+}
 
-// Dati mock per corse prenotate
-const corsePrenotate = [
-  {
-    id: 1,
-    partenza: 'Via Roma 123',
-    arrivo: 'Corso Italia 45',
-    data: new Date('2024-12-15T10:30:00'),
-    stimaKm: 8.5,
-    extra: [ 'Vettore1' ]
-  },
-  {
-    id: 2,
-    partenza: 'Piazza Duomo',
-    arrivo: 'Via Garibaldi 78',
-    data: new Date('2024-12-16T14:20:00'),
-    stimaKm: 6.8,
-    extra: [ 'Vettore2' ]
+const error = ref<string | null>(null);
+const user = ref<User | null>(null);
+const corsePrenotate = ref<CorsaType[]>([]);
+const corseEffettuate = ref<CorsaType[]>([]);
+const loading = ref(false);
+
+// Dati chilometri (default, verranno aggiornati con i dati reali)
+const chilometriTotali = ref(1000);
+const chilometriRimanenti = computed(() => chilometriTotali.value - chilometriUsati.value);
+
+// Funzione per convertire stringa data in Date object
+const parseDate = (date: Date | string): Date => {
+  if (date instanceof Date) return date;
+  return new Date(date);
+};
+
+// Carica corse prenotate
+const getCorsePrenotate = async (token: string) => {
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      corse: CorsaType[];
+    }>('/api/utente/corse/prenotate', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      // Converti le date da stringhe a Date objects
+      corsePrenotate.value = response.corse.map(corsa => ({
+        ...corsa,
+        data: parseDate(corsa.data)
+      }));
+    } else {
+      error.value = "Errore durante il caricamento delle corse prenotate";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento delle corse prenotate";
+    console.error('Errore getCorsePrenotate:', err);
   }
-];
+};
 
-// Dati mock per corse effettuate
-const corseEffettuate = [
-  {
-    id: 1,
-    partenza: 'Via Dante 22',
-    arrivo: 'Corso Como 15',
-    data: new Date('2024-12-10T09:15:00'),
-    stimaKm: 12.3,
-    extra: [ 'Vettore1' ]
-  },
-  {
-    id: 2,
-    partenza: 'Via Milano 5',
-    arrivo: 'Piazza della Scala',
-    data: new Date('2024-12-09T16:45:00'),
-    stimaKm: 9.2,
-    extra: [ 'Vettore3' ]
-  },
-  {
-    id: 3,
-    partenza: 'Corso Buenos Aires 20',
-    arrivo: 'Via Paolo Sarpi 8',
-    data: new Date('2024-12-08T11:30:00'),
-    stimaKm: 15.7,
-    extra: [ 'Vettore2' ]
+// Carica corse effettuate
+const getCorseEffettuate = async (token: string) => {
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      corse: CorsaType[];
+    }>('/api/utente/corse/effettuate', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      // Converti le date da stringhe a Date objects
+      corseEffettuate.value = response.corse.map(corsa => ({
+        ...corsa,
+        data: parseDate(corsa.data)
+      }));
+    } else {
+      error.value = "Errore durante il caricamento delle corse effettuate";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento delle corse effettuate";
+    console.error('Errore getCorseEffettuate:', err);
   }
-];
+};
+
+// Carica dati utente
+const getUser = async () => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      user: User;
+    }>('/api/utente/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      user.value = response.user;
+      
+      // Carica corse prenotate ed effettuate
+      await Promise.all([
+        getCorsePrenotate(token),
+        getCorseEffettuate(token)
+      ]);
+      
+      // TODO: Aggiorna chilometriTotali e chilometriUtilizzati dai dati utente
+      // quando disponibili dall'API
+    } else {
+      error.value = "Errore durante il caricamento dei dati dell'utente";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati dell'utente";
+    console.error('Errore getUser:', err);
+  } finally {
+    loading.value = false;
+  }
+};
 
 // Calcola chilometri utilizzati dalle corse effettuate
-const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => total + corsa.stimaKm, 0);
+const chilometriUsati = computed(() => {
+  return corseEffettuate.value.reduce((total, corsa) => total + (corsa.kmEffettivi || corsa.stimaKm), 0);
+});
+
+// Carica dati al mount
+onMounted(() => {
+  getUser();
+});
 </script>
 
 <template>
   <HomeLayout role="utente">
-    <div class="row">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+    <!-- Messaggio di errore -->
+    <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ error }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Loading -->
+    <div v-if="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+      <p class="mt-2 text-muted">Caricamento dati...</p>
+    </div>
+
+    <!-- Contenuto principale -->
+    <div v-else class="row">
 
     <!-- Sezione chilometri e grafico -->
     <div class="row mt-4">
@@ -73,7 +180,7 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
               Chilometraggio
             </h5>
             <div class="text-end">
-              <div class="fs-4 fw-bold text-primary">{{ chilometriRimanenti}} km</div>
+              <div class="fs-4 fw-bold text-primary">{{ chilometriUsati}} km</div>
               <small class="text-muted">Rimanenti su {{ chilometriTotali }} km totali</small>
             </div>
           </div>
@@ -88,7 +195,7 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
               <div class="progress" style="height: 30px;">
                 <div
                   class="progress-bar bg-success"
-                  :style="{ width: (chilometriUtilizzati / chilometriTotali * 100) + '%' }"
+                  :style="{ width: (chilometriUsati / chilometriTotali * 100) + '%' }"
                 >
                 </div>
                 <div
@@ -103,7 +210,7 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
             <div class="row text-center mt-4">
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-success">{{ chilometriDaCorseEffettuate.toFixed(1) }}</div>
+                  <div class="fs-4 fw-bold text-success">{{ chilometriUsati.toFixed(1) }}</div>
                   <small class="text-muted">Km da corse effettuate</small>
                 </div>
               </div>
@@ -121,7 +228,7 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
               </div>
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{ ((chilometriUtilizzati / chilometriTotali) * 100).toFixed(1) }}%</div>
+                  <div class="fs-4 fw-bold text-primary">{{ ((chilometriUsati / chilometriTotali) * 100).toFixed(1) }}%</div>
                   <small class="text-muted">Utilizzo chilometri</small>
                 </div>
               </div>
@@ -153,7 +260,8 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
                 :stimaKm="corsa.stimaKm"
-                :extra="corsa.extra"
+                :codiceVettore="corsa.codiceVettore"
+                :nomeVettore="corsa.nomeVettore"
               />
             </div>
           </div>
@@ -182,15 +290,18 @@ const chilometriDaCorseEffettuate = corseEffettuate.reduce((total, corsa) => tot
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
                 :stimaKm="corsa.stimaKm"
-                :extra="corsa.extra"
+                :kmEffettivi="corsa.kmEffettivi"
+                :prezzo="corsa.prezzo"
+                :codiceVettore="corsa.codiceVettore"
+                :nomeVettore="corsa.nomeVettore"
               />
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
+  </div>
+  </div>
   </HomeLayout>
 </template>
 

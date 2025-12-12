@@ -18,14 +18,25 @@
     <i class="bi bi-clock me-1"></i>
     {{ data?.toLocaleTimeString() }}
   </div>
-  <div class="text-truncate fw-bold " style="width: 4rem;">
+  <div class="text-truncate fw-bold" style="width: 5rem;">
     {{ stimaKm }} km
   </div>
 
-  <div class="d-flex align-items-center gap-2 ms-auto">
-    <span v-for="(e ) in extra" style="min-width: 4.2rem;">
-      {{ e }}
-    </span>
+  <!-- Campi opzionali -->
+  <div v-if="kmEffettivi" class="text-truncate fw-bold text-success" style="width: 5rem;">
+    {{ kmEffettivi }} km
+  </div>
+  <div v-if="prezzo" class="text-truncate fw-bold text-info" style="width: 7rem;">
+    <i class="bi bi-currency-euro me-1"></i>
+    {{ prezzo }}€
+  </div>
+  <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 7rem;">
+    <i class="bi bi-person me-1"></i>
+    {{ codiceUtente }}
+  </div>
+  <div v-if="nomeVettore" class="text-truncate text-muted" style="width: 17.5rem;">
+    <i class="bi bi-truck me-1"></i>
+    {{ nomeVettore }}
   </div>
 </div>
 </template>
@@ -33,12 +44,27 @@
 <script>
   export default {
     name: "Corsa",
-    props:{
+    props: {
       partenza: String,
       arrivo: String,
       data: Date,
       stimaKm: Number,
-      extra: Array
+      kmEffettivi: {
+        type: Number,
+        default: null
+      },
+      prezzo: {
+        type: [Number, String],
+        default: null
+      },
+      codiceUtente: {
+        type: String,
+        default: null
+      },
+      nomeVettore: {
+        type: String,
+        default: null
+      }
     }
   }
 </script>

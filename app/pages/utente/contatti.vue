@@ -38,7 +38,7 @@ const vettori = [
   <HomeLayout role="utente" >
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1 class="mb-4">Contatti</h1>
+        <h1>Contatti</h1>
 
         <!-- Numero Comune -->
         <div class="card mb-4">

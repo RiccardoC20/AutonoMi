@@ -99,55 +99,55 @@ const corseFiltrate = computed(() => {
           <!-- Filtri e ricerca -->
           <div class="card mb-4">
             <div class="card-body">
-        <div class="row g-3">
+              <div class="row g-3">
 
-          <!-- Ordinamento -->
-          <div class="col-md-3">
-            <select v-model="sortBy" class="form-select">
-              <option value="data-desc">Più recenti prima</option>
-              <option value="data-asc">Più vecchie prima</option>
-            </select>
-          </div>
+                <!-- Ordinamento -->
+                <div class="col-md-3">
+                  <select v-model="sortBy" class="form-select">
+                    <option value="data-desc">Più recenti prima</option>
+                    <option value="data-asc">Più vecchie prima</option>
+                  </select>
+                </div>
 
-          <!-- Filtro data -->
-          <div class="col-md-3">
-            <button class="btn btn-outline-secondary w-100" data-bs-toggle="collapse" data-bs-target="#dateFilters">
-              <i class="bi bi-calendar-range me-2"></i>Filtro Data
-            </button>
-          </div>
-        </div>
+                <!-- Filtro data -->
+                <div class="col-md-3">
+                  <button class="btn btn-outline-secondary w-100" data-bs-toggle="collapse" data-bs-target="#dateFilters">
+                    <i class="bi bi-calendar-range me-2"></i>Filtro Data
+                  </button>
+                </div>
+              </div>
 
-        <!-- Filtri data espandibili -->
-        <div class="collapse mt-3" id="dateFilters">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label small fw-bold">Data dal:</label>
-              <input
-                v-model="dateFrom"
-                type="date"
-                class="form-control"
-              >
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-bold">Data al:</label>
-              <input
-                v-model="dateTo"
-                type="date"
-                class="form-control"
-              >
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-              <button
-                class="btn btn-outline-danger w-100"
-                @click="dateFrom = ''; dateTo = ''"
-              >
-                <i class="bi bi-x-circle me-2"></i>Rimuovi Filtro
-              </button>
+              <!-- Filtri data espandibili -->
+              <div class="collapse mt-3" id="dateFilters">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label small fw-bold">Data dal:</label>
+                    <input
+                      v-model="dateFrom"
+                      type="date"
+                      class="form-control"
+                    >
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-bold">Data al:</label>
+                    <input
+                      v-model="dateTo"
+                      type="date"
+                      class="form-control"
+                    >
+                  </div>
+                  <div class="col-md-4 d-flex align-items-end">
+                    <button
+                      class="btn btn-outline-danger w-100"
+                      @click="dateFrom = ''; dateTo = ''"
+                    >
+                      <i class="bi bi-x-circle me-2"></i>Rimuovi Filtro
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-          </div>
-        </div>
 
     <!-- Lista corse-->
     <div class="mb-4 ">
