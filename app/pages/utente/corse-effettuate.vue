@@ -1,89 +1,87 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import Corsa from '../../components/Corsa.vue';
+import { type Corsa, type User } from '../../../composables/useAuth';
 
-// Dati mock per corse effettuate
-const corseEffettuate = [
-  {
-    id: 1,
-    partenza: 'Via Dante 22',
-    arrivo: 'Corso Como 15',
-    data: new Date('2024-12-10T09:15:00'),
-    stimaKm: 12.3,
-    kmEffettivi: 12.8,
-    prezzo: 18.45,
-    codiceVettore: 'VET001',
-    nomeVettore: 'Mario Rossi Trasporti',
-    codiceUtente: 'USR001'
-  },
-  {
-    id: 2,
-    partenza: 'Via Milano 5',
-    arrivo: 'Piazza della Scala',
-    data: new Date('2024-12-09T16:45:00'),
-    stimaKm: 9.2,
-    kmEffettivi: 9.5,
-    prezzo: 13.80,
-    codiceVettore: 'VET003',
-    nomeVettore: 'Laura Bianchi Delivery',
-    codiceUtente: 'USR002'
-  },
-  {
-    id: 3,
-    partenza: 'Corso Buenos Aires 20',
-    arrivo: 'Via Paolo Sarpi 8',
-    data: new Date('2024-12-08T11:30:00'),
-    stimaKm: 15.7,
-    kmEffettivi: 16.2,
-    prezzo: 23.55,
-    codiceVettore: 'VET002',
-    nomeVettore: 'Giuseppe Verdi Logistics',
-    codiceUtente: 'USR003'
-  },
-  {
-    id: 4,
-    partenza: 'Via Garibaldi 78',
-    arrivo: 'Corso Italia 45',
-    data: new Date('2024-12-07T14:20:00'),
-    stimaKm: 8.9,
-    kmEffettivi: 9.1,
-    prezzo: 13.35,
-    codiceVettore: 'VET001',
-    nomeVettore: 'Mario Rossi Trasporti',
-    codiceUtente: 'USR001'
-  },
-  {
-    id: 5,
-    partenza: 'Piazza Duomo',
-    arrivo: 'Via Roma 123',
-    data: new Date('2024-12-06T10:00:00'),
-    stimaKm: 11.5,
-    kmEffettivi: 11.8,
-    prezzo: 17.70,
-    codiceVettore: 'VET003',
-    nomeVettore: 'Laura Bianchi Delivery',
-    codiceUtente: 'USR004'
-  },
-  {
-    id: 6,
-    partenza: 'Via Paolo Sarpi 8',
-    arrivo: 'Corso Buenos Aires 20',
-    data: new Date('2024-12-05T18:30:00'),
-    stimaKm: 15.7,
-    kmEffettivi: 16.0,
-    prezzo: 23.55,
-    codiceVettore: 'VET002',
-    nomeVettore: 'Giuseppe Verdi Logistics',
-    codiceUtente: 'USR005'
-  }
-];
+// Interfaccia per Corsa temporanea
+
+
+const error = ref<string | null>(null);
+const user = ref<User | null>(null);
+const corseEffettuate = ref<Corsa[]>([]);
+const loading = ref(false);
 
 // Filtri di ricerca
 const searchTerm = ref('');
 const sortBy = ref('data'); // 'data', 'costo', 'valutazione', 'km'
 
+// Carica corse effettuate
+const getCorseEffettuate = async (token: string) => {
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      corse: Corsa[];
+    }>('/api/corsa', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.success) {
+      corseEffettuate.value = response.corse;
+    } else {
+      error.value = "Errore durante il caricamento delle corse effettuate";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento delle corse effettuate";
+    console.error('Errore getCorseEffettuate:', err);
+  }
+};
+
+// Carica dati utente
+const getUser = async () => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      user: User;
+    }>('/api/utente/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      user.value = response.user;
+      
+      // Carica corse effettuate
+      await getCorseEffettuate(token);
+    } else {
+      error.value = "Errore durante il caricamento dei dati dell'utente";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati dell'utente";
+    console.error('Errore getUser:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
 const corseFiltrate = computed(() => {
-  let filtered = corseEffettuate.filter(corsa => {
+  let filtered = corseEffettuate.value.filter(corsa => {
     const searchLower = searchTerm.value.toLowerCase();
     const matchesSearch = corsa.partenza.toLowerCase().includes(searchLower) ||
                          corsa.arrivo.toLowerCase().includes(searchLower) ||
@@ -118,6 +116,11 @@ const statistiche = computed(() => {
     costoTotale: corse.reduce((sum, corsa) => sum + (corsa.prezzo || 0), 0)
   };
 });
+
+// Carica dati al mount
+onMounted(() => {
+  getUser();
+});
 </script>
 
 <template>
@@ -125,6 +128,24 @@ const statistiche = computed(() => {
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-3 p-md-4">
           <h1>Corse Effettuate</h1>
+
+          <!-- Messaggio di errore -->
+          <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
+          <!-- Loading -->
+          <div v-if="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Caricamento...</span>
+            </div>
+            <p class="mt-2 text-muted">Caricamento dati...</p>
+          </div>
+
+          <!-- Contenuto principale -->
+          <div v-else>
           <!-- Statistiche riepilogative -->
           <div class="row mb-3 mb-md-4">
             <div class="col-12 col-sm-6 col-md-3 mb-3">
@@ -206,6 +227,7 @@ const statistiche = computed(() => {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -2,58 +2,158 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Vettore from '../../components/Vettore.vue';
 
-// Dati mock per i vettori
-const vettori = [
-  {
-    id: 1,
-    codiceVettore: 'V001',
-    nome: 'Mario Rossi Trasporti',
-    email: 'mario.rossi@email.com'
-  },
-  {
-    id: 2,
-    codiceVettore: 'V002',
-    nome: 'Laura Bianchi Delivery',
-    email: 'laura.bianchi@email.com'
-  },
-  {
-    id: 3,
-    codiceVettore: 'V003',
-    nome: 'Giuseppe Verdi Logistics',
-    email: 'giuseppe.verdi@email.com'
-  },
-  {
-    id: 4,
-    codiceVettore: 'V004',
-    nome: 'Anna Neri Transport',
-    email: 'anna.neri@email.com'
-  },
-  {
-    id: 5,
-    codiceVettore: 'V005',
-    nome: 'Luca Gallo Express',
-    email: 'luca.gallo@email.com'
-  }
-];
+// Interfaccia per Vettore
+interface VettoreType {
+  _id: string;
+  codiceVettore: number;
+  nome: string;
+  email: string;
+  numeroTelefono?: string;
+  sede?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// Interfaccia per Comune
+interface ComuneType {
+  _id: string;
+  ID: number;
+}
+
+const error = ref<string | null>(null);
+const comune = ref<ComuneType | null>(null);
+const vettori = ref<VettoreType[]>([]);
+const loading = ref(false);
 
 // Barra di ricerca
 const searchTerm = ref('');
 
 // Lista vettori filtrata
 const vettoriFiltrati = computed(() => {
-  if (!searchTerm.value) return vettori;
+  if (!searchTerm.value) return vettori.value;
 
-  return vettori.filter(vettore =>
+  return vettori.value.filter(vettore =>
     vettore.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-    vettore.codiceVettore.toLowerCase().includes(searchTerm.value.toLowerCase())
+    vettore.codiceVettore.toString().includes(searchTerm.value)
   );
 });
 
-// Funzione mock per eliminare vettore
-function eliminaVettore(vettoreId: number) {
-  // Chiamata API per eliminare il vettore
-  console.log('Eliminazione vettore:', vettoreId);
-}
+// Carica vettori
+const getVettori = async (token: string) => {
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      data: VettoreType[];
+      count: number;
+    }>('/api/vettore/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      vettori.value = response.data;
+    } else {
+      error.value = "Errore durante il caricamento dei vettori";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei vettori";
+    console.error('Errore getVettori:', err);
+  }
+};
+
+// Carica dati comune (se l'endpoint esiste)
+const getComune = async (token: string) => {
+  try {
+    //<--decommentare quando l'endpoint /api/comune/me sarà disponibile-->
+    // const response = await $fetch<{
+    //   success: boolean;
+    //   comune: ComuneType;
+    // }>('/api/comune/me', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Authorization': `Bearer ${token}`
+    //   }
+    // });
+    // 
+    // if (response.success) {
+    //   comune.value = response.comune;
+    // }
+  } catch (err: any) {
+    console.error('Errore getComune:', err);
+    // Non blocchiamo il caricamento se l'endpoint non esiste
+  }
+};
+
+// Carica dati iniziali
+const loadData = async () => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    // Carica vettori e dati comune in parallelo
+    await Promise.all([
+      getVettori(token),
+      getComune(token)
+    ]);
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati";
+    console.error('Errore loadData:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Funzione per eliminare vettore
+const eliminaVettore = async (vettoreId: string) => {
+  if (!confirm('Sei sicuro di voler eliminare questo vettore?')) {
+    return;
+  }
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      message: string;
+    }>(`/api/vettore/${vettoreId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.success) {
+      // Ricarica la lista dei vettori
+      await getVettori(token);
+    } else {
+      error.value = "Errore durante l'eliminazione del vettore";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante l'eliminazione del vettore";
+    console.error('Errore eliminaVettore:', err);
+  }
+};
+
+// Carica dati al mount
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>
@@ -61,9 +161,27 @@ function eliminaVettore(vettoreId: number) {
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
         <h1>Gestione Vettori</h1>
+
+        <!-- Messaggio di errore -->
+        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-2 text-muted">Caricamento dati...</p>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div v-else>
           <!-- Barra di ricerca -->
           <div class="card mb-4">
-          <div class="card-body">
+            <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
                   <input
@@ -72,38 +190,41 @@ function eliminaVettore(vettoreId: number) {
                     class="form-control"
                     placeholder="Cerca per nome o codice vettore..."
                   >
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Lista vettori -->
-    <div class="mb-4">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="card-title mb-0">
-            <i class="bi bi-truck me-2"></i>
-            Lista Vettori ({{ vettoriFiltrati.length }})
-          </h5>
-          </div>
-        <div class="card-body">
-          <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
-            <i class="bi bi-truck text-muted fs-1 mb-2"></i>
-            <p class="text-muted">Nessun vettore trovato con la ricerca effettuata</p>
-          </div>
-          <div v-else class="d-flex flex-column gap-3">
-            <Vettore
-              v-for="vettore in vettoriFiltrati"
-              :key="vettore.id"
-              :codiceVettore="vettore.codiceVettore"
-              :nome="vettore.nome"
-              :email="vettore.email"
-              @elimina="eliminaVettore(vettore.id)"
-            />
+          <!-- Lista vettori -->
+          <div class="mb-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-truck me-2"></i>
+                  Lista Vettori ({{ vettoriFiltrati.length }})
+                </h5>
+              </div>
+              <div class="card-body">
+                <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
+                  <i class="bi bi-truck text-muted fs-1 mb-2"></i>
+                  <p class="text-muted">
+                    {{ searchTerm ? 'Nessun vettore trovato con la ricerca effettuata' : 'Nessun vettore disponibile' }}
+                  </p>
+                </div>
+                <div v-else class="d-flex flex-column gap-3">
+                  <Vettore
+                    v-for="vettore in vettoriFiltrati"
+                    :key="vettore._id"
+                    :codiceVettore="vettore.codiceVettore.toString()"
+                    :nome="vettore.nome"
+                    :email="vettore.email"
+                    @elimina="eliminaVettore(vettore._id)"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
       </div>
     </div>
   </HomeLayout>

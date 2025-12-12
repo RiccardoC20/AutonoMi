@@ -9,6 +9,19 @@ export interface User {
   dataNascita: string;
   cellulare: string;
   indirizzo: string;
+  budget: number;
+}
+export interface Corsa {
+  id: number;
+  partenza: string;
+  arrivo: string;
+  data: Date;
+  stimaKm: number;
+  kmEffettivi?: number;
+  prezzo?: number;
+  codiceUtente?: string;
+  codiceVettore?: string;
+  nomeVettore?: string;
 }
 
 // Stato globale dell'autenticazione

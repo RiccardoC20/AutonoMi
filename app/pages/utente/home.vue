@@ -1,26 +1,12 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import Corsa from '../../components/Corsa.vue';
-import { useAuth, type User } from '../../../composables/useAuth';
+import { useAuth, type User , type Corsa} from '../../../composables/useAuth';
 
-// Interfaccia per Corsa temporanea
-interface CorsaType {
-  id: number;
-  partenza: string;
-  arrivo: string;
-  data: Date | string;
-  stimaKm: number;
-  kmEffettivi?: number;
-  prezzo?: number;
-  codiceUtente?: string;
-  codiceVettore?: string;
-  nomeVettore?: string;
-}
 
 const error = ref<string | null>(null);
 const user = ref<User | null>(null);
-const corsePrenotate = ref<CorsaType[]>([]);
-const corseEffettuate = ref<CorsaType[]>([]);
+const corsePrenotate = ref<Corsa[]>([]);
+const corseEffettuate = ref<Corsa[]>([]);
 const loading = ref(false);
 
 // Dati chilometri (default, verranno aggiornati con i dati reali)
@@ -38,8 +24,8 @@ const getCorsePrenotate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: CorsaType[];
-    }>('/api/utente/corse/prenotate', {
+      corse: Corsa[];
+    }>('/api/corsa', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -66,8 +52,8 @@ const getCorseEffettuate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: CorsaType[];
-    }>('/api/utente/corse/effettuate', {
+      corse: Corsa[];
+    }>('/api/corsa', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -75,11 +61,7 @@ const getCorseEffettuate = async (token: string) => {
     });
     
     if (response.success) {
-      // Converti le date da stringhe a Date objects
-      corseEffettuate.value = response.corse.map(corsa => ({
-        ...corsa,
-        data: parseDate(corsa.data)
-      }));
+      corseEffettuate.value = response.corse;
     } else {
       error.value = "Errore durante il caricamento delle corse effettuate";
     }

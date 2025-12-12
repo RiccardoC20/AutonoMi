@@ -1,48 +1,88 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import Corsa from '../../components/Corsa.vue';
+import { useAuth, type User , type Corsa} from '../../../composables/useAuth';
 
-// Dati mock per corse prenotate dall'utente
-const corse = [
-  {
-    id: 1,
-    partenza: 'Via Roma 123',
-    arrivo: 'Corso Italia 45',
-    data: new Date('2024-12-15T10:30:00'),
-    stimaKm: 8.5,
-    codiceVettore: 'VET001',
-    nomeVettore: 'Mario Rossi Trasporti',
-    codiceUtente: 'USR001'
-  },
-  {
-    id: 2,
-    partenza: 'Piazza Duomo',
-    arrivo: 'Via Garibaldi 78',
-    data: new Date('2024-12-16T14:20:00'),
-    stimaKm: 12.3,
-    codiceVettore: 'VET002',
-    nomeVettore: 'Giuseppe Verdi Logistics',
-    codiceUtente: 'USR001'
-  },
-  {
-    id: 3,
-    partenza: 'Via Dante 22',
-    arrivo: 'Corso Como 15',
-    data: new Date('2024-12-17T09:15:00'),
-    stimaKm: 6.8,
-    codiceVettore: 'VET003',
-    nomeVettore: 'Laura Bianchi Delivery',
-    codiceUtente: 'USR001'
-  }
-];
+
+
+const error = ref<string | null>(null);
+const user = ref<User | null>(null);
+const corse = ref<Corsa[]>([]);
+const loading = ref(false);
 
 // Filtri di ricerca e ordinamento
 const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
 const dateFrom = ref('');
 const dateTo = ref('');
 
+
+// Carica corse prenotate
+const getCorsePrenotate = async (token: string) => {
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      corse: Corsa[];
+    }>('/api/corsa', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      corse.value = response.corse;
+    } else {
+      error.value = "Errore durante il caricamento delle corse prenotate";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento delle corse prenotate";
+    console.error('Errore getCorsePrenotate:', err);
+  }
+};
+
+// Carica dati utente
+const getUser = async () => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      user: User;
+    }>('/api/utente/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      user.value = response.user;
+      
+      // Carica corse prenotate
+      await getCorsePrenotate(token);
+    } else {
+      error.value = "Errore durante il caricamento dei dati dell'utente";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati dell'utente";
+    console.error('Errore getUser:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
 const corseFiltrate = computed(() => {
-  let filtered = corse.filter(corsa => {
+  let filtered = corse.value.filter(corsa => {
     // Filtro per periodo di data
     const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
@@ -63,6 +103,11 @@ const corseFiltrate = computed(() => {
 
   return filtered;
 });
+
+// Carica dati al mount
+onMounted(() => {
+  getUser();
+});
 </script>
 
 <template>
@@ -71,6 +116,23 @@ const corseFiltrate = computed(() => {
       <div class="content-wrapper p-4">
         <h1>Corse Prenotate</h1>
 
+        <!-- Messaggio di errore -->
+        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-2 text-muted">Caricamento dati...</p>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div v-else>
           <!-- Filtri e controlli --> 
           <div class="mb-4">
           <div class="card h-100">
@@ -154,6 +216,7 @@ const corseFiltrate = computed(() => {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
