@@ -37,6 +37,10 @@ const UtenteSchema = new mongoose.Schema({
   budget: {
     type: Number,
     required: true
+  },
+  pdfUrl: {
+    type: String,
+    required: true
   }
 }, {
     collection: "utenti",
@@ -44,5 +48,5 @@ const UtenteSchema = new mongoose.Schema({
 });
 
 
-export default mongoose.models.utente || mongoose.model("utente", UtenteSchema);
+export default mongoose.models.utenti || mongoose.model("utenti", UtenteSchema);
 

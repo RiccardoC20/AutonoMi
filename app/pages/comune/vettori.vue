@@ -2,37 +2,35 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Vettore from '../../components/Vettore.vue';
 
-// Dati mock per i vettori
-const vettori = [
-  {
-    id: 1,
-    codiceVettore: 'V001',
-    nome: 'Mario Rossi Trasporti',
-    email: 'mario.rossi@email.com'
-  },
-  {
-    id: 2,
-    codiceVettore: 'V002',
-    nome: 'Laura Bianchi Delivery',
-    email: 'laura.bianchi@email.com'
-  },
-  {
-    id: 3,
-    codiceVettore: 'V003',
-    nome: 'Giuseppe Verdi Logistics',
-    email: 'giuseppe.verdi@email.com'
-  },
-  {
-    id: 4,
-    codiceVettore: 'V004',
-    nome: 'Anna Neri Transport',
-    email: 'anna.neri@email.com'
-  },
-  {
-    id: 5,
-    codiceVettore: 'V005',
-    nome: 'Luca Gallo Express',
-    email: 'luca.gallo@email.com'
+const vettori = ref<any[]>([]);
+const loading = ref(false);
+const error = ref<string | null>(null);
+
+async function loadVettori() {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const token = localStorage.getItem('auth_token');
+
+    const response = await $fetch<{
+      success: boolean;
+      data: any[];
+      count: number;
+    }>('/api/vettore/get', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.success) {
+      vettori.value = response.data;
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || 'Errore nel caricamento dei vettori';
+    console.error('Errore caricamento vettori:', err);
+  } finally {
+    loading.value = false;
   }
 ];
 

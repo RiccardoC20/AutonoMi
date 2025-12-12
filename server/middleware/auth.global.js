@@ -10,8 +10,8 @@ export default defineEventHandler(async (event) => {
     return;
   }
 
-  console.log("middleware backend - chiamata API")
-
+  console.log("middleware backend - auth.global - chiamata API")
+  
 
   // 2. Endpoint pubblici: non richiedono login
   if (publicEndpoints.includes(event.path)) {

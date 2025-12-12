@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CandidatureSchema = new mongoose.Schema({
+const CandidaturaSchema = new mongoose.Schema({
   utente: {
     nome: {
       type: String,
@@ -12,7 +12,8 @@ const CandidatureSchema = new mongoose.Schema({
     },
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     dataNascita: {
       type: Date,
@@ -24,13 +25,18 @@ const CandidatureSchema = new mongoose.Schema({
     },
     codiceFiscale: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     }
+  },
+  pdfUrl: {
+    type: String,
+    required: true
   }
 }, {
   collection: "candidature",
   timestamps: true
 });
 
-export default mongoose.models.candidature || mongoose.model("candidature", CandidatureSchema);
+export default mongoose.models.candidature || mongoose.model("candidature", CandidaturaSchema);
 

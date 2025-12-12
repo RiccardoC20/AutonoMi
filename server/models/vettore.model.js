@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const VettoreSchema = new mongoose.Schema({
+const vettoreSchema = new mongoose.Schema({
   codiceVettore: {
     type: Number,
     required: true,
@@ -16,4 +16,4 @@ const VettoreSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.models.Vettore || mongoose.model("Vettore", VettoreSchema);
+export default mongoose.models.vettori || mongoose.model("vettori", vettoreSchema);

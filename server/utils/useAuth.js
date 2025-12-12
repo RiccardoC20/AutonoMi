@@ -8,7 +8,7 @@ export default async function useAuth(event) {
       statusMessage: "JWT_SECRET non configurato"
     });
   }
-  console.log(event.node.req.headers)
+
   const authHeader = event.node.req.headers["authorization"];
   if (!authHeader) {
     return { ok: false };

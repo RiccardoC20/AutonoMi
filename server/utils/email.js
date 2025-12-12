@@ -1,34 +1,36 @@
-import { Resend } from 'resend';
+import sgMail from "@sendgrid/mail";
 
-export async function sendVettoreCredentials(to, codiceVettore, password, nome) {
+sgMail.setApiKey(process.env.SENDER_API);
+
+/**
+ * Invia email con SendGrid 
+ */
+export async function sendMail(to, subject, text) {
   try {
-    const resend = new Resend(process.env.RESEND_API);
 
-    const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM || 'no-reply@resend.dev',
-      to: to,
-      subject: 'Credenziali di accesso - AutonoMi',
-      text: `
-        Benvenuto in AutonoMi
-        Ciao ${nome},
-        Le tue credenziali di accesso sono state create con successo.
-        Codice Vettore: ${codiceVettore}
-        Password: ${password}
-        Importante: Ti consigliamo di cambiare la password al primo accesso.
-        Saluti, Team AutonoMi
-      `,
-    });
+    const from = process.env.AUTONOMI_EMAIL;
 
-    if (error) {
-      console.error('Errore nell\'invio email:', error);
-      throw error;
-    }
+    const msg = {
+      to,
+      from,
+      subject,
+      text
+    };
 
-    console.log('Email inviata con successo:', data?.id);
-    return { success: true, messageId: data?.id };
+    const response = await sgMail.send(msg);
+    console.log("Email inviata!", response[0].statusCode);
+    
+    return {
+      success: true,
+      statusCode: response[0].statusCode
+    };
   } catch (error) {
-    console.error('Errore nell\'invio email:', error);
+    console.error("Errore invio email:", error);
+    
+    if (error.response) {
+      console.error(error.response.body);
+    }
+    
     throw error;
   }
 }
-
