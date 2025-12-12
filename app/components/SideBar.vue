@@ -7,18 +7,43 @@
         :to="link.to"
         class="nav-link text-white text-decoration-none d-flex align-items-center p-2 mb-1 rounded small"
       >
-        <i :class="link.icon" class="me-2"></i>
+      <i :class="link.icon" class="me-2"></i>
         {{ link.label }}
       </NuxtLink>
     </nav>
 
     <div class="mt-auto">
-      <NuxtLink to="/logout" class="nav-link text-white text-decoration-none d-flex align-items-center p-2 rounded small">
+      <button 
+        type="button" 
+        class="nav-link text-white text-decoration-none d-flex align-items-center p-2 rounded small w-100 border-0 bg-transparent"
+        data-bs-toggle="modal" 
+        data-bs-target="#staticBackdrop"
+      >
         <i class="bi bi-box-arrow-right me-2"></i>
         Logout
-      </NuxtLink>
+      </button>
     </div>
   </div>
+
+<!-- Modal Logout -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Conferma Logout.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="logout()">Conferma</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
 </template>
 
 <script>
@@ -32,9 +57,21 @@ export default {
     color: {
       type: String,
       default: "#1c1f2b"
+    },
+    role: {
+      type: String,
+      default: "utente"
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      navigateTo(`/${this.role}/login`);
     }
   }
-}
+};
+
 </script>
 
 <style scoped>
@@ -49,6 +86,10 @@ export default {
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #0000001f;
 }
-</style>
+
+button.nav-link {
+  cursor: pointer;
+}
+</style>  

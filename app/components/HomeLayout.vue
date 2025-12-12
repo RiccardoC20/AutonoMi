@@ -3,6 +3,7 @@
     <SideBar
       :links="navigationLinks"
       :color="sidebarColor"
+      :role="role"
     />
 
     <div class="flex-grow-1 p-3">
@@ -135,12 +136,5 @@ export default {
 /* Aggiunge margine sinistro per compensare la sidebar fissa */
 .flex-grow-1 {
   margin-left: 200px;
-}
-
-/* Responsive: riduce il margine su mobile */
-@media (max-width: 576px) {
-  .flex-grow-1 {
-    margin-left: 180px; /* Compensazione per la sidebar più stretta su mobile */
-  }
 }
 </style>

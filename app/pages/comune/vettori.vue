@@ -65,7 +65,7 @@ function eliminaVettore(vettoreId: number) {
         <h1>Gestione Vettori</h1>
           <!-- Barra di ricerca -->
           <div class="card mb-4">
-            <div class="card-body">
+          <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
                   <input
@@ -74,10 +74,10 @@ function eliminaVettore(vettoreId: number) {
                     class="form-control"
                     placeholder="Cerca per nome o codice vettore..."
                   >
-                </div>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Lista vettori usando il componente Vettore -->
     <div class="mb-4">
@@ -87,7 +87,7 @@ function eliminaVettore(vettoreId: number) {
             <i class="bi bi-truck me-2"></i>
             Lista Vettori ({{ vettoriFiltrati.length }})
           </h5>
-        </div>
+          </div>
         <div class="card-body">
           <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
             <i class="bi bi-truck text-muted fs-1 mb-2"></i>

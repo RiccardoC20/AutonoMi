@@ -104,7 +104,7 @@ const utentiFiltrati = computed(() => {
       </div>
     </div>
       </div>
-    </div>
+  </div>
   </HomeLayout>
 </template>
 
