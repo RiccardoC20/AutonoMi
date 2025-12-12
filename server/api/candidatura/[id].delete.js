@@ -44,10 +44,11 @@ export default defineEventHandler(async (event) => {
           const supabase = getSupabaseClient();
           const bucketName = process.env.SUPABASE_STORAGE_BUCKET;
           const fileName = `${codiceFiscale}.pdf`;
+          const filePath = "candidature/" + fileName;
           
           const { error: deleteError } = await supabase.storage
             .from(bucketName)
-            .remove([fileName]);
+            .remove([filePath]);
           
           if (deleteError) {
             console.error('Errore eliminazione file PDF da Supabase:', deleteError);

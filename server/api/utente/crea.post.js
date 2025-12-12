@@ -3,6 +3,7 @@ import Utente from "../../models/utente.model";
 import { getNextSequenceValue } from "../../utils/sequence";
 import { generateRandomPassword } from "../../utils/password";
 import { sendMail } from "../../utils/email";
+import { getSupabaseClient } from "../../utils/supabase";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
@@ -58,6 +59,46 @@ export default defineEventHandler(async (event) => {
     // Converte dataNascita in Date se è una stringa
     const dataNascitaDate = typeof dataNascita === 'string' ? new Date(dataNascita) : dataNascita;
 
+    // Sposta e rinomina il file PDF da /candidature/codiceFiscale.pdf a /utenti/codiceUtente.pdf
+    let nuovoPdfUrl = pdfUrl || '';
+    
+    if (pdfUrl) {
+      try {
+        const supabase = getSupabaseClient();
+        const bucketName = process.env.SUPABASE_STORAGE_BUCKET;
+        const fromPath = `candidature/${codiceFiscale}.pdf`;
+        const toPath = `utenti/${codiceUtente}.pdf`;
+
+        // Copia il file dalla posizione originale alla nuova posizione
+        const { data: copyData, error: copyError } = await supabase.storage
+          .from(bucketName)
+          .copy(fromPath, toPath);
+
+        if (!copyError) {
+          // Elimina il file dalla posizione originale
+          await supabase.storage
+            .from(bucketName)
+            .remove([fromPath]);
+
+          // Genera URL firmato per il nuovo file
+          const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+            .from(bucketName)
+            .createSignedUrl(toPath, 31622400); // 366 giorni (s)
+
+          if (!signedUrlError && signedUrlData) {
+            nuovoPdfUrl = signedUrlData.signedUrl;
+          } else {
+            console.error('Errore generazione URL firmato:', signedUrlError);
+          }
+        } else {
+          console.error('Errore copia file su Supabase:', copyError);
+        }
+      } catch (supabaseError) {
+        console.error('Errore durante lo spostamento del PDF su Supabase:', supabaseError);
+        // Non blocchiamo la creazione dell'utente se lo spostamento fallisce
+      }
+    }
+    
     // Crea l'utente in mongoDb
     await Utente.create({
       codiceUtente,
@@ -69,7 +110,7 @@ export default defineEventHandler(async (event) => {
       codiceFiscale,
       budget,
       password: passwordHash,
-      pdfUrl: pdfUrl || '', // Aggiunge pdfUrl se fornito, altrimenti stringa vuota
+      pdfUrl: nuovoPdfUrl, // Usa il nuovo URL dopo lo spostamento
     });
     
     // Invia email con le credenziali (in background, non blocca la risposta)   

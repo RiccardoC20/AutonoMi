@@ -418,7 +418,6 @@ onMounted(() => {
       @click="closeConfirmModal"
     ></div>
   </div>
-  </HomeLayout>
 </template>
 
 <style scoped>

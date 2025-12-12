@@ -82,10 +82,10 @@ export default defineEventHandler(async (event) => {
     // nome file (cod_fiscale.pdf)
     const fileName = `${codiceFiscale}.pdf`;
     
-    // upload PDF
+    // upload PDF su Supabase
     const supabase = getSupabaseClient();
     const bucketName = process.env.SUPABASE_STORAGE_BUCKET;
-    const filePath = fileName;
+    const filePath = "candidature/" + fileName;
 
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from(bucketName)

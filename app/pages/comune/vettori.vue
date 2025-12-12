@@ -32,7 +32,7 @@ async function loadVettori() {
   } finally {
     loading.value = false;
   }
-];
+};
 
 // Barra di ricerca
 const searchTerm = ref('');
