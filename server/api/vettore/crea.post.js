@@ -2,7 +2,7 @@ import connectDB from "../../utils/mongo";
 import Vettore from "../../models/vettore.model";
 import { getNextSequenceValue } from "../../utils/sequence";
 import { generateRandomPassword } from "../../utils/password";
-import { sendVettoreCredentials } from "../../utils/email";
+import { sendCredentials } from "../../utils/email";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
     });
     
     // Invia email con le credenziali (in background, non blocca la risposta)   
-    sendVettoreCredentials(email, codiceVettore, passwordPlain, nome)
+    sendCredentials(email, codiceVettore, passwordPlain, nome, 'vettore')
       .catch(err => {
         console.error('Errore nell\'invio email (non critico):', err);
         // Non blocchiamo la creazione del vettore se l'email fallisce

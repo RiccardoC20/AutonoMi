@@ -16,11 +16,16 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
+    const token = localStorage.getItem('auth_token');
+    
     const response = await $fetch<{
       success: boolean;
       vettore: any;
     }>('/api/vettore/crea', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: {
         nome: nome.value.trim(),
         email: email.value.trim(),

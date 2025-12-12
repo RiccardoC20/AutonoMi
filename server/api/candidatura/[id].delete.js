@@ -1,13 +1,13 @@
-import connectDB from "../../../utils/mongo";
-import Candidatura from "../../../models/candidatura.model";
+import connectDB from "../../utils/mongo";
+import Candidatura from "../../models/candidatura.model";
 
 export default defineEventHandler(async (event) => {
   try {
     await connectDB();
-
+    
     // Ottiene l'ID dal parametro della route
     const id = getRouterParam(event, 'id');
-
+    
     if (!id) {
       throw createError({
         statusCode: 400,
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         statusMessage: 'Candidatura non trovata'
       });
     }
-
+   
     // Elimina la candidatura
     await Candidatura.findByIdAndDelete(id);
 

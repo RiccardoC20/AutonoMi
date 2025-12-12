@@ -29,7 +29,7 @@ function handleDrop(event: DragEvent) {
   isDragging.value = false;
 
   const files = event.dataTransfer?.files;
-  if (files && files.length > 0) {
+  if (files && files.length > 0 && files[0]) {
     handleFileSelect(files[0]);
   }
 }
@@ -47,7 +47,7 @@ function handleFileSelect(file: File) {
 
 function handleFileInput(event: Event) {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
+  if (target.files && target.files.length > 0 && target.files[0]) {
     handleFileSelect(target.files[0]);
   }
 }
@@ -119,137 +119,156 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="container my-5">
+  <!-- Alert di successo -->
+  <div
+    v-if="success"
+    class="alert alert-success alert-dismissible fade show fixed-alert"
+    role="alert"
+  >
+    <i class="bi bi-check-circle-fill me-2"></i>
+    <strong>Successo!</strong> Candidatura inviata con successo!
+    <button
+      type="button"
+      class="btn-close"
+      @click="success = false"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <!-- Alert di errore -->
+  <div
+    v-if="error"
+    class="alert alert-danger alert-dismissible fade show fixed-alert"
+    role="alert"
+  >
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong>Errore!</strong> {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      @click="error = null"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <div class="container my-5 page-background">
     <div class="row justify-content-center">
       <div class="col-12 col-md-8 col-lg-6">
         <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white text-center">
+          <div class="form-element card-header text-white text-center">
             <h2 class="h4 mb-0">Invio Candidatura</h2>
           </div>
 
           <div class="card-body">
-            <!-- Messaggio di successo -->
-            <div
-              v-if="success"
-              class="alert alert-success alert-dismissible fade show"
-              role="alert"
-            >
-              Candidatura inviata con successo!
-              <button
-                type="button"
-                class="btn-close"
-                @click="success = false"
-                aria-label="Close"
-              ></button>
-            </div>
-
-            <!-- Messaggio di errore -->
-            <div
-              v-if="error"
-              class="alert alert-danger alert-dismissible fade show"
-              role="alert"
-            >
-              {{ error }}
-              <button
-                type="button"
-                class="btn-close"
-                @click="error = null"
-                aria-label="Close"
-              ></button>
-            </div>
-
             <form @submit.prevent="handleSubmit">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="nome" class="form-label">
-                    Nome <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    id="nome"
-                    v-model="nome"
-                    type="text"
-                    class="form-control"
-                    placeholder="Inserisci il nome"
-                    required
-                    :disabled="loading"
-                  />
+                  <div class="form-floating">
+                    <input
+                      id="nome"
+                      v-model="nome"
+                      type="text"
+                      class="form-control"
+                      placeholder="Inserisci il nome"
+                      required
+                      :disabled="loading"
+                    />
+                    <label for="nome">
+                      Nome <span class="text-danger">*</span>
+                    </label>
+                  </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="cognome" class="form-label">
-                    Cognome <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    id="cognome"
-                    v-model="cognome"
-                    type="text"
-                    class="form-control"
-                    placeholder="Inserisci il cognome"
-                    required
-                    :disabled="loading"
-                  />
+                  <div class="form-floating">
+                    <input
+                      id="cognome"
+                      v-model="cognome"
+                      type="text"
+                      class="form-control"
+                      placeholder="Inserisci il cognome"
+                      required
+                      :disabled="loading"
+                    />
+                    <label for="cognome">
+                      Cognome <span class="text-danger">*</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="email" class="form-label">
-                  Email <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="email"
-                  v-model="email"
-                  type="email"
-                  class="form-control"
-                  placeholder="Inserisci l'email"
-                  required
-                  :disabled="loading"
-                />
+                <div class="form-floating">
+                  <input
+                    id="email"
+                    v-model="email"
+                    type="email"
+                    class="form-control"
+                    placeholder="Inserisci l'email"
+                    required
+                    :disabled="loading"
+                  />
+                  <label for="email">
+                    Email <span class="text-danger">*</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-4 mb-3">
+                  <div class="form-floating">
+                    <input
+                      id="dataNascita"
+                      v-model="dataNascita"
+                      type="date"
+                      class="form-control"
+                      placeholder="Data di Nascita"
+                      required
+                      :disabled="loading"
+                      :max="new Date().toISOString().split('T')[0]"
+                    />
+                    <label for="dataNascita">
+                      Data di Nascita <span class="text-danger">*</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-8 mb-3">
+                  <div class="form-floating">
+                    <input
+                      id="cellulare"
+                      v-model="cellulare"
+                      type="tel"
+                      class="form-control"
+                      placeholder="Inserisci il numero di cellulare"
+                      required
+                      :disabled="loading"
+                      maxlength="10"
+                    />
+                    <label for="cellulare">
+                      Cellulare <span class="text-danger">*</span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">
-                <label for="dataNascita" class="form-label">
-                  Data di Nascita <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="dataNascita"
-                  v-model="dataNascita"
-                  type="date"
-                  class="form-control"
-                  required
-                  :disabled="loading"
-                  :max="new Date().toISOString().split('T')[0]"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="cellulare" class="form-label">
-                  Cellulare <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="cellulare"
-                  v-model="cellulare"
-                  type="tel"
-                  class="form-control"
-                  placeholder="Inserisci il numero di cellulare"
-                  required
-                  :disabled="loading"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="codiceFiscale" class="form-label">
-                  Codice Fiscale <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="codiceFiscale"
-                  v-model="codiceFiscale"
-                  type="text"
-                  class="form-control"
-                  placeholder="Inserisci il codice fiscale"
-                  required
-                  :disabled="loading"
-                  style="text-transform: uppercase;"
-                />
+                <div class="form-floating">
+                  <input
+                    id="codiceFiscale"
+                    v-model="codiceFiscale"
+                    type="text"
+                    class="form-control"
+                    placeholder="Inserisci il codice fiscale"
+                    required
+                    :disabled="loading"
+                    style="text-transform: uppercase;"
+                    maxlength="16"
+                  />
+                  <label for="codiceFiscale">
+                    Codice Fiscale <span class="text-danger">*</span>
+                  </label>
+                </div>
               </div>
 
               <!-- Drag and Drop PDF -->
@@ -280,7 +299,7 @@ async function handleSubmit() {
                   <div v-if="!pdfFile">
                     <i class="bi bi-cloud-upload fs-1 text-muted mb-2"></i>
                     <p class="mb-1">
-                      <label for="pdfInput" class="text-primary" style="cursor: pointer;">
+                      <label for="pdfInput" class="text-danger" style="cursor: pointer;">
                         Clicca per selezionare
                       </label>
                       o trascina il file qui
@@ -306,7 +325,7 @@ async function handleSubmit() {
               <div class="d-grid gap-2">
                 <button
                   type="submit"
-                  class="btn btn-primary btn-lg"
+                  class="btn form-element btn-lg text-white"
                   :disabled="loading || !nome.trim() || !cognome.trim() || !email.trim() || !dataNascita || !cellulare.trim() || !codiceFiscale.trim() || !pdfFile"
                 >
                   <span v-if="loading">
@@ -330,12 +349,60 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
+.page-background {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.page-background::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/img/piazza-duomo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(2px);
+  z-index: -1;
+  transform: scale(1.1);
+}
+
+.page-background::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, .4);
+  z-index: -1;
+}
+
 .border {
   transition: all 0.3s ease;
 }
 
 .border:hover {
-  border-color: #0d6efd !important;
+  border-color: #0d6efd;
+}
+
+.form-element {
+  background-color: rgb(74, 110, 132);
+}
+
+.fixed-alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050;
+  min-width: 300px;
+  max-width: 90%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 </style>
 

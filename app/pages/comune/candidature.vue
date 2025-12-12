@@ -37,7 +37,7 @@ async function loadCandidature() {
       success: boolean;
       data: Candidatura[];
       count: number;
-    }>('/api/comune/candidature', {
+    }>('/api/candidatura/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -91,7 +91,7 @@ async function executeRifiuta(candidaturaId: string) {
     const response = await $fetch<{
       success: boolean;
       message: string;
-    }>(`/api/comune/candidature/${candidaturaId}`, {
+    }>(`/api/candidatura/${candidaturaId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -111,9 +111,68 @@ async function executeRifiuta(candidaturaId: string) {
 }
 
 async function executeAccetta(candidaturaId: string) {
-  // Per ora non fa nulla, come specificato
-  // TODO: Implementare la logica di accettazione
-  console.log('Accettazione candidatura:', candidaturaId);
+  deletingId.value = candidaturaId;
+  error.value = null;
+
+  try {
+    const token = localStorage.getItem('auth_token');
+    
+    // Recupera i dati della candidatura dalla lista locale
+    const candidatura = candidature.value.find(c => c._id === candidaturaId);
+    
+    if (!candidatura) {
+      throw new Error('Candidatura non trovata');
+    }
+
+    // Crea il nuovo utente con i dati della candidatura
+    const createUtenteResponse = await $fetch<{
+      success: boolean;
+      codiceUtente?: string;
+    }>('/api/utente/crea', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: {
+        nome: candidatura.utente.nome,
+        cognome: candidatura.utente.cognome,
+        email: candidatura.utente.email,
+        dataNascita: candidatura.utente.dataNascita,
+        cellulare: candidatura.utente.cellulare,
+        codiceFiscale: candidatura.utente.codiceFiscale,
+        budget: 0 // Budget iniziale a 0
+      }
+    });
+
+    if (!createUtenteResponse.success) {
+      throw new Error('Errore nella creazione dell\'utente');
+    }
+
+    // DA FARE: eliminare il file pdf da supabase
+   
+    // Elimina la candidatura dal db solo se l'utente è stato creato con successo
+    const deleteResponse = await $fetch<{
+      success: boolean;
+      message: string;
+    }>(`/api/candidatura/${candidaturaId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (deleteResponse.success) {
+      // Rimuove la candidatura dalla lista locale
+      candidature.value = candidature.value.filter(c => c._id !== candidaturaId);
+      console.log('Candidatura accettata, utente creato ed eliminata con successo');
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || err.message || 'Errore nell\'accettazione della candidatura';
+    console.error('Errore accettazione candidatura:', err);
+  } finally {
+    deletingId.value = null;
+  }
 }
 
 function handleRifiuta(candidaturaId: string, nome: string) {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const vettoreSchema = new mongoose.Schema({
-  codicevettore: {
+  codiceVettore: {
     type: Number,
     required: true,
     unique: true
