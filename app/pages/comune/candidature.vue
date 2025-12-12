@@ -141,7 +141,8 @@ async function executeAccetta(candidaturaId: string) {
         dataNascita: candidatura.utente.dataNascita,
         cellulare: candidatura.utente.cellulare,
         codiceFiscale: candidatura.utente.codiceFiscale,
-        budget: 0 // Budget iniziale a 0
+        budget: 200,
+        pdfUrl: candidatura.pdfUrl
       }
     });
 
@@ -149,13 +150,14 @@ async function executeAccetta(candidaturaId: string) {
       throw new Error('Errore nella creazione dell\'utente');
     }
 
-    // DA FARE: eliminare il file pdf da supabase
+
    
     // Elimina la candidatura dal db solo se l'utente è stato creato con successo
+    // Passa action=accept per non cancellare il PDF
     const deleteResponse = await $fetch<{
       success: boolean;
       message: string;
-    }>(`/api/candidatura/${candidaturaId}`, {
+    }>(`/api/candidatura/${candidaturaId}?action=accept`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`

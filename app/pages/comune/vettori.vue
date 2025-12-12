@@ -11,11 +11,17 @@ async function loadVettori() {
   error.value = null;
 
   try {
+    const token = localStorage.getItem('auth_token');
+
     const response = await $fetch<{
       success: boolean;
       data: any[];
       count: number;
-    }>('/api/vettore/get');
+    }>('/api/vettore/get', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
     if (response.success) {
       vettori.value = response.data;

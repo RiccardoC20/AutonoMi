@@ -37,6 +37,10 @@ const UtenteSchema = new mongoose.Schema({
   budget: {
     type: Number,
     required: true
+  },
+  pdfUrl: {
+    type: String,
+    required: true
   }
 }, {
     collection: "utenti",

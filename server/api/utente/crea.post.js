@@ -2,7 +2,7 @@ import connectDB from "../../utils/mongo";
 import Utente from "../../models/utente.model";
 import { getNextSequenceValue } from "../../utils/sequence";
 import { generateRandomPassword } from "../../utils/password";
-import { sendCredentials } from "../../utils/email";
+import { sendMail } from "../../utils/email";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
@@ -20,8 +20,9 @@ export default defineEventHandler(async (event) => {
     const cellulare = body.cellulare;
     const codiceFiscale = body.codiceFiscale;
     const budget = 200; // Budget di default a 200 se non specificato
+    const pdfUrl = body.pdfUrl; // URL del PDF dalla candidatura (opzionale)
 
-    // Validazione: tutti i campi sono obbligatori (tranne budget)
+    // Validazione: tutti i campi sono obbligatori (tranne budget e pdfUrl)
     if (!nome || !cognome || !email || !dataNascita || !cellulare || !codiceFiscale) {
       throw createError({
         statusCode: 400,
@@ -68,10 +69,27 @@ export default defineEventHandler(async (event) => {
       codiceFiscale,
       budget,
       password: passwordHash,
+      pdfUrl: pdfUrl || '', // Aggiunge pdfUrl se fornito, altrimenti stringa vuota
     });
     
     // Invia email con le credenziali (in background, non blocca la risposta)   
-    sendCredentials(email, codiceUtente, passwordPlain, nome, 'utente')
+    const testoEmail = `
+Benvenuto in AutonoMi
+
+Ciao ${nome},
+
+La tua candidatura è stata accettata e le tue credenziali di accesso sono state create con successo.
+
+Codice Utente: ${codiceUtente}
+Password: ${passwordPlain}
+
+Importante: Ti consigliamo di cambiare la password al primo accesso.
+
+Saluti,
+Team AutonoMi
+    `;
+    
+    sendMail(email, 'Credenziali di accesso - AutonoMi', testoEmail)
       .catch(err => {
         console.error('Errore nell\'invio email (non critico):', err);
         // Non blocchiamo la creazione dell'utente se l'email fallisce
@@ -79,7 +97,6 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      codiceUtente: codiceUtente
     };
   } catch (error) {
     console.error('Errore in utente.crea.post.js:', error);

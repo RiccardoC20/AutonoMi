@@ -2,7 +2,7 @@ import connectDB from "../../utils/mongo";
 import Vettore from "../../models/vettore.model";
 import { getNextSequenceValue } from "../../utils/sequence";
 import { generateRandomPassword } from "../../utils/password";
-import { sendCredentials } from "../../utils/email";
+import { sendMail } from "../../utils/email";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
@@ -47,7 +47,23 @@ export default defineEventHandler(async (event) => {
     });
     
     // Invia email con le credenziali (in background, non blocca la risposta)   
-    sendCredentials(email, codiceVettore, passwordPlain, nome, 'vettore')
+    const testoEmail = `
+Benvenuto in AutonoMi
+
+Ciao ${nome},
+
+Le tue credenziali di accesso sono state create con successo.
+
+Codice Vettore: ${codiceVettore}
+Password: ${passwordPlain}
+
+Importante: Ti consigliamo di cambiare la password al primo accesso.
+
+Saluti,
+Team AutonoMi
+    `;
+    
+    sendMail(email, 'Credenziali di accesso - AutonoMi', testoEmail)
       .catch(err => {
         console.error('Errore nell\'invio email (non critico):', err);
         // Non blocchiamo la creazione del vettore se l'email fallisce
