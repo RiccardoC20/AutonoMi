@@ -12,7 +12,8 @@ const CandidaturaSchema = new mongoose.Schema({
     },
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     dataNascita: {
       type: Date,
@@ -24,7 +25,8 @@ const CandidaturaSchema = new mongoose.Schema({
     },
     codiceFiscale: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     }
   },
   pdfUrl: {
