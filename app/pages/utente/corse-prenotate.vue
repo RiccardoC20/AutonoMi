@@ -65,7 +65,7 @@ const corseFiltrate = computed(() => {
       <div class="content-wrapper p-4">
         <h1>Corse Prenotate</h1>
 
-            <!-- Filtri e controlli -->
+        <!-- Filtri e controlli --> 
         <div class="mb-4">
         <div class="card h-100">
           <div class="card-body">

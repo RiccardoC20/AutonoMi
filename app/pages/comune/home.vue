@@ -39,13 +39,6 @@ const stats = {
       </div>
     </div>
 
-    <!-- Statistiche costi e chilometraggio -->
-    <div class="row mb-4">
-
-
-
-    </div>
-
     <!-- Riepilogo finanziario -->
     <div class="row">
       <div class="col-12">

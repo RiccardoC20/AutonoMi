@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 
+// Vettori disponibili mock
+const vettoriDisponibili = [
+  { id: 1, nome: 'Mario Rossi Trasporti' },
+  { id: 2, nome: 'Laura Bianchi Delivery' },
+  { id: 3, nome: 'Giuseppe Verdi Logistics' },
+  { id: 4, nome: 'Anna Neri Transport' },
+  { id: 5, nome: 'Luca Gallo Express' }
+];
+
 // Dati del form
 const formData = ref({
+  vettore: '',
   partenza: '',
   arrivo: '',
   data: '',
@@ -15,7 +25,7 @@ const message = ref('');
 // Funzione per prenotare una corsa
 const prenotaCorsa = async () => {
   // Validazione base
-  if (!formData.value.partenza || !formData.value.arrivo || !formData.value.data || !formData.value.ora) {
+  if (!formData.value.vettore || !formData.value.partenza || !formData.value.arrivo || !formData.value.data || !formData.value.ora) {
     message.value = 'Compila tutti i campi obbligatori';
     return;
   }
@@ -30,10 +40,11 @@ const prenotaCorsa = async () => {
     // In produzione qui chiameresti l'API
     console.log('Prenotazione corsa:', formData.value);
 
-    message.value = 'Prenotazione effettuata con successo! Riceverai una conferma via email.';
+    message.value = 'Prenotazione effettuata con successo!';
 
     // Reset form
     formData.value = {
+      vettore: '',
       partenza: '',
       arrivo: '',
       data: '',
@@ -67,13 +78,8 @@ const getMinTime = () => {
   <HomeLayout role="utente" >
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
+        <h1>Nuova Prenotazione</h1>
         <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <h4 class="card-title mb-0">
-              <i class="bi bi-car-front me-2"></i>
-              Nuova Prenotazione
-            </h4>
-          </div>
 
           <div class="card-body">
             <!-- Messaggio di stato -->
@@ -89,6 +95,32 @@ const getMinTime = () => {
             </div>
 
             <form @submit.prevent="prenotaCorsa">
+              <!-- Campo Vettore -->
+              <div class="mb-3">
+                <label for="vettore" class="form-label fw-bold">
+                  <i class="bi bi-truck text-primary me-1"></i>
+                  Vettore *
+                </label>
+                <select
+                  id="vettore"
+                  v-model="formData.vettore"
+                  class="form-select form-select-lg"
+                  required
+                >
+                  <option value="" disabled>Seleziona un vettore</option>
+                  <option
+                    v-for="vettore in vettoriDisponibili"
+                    :key="vettore.id"
+                    :value="vettore.id"
+                  >
+                    {{ vettore.nome }}
+                  </option>
+                </select>
+                <div class="form-text">
+                  Scegli il vettore per la tua corsa
+                </div>
+              </div>
+
               <!-- Campo Partenza -->
               <div class="mb-3">
                 <label for="partenza" class="form-label fw-bold">
@@ -179,44 +211,28 @@ const getMinTime = () => {
               </div>
             </form>
           </div>
+        </div>
 
-          <!-- Footer con informazioni -->
-          <div class="card-footer bg-light">
-            <div class="row text-center">
-              <div class="col-4">
-                <i class="bi bi-clock-history text-muted fs-4 mb-1"></i>
-                <small class="d-block text-muted">Conferma</small>
-                <small class="d-block text-muted">Immediata</small>
-              </div>
-              <div class="col-4">
-                <i class="bi bi-shield-check text-muted fs-4 mb-1"></i>
-                <small class="d-block text-muted">Vettori</small>
-                <small class="d-block text-muted">Certificati</small>
-              </div>
-              <div class="col-4">
-                <i class="bi bi-telephone text-muted fs-4 mb-1"></i>
-                <small class="d-block text-muted">Supporto</small>
-                <small class="d-block text-muted">24/7</small>
-              </div>
+        <!-- Informazioni aggiuntive -->
+        <div class="card mt-3 border-info">
+          <div class="card-body p-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <small class="text-info fw-bold">
+              <i class="bi bi-info-circle me-1"></i>
+              Informazioni Importanti
+            </small>
+          </div>
+
+          <div class="collapse" id="collapseExample">
+            <div class="card-footer p-2">
+              <ul class="mb-0 small">
+                <li>La prenotazione può essere effettuata fino a 24 ore prima</li>
+                <li>Riceverai una conferma via email con i dettagli del vettore</li>
+                <li>I costi verranno calcolati in base alla distanza effettiva</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <!-- Informazioni aggiuntive -->
-        <div class="card mt-4 border-info">
-          <div class="card-body">
-            <h6 class="card-title text-info">
-              <i class="bi bi-info-circle me-2"></i>
-              Informazioni Importanti
-            </h6>
-            <ul class="mb-0 small">
-              <li>La prenotazione può essere effettuata fino a 24 ore prima</li>
-              <li>Riceverai una conferma via email con i dettagli del vettore</li>
-              <li>Puoi modificare o cancellare la prenotazione fino a 2 ore prima</li>
-              <li>I costi verranno calcolati in base alla distanza effettiva</li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </HomeLayout>

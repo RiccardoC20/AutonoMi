@@ -51,10 +51,8 @@ const vettoriFiltrati = computed(() => {
 
 // Funzione mock per eliminare vettore
 function eliminaVettore(vettoreId: number) {
-  // In produzione qui chiameresti l'API
+  // Chiamata API per eliminare il vettore
   console.log('Eliminazione vettore:', vettoreId);
-  // Per demo, potresti rimuovere dalla lista locale
-  // vettori.value = vettori.value.filter(v => v.id !== vettoreId);
 }
 </script>
 
@@ -79,7 +77,7 @@ function eliminaVettore(vettoreId: number) {
       </div>
     </div>
 
-    <!-- Lista vettori usando il componente Vettore -->
+    <!-- Lista vettori -->
     <div class="mb-4">
       <div class="card h-100">
         <div class="card-header">
