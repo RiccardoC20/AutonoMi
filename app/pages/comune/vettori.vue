@@ -1,27 +1,9 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Vettore from '../../components/Vettore.vue';
-
-// Interfaccia per Vettore
-interface VettoreType {
-  _id: string;
-  codiceVettore: number;
-  nome: string;
-  email: string;
-  numeroTelefono?: string;
-  sede?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// Interfaccia per Comune
-interface ComuneType {
-  _id: string;
-  ID: number;
-}
+import { type VettoreType , type ComuneType} from '~~/composables/useAuth';
 
 const error = ref<string | null>(null);
-const comune = ref<ComuneType | null>(null);
 const vettori = ref<VettoreType[]>([]);
 const loading = ref(false);
 
@@ -63,29 +45,6 @@ const getVettori = async (token: string) => {
   }
 };
 
-// Carica dati comune (se l'endpoint esiste)
-const getComune = async (token: string) => {
-  try {
-    //<--decommentare quando l'endpoint /api/comune/me sarà disponibile-->
-    // const response = await $fetch<{
-    //   success: boolean;
-    //   comune: ComuneType;
-    // }>('/api/comune/me', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`
-    //   }
-    // });
-    // 
-    // if (response.success) {
-    //   comune.value = response.comune;
-    // }
-  } catch (err: any) {
-    console.error('Errore getComune:', err);
-    // Non blocchiamo il caricamento se l'endpoint non esiste
-  }
-};
-
 // Carica dati iniziali
 const loadData = async () => {
   if (typeof window === 'undefined' || !window.localStorage) {
@@ -102,11 +61,9 @@ const loadData = async () => {
   error.value = null;
 
   try {
-    // Carica vettori e dati comune in parallelo
-    await Promise.all([
-      getVettori(token),
-      getComune(token)
-    ]);
+    // Carica vettori
+    await getVettori(token)
+
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
     console.error('Errore loadData:', err);

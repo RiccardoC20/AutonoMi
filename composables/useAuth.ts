@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 
-export interface User {
+export interface UtenteType {
   _id: string;
   codiceUtente: string;
   nome: string;
@@ -8,10 +8,18 @@ export interface User {
   email: string;
   dataNascita: string;
   cellulare: string;
-  indirizzo: string;
   budget: number;
 }
-export interface Corsa {
+export interface CandidaturaType {
+  _id: string;
+  codiceCandidatura: string;
+  nome: string;
+  cognome: string;
+  email: string;
+  dataNascita: string;
+  cellulare: string;
+}
+export interface CorsaType {
   id: number;
   partenza: string;
   arrivo: string;
@@ -23,9 +31,22 @@ export interface Corsa {
   codiceVettore?: string;
   nomeVettore?: string;
 }
+export interface VettoreType {
+  _id: string;
+  codiceVettore: number;
+  nome: string;
+  email: string;
+  numeroTelefono?: string;
+  sede?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+export interface ComuneType {
+  name: string;
+}
 
 // Stato globale dell'autenticazione
-const user = ref<User | null>(null);
+const user = ref<UtenteType | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
 const isAuthenticated = computed(() => user.value !== null);
@@ -64,7 +85,7 @@ export const useAuth = () => {
       //   - Restituisce i dati utente (senza password)
       const response = await $fetch<{
         success: boolean;
-        user: User;
+        user: UtenteType;
       }>('/api/utente/me', {
         headers: {
           'Authorization': `Bearer ${token}`

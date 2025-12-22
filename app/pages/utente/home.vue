@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import { useAuth, type User , type Corsa} from '../../../composables/useAuth';
+import { useAuth, type UtenteType , type CorsaType} from '../../../composables/useAuth';
 
 
 const error = ref<string | null>(null);
-const user = ref<User | null>(null);
-const corsePrenotate = ref<Corsa[]>([]);
-const corseEffettuate = ref<Corsa[]>([]);
+const user = ref<UtenteType | null>(null);
+const corsePrenotate = ref<CorsaType[]>([]);
+const corseEffettuate = ref<CorsaType[]>([]);
 const loading = ref(false);
 
 // Dati chilometri (default, verranno aggiornati con i dati reali)
@@ -24,7 +24,7 @@ const getCorsePrenotate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: Corsa[];
+      corse: CorsaType[];
     }>('/api/corsa', {
       method: 'GET',
       headers: {
@@ -52,7 +52,7 @@ const getCorseEffettuate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: Corsa[];
+      corse: CorsaType[];
     }>('/api/corsa', {
       method: 'GET',
       headers: {
@@ -89,7 +89,7 @@ const getUser = async () => {
   try {
     const response = await $fetch<{
       success: boolean;
-      user: User;
+      user: UtenteType;
     }>('/api/utente/me', {
       method: 'GET',
       headers: {

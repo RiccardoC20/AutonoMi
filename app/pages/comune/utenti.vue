@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Utente from '../../components/Utente.vue';
+import { type UtenteType } from '../../../composables/useAuth'
 
-// Interfaccia per Utente
-interface UtenteType {
-  id: string;
-  codiceUtente: string;
-  nome: string;
-  cognome: string;
-  email: string;
-  dataNascita?: string;
-  cellulare?: string;
-  codiceFiscale?: string;
-  createdAt?: string;
-}
+
 
 const error = ref<string | null>(null);
 const utenti = ref<UtenteType[]>([]);
@@ -33,13 +23,22 @@ const utentiFiltrati = computed(() => {
   );
 });
 
-// Carica utenti
-const getUtenti = async (token: string) => {
+// Carica dati iniziali
+const loadData = async () => {
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
   try {
+    //carica utenti
     const response = await $fetch<{
       success: boolean;
       data: UtenteType[];
-      count: number;
     }>('/api/utente/get', {
       method: 'GET',
       headers: {
@@ -52,33 +51,7 @@ const getUtenti = async (token: string) => {
     } else {
       error.value = "Errore durante il caricamento degli utenti";
     }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento degli utenti";
-    console.error('Errore getUtenti:', err);
-  }
-};
 
-
-// Carica dati iniziali
-const loadData = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    error.value = "Token non trovato. Effettua il login.";
-    return;
-  }
-
-  loading.value = true;
-  error.value = null;
-
-  try {
-    // Carica utenti e dati comune in parallelo
-    await Promise.all([
-      getUtenti(token)
-    ]);
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
     console.error('Errore loadData:', err);
@@ -151,7 +124,7 @@ onMounted(() => {
                 <div v-else class="d-flex flex-column gap-3">
                   <Utente
                     v-for="utente in utentiFiltrati"
-                    :key="utente.id"
+                    :key="utente._id"
                     :nome="utente.nome"
                     :cognome="utente.cognome"
                     :codiceUtente="utente.codiceUtente"

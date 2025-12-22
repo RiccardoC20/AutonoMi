@@ -1,65 +1,12 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
+import { type CorsaType } from '~~/composables/useAuth';
 
-// Dati mock per le corse
-const corse = [
-  {
-    id: 1,
-    partenza: 'Via Roma 123',
-    arrivo: 'Corso Italia 45',
-    data: new Date('2024-12-10T10:30:00'),
-    stimaKm: 8.5,
-    extra: [
-      'USR001' ,
-      'V001' 
-    ]
-  },
-  {
-    id: 2,
-    partenza: 'Piazza Duomo',
-    arrivo: 'Via Garibaldi 78',
-    data: new Date('2024-12-10T11:15:00'),
-    stimaKm: 12.3,
-    extra: [
-       'USR002' ,
-       'V002' 
-    ]
-  },
-  {
-    id: 3,
-    partenza: 'Via Dante 22',
-    arrivo: 'Corso Como 15',
-    data: new Date('2024-12-10T14:20:00'),
-    stimaKm: 6.8,
-    extra: [
-      'USR003' ,
-       'V003'
-    ]
-  },
-  {
-    id: 4,
-    partenza: 'Via Milano 5',
-    arrivo: 'Piazza della Scala',
-    data: new Date('2024-12-10T16:45:00'),
-    stimaKm: 9.2,
-    extra: [
-       'USR004' ,
-       'V001' 
-    ]
-  },
-  {
-    id: 5,
-    partenza: 'Corso Buenos Aires 20',
-    arrivo: 'Via Paolo Sarpi 8',
-    data: new Date('2024-12-10T18:30:00'),
-    stimaKm: 15.7,
-    extra: [
-       'USR005' ,
-       'V004' 
-    ]
-  }
-];
+const error = ref<string | null>(null);
+const corse = ref<CorsaType[]>([]);
+const loading = ref(false);
+
 
 // Filtri di ricerca e ordinamento
 const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
@@ -67,7 +14,7 @@ const dateFrom = ref('');
 const dateTo = ref('');
 
 const corseFiltrate = computed(() => {
-  let filtered = corse.filter(corsa => {
+  let filtered = corse.value.filter(corsa => {
 
     // Filtro per periodo di data
     const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
@@ -89,6 +36,48 @@ const corseFiltrate = computed(() => {
 
   return filtered;
 });
+
+//carica corse
+const loadData = async () =>{
+
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+  try {
+    //carica corse
+    const response = await $fetch<{
+      success: boolean;
+      data: CorsaType[];
+    }>('/api/corsa/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      corse.value = response.data;
+    } else {
+      error.value = "Errore durante il caricamento delle corse";
+    }
+
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati";
+    console.error('Errore loadData:', err);
+  } finally {
+    loading.value = false;
+  }
+
+}
+// Carica dati al mount
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>
@@ -96,6 +85,15 @@ const corseFiltrate = computed(() => {
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
         <h1>Monitoraggio Corse</h1>
+
+        <!-- Messaggio di errore -->
+        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+
           <!-- Filtri e ricerca -->
           <div class="card mb-4">
             <div class="card-body">
@@ -171,7 +169,7 @@ const corseFiltrate = computed(() => {
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
                 :stimaKm="corsa.stimaKm"
-                :extra="corsa.extra"
+                :codiceUtente="corsa.codiceUtente"
               />
             </div>
           </div>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import DashboardCard from '../../components/DashboardCard.vue';
-import { type Corsa , type User } from '../../../composables/useAuth';
+import { type CorsaType , type UtenteType } from '../../../composables/useAuth';
 
 // Interfaccia per Utente
 
 
 const error = ref<string | null>(null);
 const loading = ref(false);
-const utenti = ref<User[]>([]);
-const corseEffettuate = ref<Corsa[]>([]);
+const utenti = ref<UtenteType[]>([]);
+const corseEffettuate = ref<CorsaType[]>([]);
 
 // Statistiche calcolate
 const stats = computed(() => {
@@ -30,7 +30,7 @@ const getUtenti = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      data: User[];
+      data: UtenteType[];
       count: number;
     }>('/api/utente/get', {
       method: 'GET',
@@ -55,7 +55,7 @@ const getCorseEffettuate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: Corsa[];
+      corse: CorsaType[];
     }>('/api/corsa', {
       method: 'GET',
       headers: {
