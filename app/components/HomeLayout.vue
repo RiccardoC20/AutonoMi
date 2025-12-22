@@ -19,9 +19,9 @@
         </div>
 
         <!-- Utente -->
-        <div v-if="role === 'utente' && userInfo" class="d-flex flex-column">
-          <h1 class="mb-0 fw-bold">{{ userInfo.nome || 'Utente' }}</h1>
-          <span v-if="userInfo.codiceUtente" class="text-muted">#{{ userInfo.codiceUtente }}</span>
+        <div v-if="role === 'utente' && utenteInfo" class="d-flex flex-column">
+          <h1 class="mb-0 fw-bold">{{ utenteInfo.nome || 'Utente' }}</h1>
+          <span v-if="utenteInfo.codiceUtente" class="text-muted">#{{ utenteInfo.codiceUtente }}</span>
         </div>
       </div>
 
@@ -67,13 +67,13 @@ export default {
   computed: {
     // Nome comune (mock, in produzione verrà da API)
     nomeComune() {
-      return this.user?.nomeComune || 'Comune ';
+      return this.user?.nome || 'Comune ';
     },
     nomeVettore() {
-      return this.user?.nomeVettore || 'Agenzia di Trasporti';
+      return this.user?.nome || 'Agenzia di Trasporti';
     },
     // Informazioni utente
-    userInfo() {
+    utenteInfo() {
         const currentUser = this.user;
         if (currentUser) {
           return {

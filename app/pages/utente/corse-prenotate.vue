@@ -40,7 +40,7 @@ const getCorsePrenotate = async (token: string) => {
 };
 
 // Carica dati utente
-const getUser = async () => {
+const getUtente = async () => {
   if (typeof window === 'undefined' || !window.localStorage) {
     return;
   }
@@ -106,7 +106,7 @@ const corseFiltrate = computed(() => {
 
 // Carica dati al mount
 onMounted(() => {
-  getUser();
+  getUtente();
 });
 </script>
 
