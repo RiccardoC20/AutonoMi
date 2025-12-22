@@ -19,13 +19,15 @@ const error = ref<string | null>(null);
 const success = ref(false);
 const candidature = ref<CandidaturaType[]>([]);
 
-const token = localStorage.getItem('auth_token');
+
 
 async function getCandidature() {
   error.value = null;
   success.value = false;
   loading.value = true;
 
+  const token = localStorage.getItem('auth_token');
+  
   try {
     const response = await $fetch<{
       success: boolean;

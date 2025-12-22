@@ -2,7 +2,6 @@
   <div class="d-flex min-vh-100">
     <SideBar
       :links="navigationLinks"
-      :color="sidebarColor"
       :role="role"
     />
 
@@ -68,14 +67,13 @@ export default {
   computed: {
     // Nome comune (mock, in produzione verrà da API)
     nomeComune() {
-      return this.user?.nomeComune || 'Comune di Trento';
+      return this.user?.nomeComune || 'Comune ';
     },
     nomeVettore() {
-      return this.user?.nomeVettore || 'Agenzia di Trento';
+      return this.user?.nomeVettore || 'Agenzia di Trasporti';
     },
     // Informazioni utente
     userInfo() {
-      if (this.role === 'utente') {
         const currentUser = this.user;
         if (currentUser) {
           return {
@@ -88,9 +86,7 @@ export default {
           nome: 'Utente',
           cognome: '',
           codiceUtente: ''
-        };
       }
-      return null;
     },
     navigationLinks() {
       const baseLinks = [
@@ -131,14 +127,6 @@ export default {
 
         default:
           return baseLinks;
-      }
-    },
-    sidebarColor() {
-      switch (this.role) {
-        case 'utente': return '#0066CC';
-        case 'vettore': return '#e6713e';
-        case 'comune': return '#00C383';
-        default: return '#343a40';
       }
     }
   }

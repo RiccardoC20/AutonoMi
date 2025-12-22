@@ -100,7 +100,7 @@ async function handleLogin() {
                 <button
                   type="submit"
                   class="btn text-white"
-                  style="background-color: #ff8c42;"
+                  style="background-color: var(--color-vettore-sideBar)"
                   :disabled="loading || !codiceVettore.trim() || !password"
                 >
                   <span v-if="loading">
@@ -123,14 +123,3 @@ async function handleLogin() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.form-control:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
-}
-
-.btn:hover {
-  background-color: #ff7a2e !important;
-}
-</style>

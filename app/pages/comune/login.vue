@@ -43,7 +43,7 @@ async function handleLogin() {
     <div class="row justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white text-center">
+          <div class="card-header text-white text-center" style="background-color: var(--color-comune-sideBar);" >
             <h2 class="h4 mb-0">Login Comune</h2>
           </div>
 
@@ -83,7 +83,8 @@ async function handleLogin() {
               <div class="d-grid">
                 <button
                   type="submit"
-                  class="btn btn-primary"
+                  class="btn text-white"
+                  style="background-color: var(--color-comune-sideBar);"
                   :disabled="loading || !password"
                 >
                   <span v-if="loading">
