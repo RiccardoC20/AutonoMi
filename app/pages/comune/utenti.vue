@@ -4,7 +4,7 @@ import Utente from '../../components/Utente.vue';
 
 // Interfaccia per Utente
 interface UtenteType {
-  _id: string;
+  id: string;
   codiceUtente: string;
   nome: string;
   cognome: string;
@@ -12,19 +12,10 @@ interface UtenteType {
   dataNascita?: string;
   cellulare?: string;
   codiceFiscale?: string;
-  budget?: number;
   createdAt?: string;
-  updatedAt?: string;
-}
-
-// Interfaccia per Comune
-interface ComuneType {
-  _id: string;
-  ID: number;
 }
 
 const error = ref<string | null>(null);
-const comune = ref<ComuneType | null>(null);
 const utenti = ref<UtenteType[]>([]);
 const loading = ref(false);
 
@@ -67,28 +58,6 @@ const getUtenti = async (token: string) => {
   }
 };
 
-// Carica dati comune (se l'endpoint esiste)
-const getComune = async (token: string) => {
-  try {
-    // TODO: Implementare endpoint /api/comune/me quando disponibile
-    // const response = await $fetch<{
-    //   success: boolean;
-    //   comune: ComuneType;
-    // }>('/api/comune/me', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`
-    //   }
-    // });
-    // 
-    // if (response.success) {
-    //   comune.value = response.comune;
-    // }
-  } catch (err: any) {
-    console.error('Errore getComune:', err);
-    // Non blocchiamo il caricamento se l'endpoint non esiste
-  }
-};
 
 // Carica dati iniziali
 const loadData = async () => {
@@ -108,8 +77,7 @@ const loadData = async () => {
   try {
     // Carica utenti e dati comune in parallelo
     await Promise.all([
-      getUtenti(token),
-      getComune(token)
+      getUtenti(token)
     ]);
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
@@ -183,7 +151,7 @@ onMounted(() => {
                 <div v-else class="d-flex flex-column gap-3">
                   <Utente
                     v-for="utente in utentiFiltrati"
-                    :key="utente._id"
+                    :key="utente.id"
                     :nome="utente.nome"
                     :cognome="utente.cognome"
                     :codiceUtente="utente.codiceUtente"

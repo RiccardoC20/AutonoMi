@@ -2,60 +2,109 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Candidatura from '../../components/Candidatura.vue';
 
-// Dati mock per le candidature
-const candidature = [
-  {
-    id: 1,
-    codiceCandidatura: 'CAND001',
-    nome: 'Mario',
-    cognome: 'Rossi',
-    email: 'mario.rossi@email.com',
-    documentazionePdf: 'candidatura_mario_rossi.pdf',
-    dataCandidatura: '2024-12-01'
-  },
-  {
-    id: 2,
-    codiceCandidatura: 'CAND002',
-    nome: 'Laura',
-    cognome: 'Bianchi',
-    email: 'laura.bianchi@email.com',
-    documentazionePdf: 'candidatura_laura_bianchi.pdf',
-    dataCandidatura: '2024-11-15'
-  },
-  {
-    id: 3,
-    codiceCandidatura: 'CAND003',
-    nome: 'Giuseppe',
-    cognome: 'Verdi',
-    email: 'giuseppe.verdi@email.com',
-    documentazionePdf: 'candidatura_anna_neri.pdf',
-    dataCandidatura: '2024-11-20'
-  },
-  {
-    id: 4,
-    codiceCandidatura: 'CAND004',
-    nome: 'Anna',
-    cognome: 'Neri',
-    email: 'anna.neri@email.com',
-    documentazionePdf: 'candidatura_anna_neri.pdf',
-    dataCandidatura: '2024-12-05'
-  },
-  {
-    id: 5,
-    codiceCandidatura: 'CAND005',
-    nome: 'Luca',
-    cognome: 'Gallo',
-    email: 'luca.gallo@email.com',
-    documentazionePdf: 'candidatura_luca_gallo.pdf',
-    dataCandidatura: '2024-12-08'
+// Interfaccia per Candidatura
+interface CandidaturaType {
+  id: string;
+  codiceCandidatura: string;
+  nome: string;
+  cognome: string;
+  email: string;
+  cellulare?: string;
+// file pdf?
+  dataCreazione?: string;
+}
+
+const loading = ref(false);
+const error = ref<string | null>(null);
+const success = ref(false);
+const candidature = ref<CandidaturaType[]>([]);
+
+const token = localStorage.getItem('auth_token');
+
+async function getCandidature() {
+  error.value = null;
+  success.value = false;
+  loading.value = true;
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      vettore: any;
+    }>('/api/comune/candidature', {
+        method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.success) {
+
+      success.value = true;
+      // Reset form
+      navigateTo("/comune/vettori");
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || 'Errore durante la creazione del vettore';
+    console.error('Errore creazione vettore:', err);
+  } finally {
+    loading.value = false;
   }
-];
+}
+
+// Dati mock per le candidature
+// const candidature = [
+//   {
+//     id: 1,
+//     codiceCandidatura: 'CAND001',
+//     nome: 'Mario',
+//     cognome: 'Rossi',
+//     email: 'mario.rossi@email.com',
+//     documentazionePdf: 'candidatura_mario_rossi.pdf',
+//     dataCandidatura: '2024-12-01'
+//   },
+//   {
+//     id: 2,
+//     codiceCandidatura: 'CAND002',
+//     nome: 'Laura',
+//     cognome: 'Bianchi',
+//     email: 'laura.bianchi@email.com',
+//     documentazionePdf: 'candidatura_laura_bianchi.pdf',
+//     dataCandidatura: '2024-11-15'
+//   },
+//   {
+//     id: 3,
+//     codiceCandidatura: 'CAND003',
+//     nome: 'Giuseppe',
+//     cognome: 'Verdi',
+//     email: 'giuseppe.verdi@email.com',
+//     documentazionePdf: 'candidatura_anna_neri.pdf',
+//     dataCandidatura: '2024-11-20'
+//   },
+//   {
+//     id: 4,
+//     codiceCandidatura: 'CAND004',
+//     nome: 'Anna',
+//     cognome: 'Neri',
+//     email: 'anna.neri@email.com',
+//     documentazionePdf: 'candidatura_anna_neri.pdf',
+//     dataCandidatura: '2024-12-05'
+//   },
+//   {
+//     id: 5,
+//     codiceCandidatura: 'CAND005',
+//     nome: 'Luca',
+//     cognome: 'Gallo',
+//     email: 'luca.gallo@email.com',
+//     documentazionePdf: 'candidatura_luca_gallo.pdf',
+//     dataCandidatura: '2024-12-08'
+//   }
+// ];
 
 // Filtri di ricerca
 const searchTerm = ref('');
 
 const candidatureFiltrate = computed(() => {
-  return candidature.filter(candidatura => {
+  return candidature.value.filter(candidatura => {
     const matchesSearch = candidatura.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
                          candidatura.cognome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
                          candidatura.codiceCandidatura.toLowerCase().includes(searchTerm.value.toLowerCase());
@@ -87,6 +136,7 @@ function rifiutaCandidatura(candidatura: any) {
   // chiamata API per rifiutare la candidatura.
   alert(`Candidatura ${candidatura.codiceCandidatura} rifiutata.`);
 }
+
 </script>
 
 <template>
@@ -123,7 +173,6 @@ function rifiutaCandidatura(candidatura: any) {
               :nome="candidatura.nome"
               :cognome="candidatura.cognome"
               :email="candidatura.email"
-              :documentazionePdf="candidatura.documentazionePdf"
               @visualizza="visualizzaCandidatura(candidatura)"
               @scarica-pdf="scaricaPDF"
               @approva="approvaCandidatura(candidatura)"
