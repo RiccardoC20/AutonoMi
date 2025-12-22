@@ -58,11 +58,7 @@ export default {
   },
   mounted() {
     // Carica dati utente dopo il mount
-    if (this.role === 'utente') {
       this.loadUserFromStorage();
-      // Verifica anche il token e carica i dati dall'API
-
-    }
   },
   computed: {
     // Nome comune (mock, in produzione verrà da API)

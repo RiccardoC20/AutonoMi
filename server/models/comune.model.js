@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
 
 const ComuneSchema = new mongoose.Schema({
-  ID: {
-    type: Number,
+  nome: {
+    type: String,
     required: true,
     unique: true
   },
-  password: { type: String, required: true }
+  password: { 
+    type: String, 
+    required: true 
+  }
 }, {
   collection: "comune"
 });
