@@ -1,50 +1,76 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
+import { ref, computed, onMounted } from 'vue';
 
-// Dati mock per corse prenotate dal vettore
-const corse = [
-  {
-    id: 1,
-    partenza: 'Via Roma 123',
-    arrivo: 'Corso Italia 45',
-    data: new Date('2024-12-15T10:30:00'),
-    stimaKm: 8.5,
-    extra: ['Utente001']
-  },
-  {
-    id: 2,
-    partenza: 'Piazza Duomo',
-    arrivo: 'Via Garibaldi 78',
-    data: new Date('2024-12-16T14:20:00'),
-    stimaKm: 12.3,
-    extra: ['Utente002']
-  },
-  {
-    id: 3,
-    partenza: 'Via Dante 22',
-    arrivo: 'Corso Como 15',
-    data: new Date('2024-12-17T09:15:00'),
-    stimaKm: 6.8,
-    extra: ['Utente003']
-  },
-  {
-    id: 4,
-    partenza: 'Via Milano 5',
-    arrivo: 'Piazza della Scala',
-    data: new Date('2024-12-18T16:45:00'),
-    stimaKm: 9.2,
-    extra: ['Utente004']
-  }
-];
+// Stato delle corse
+const corse = ref<any[]>([]);
+const loading = ref(false);
+const error = ref<string | null>(null);
 
 // Filtri di ricerca e ordinamento
 const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
 const dateFrom = ref('');
 const dateTo = ref('');
 
+// Funzione per caricare le corse dal backend
+const caricaCorse = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    // Ottieni token JWT da localStorage
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      error.value = 'Devi effettuare il login per visualizzare le corse';
+      loading.value = false;
+      return;
+    }
+
+    // Chiamata API per ottenere le corse
+    const response = await $fetch<{
+      success: boolean;
+      data: any[];
+      count: number;
+    }>('/api/corse/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.success) {
+      corse.value = response.data.map(corsa => {
+        // Combina data e orario per creare un Date completo
+        const dataCompleta = new Date(corsa.data);
+        if (corsa.orario) {
+          const [ore, minuti] = corsa.orario.split(':');
+          dataCompleta.setHours(parseInt(ore, 10), parseInt(minuti, 10), 0, 0);
+        }
+        
+        return {
+          ...corsa,
+          id: corsa._id,
+          data: dataCompleta,
+          // Usa codiceUtente come extra per il componente Corsa
+          extra: [`Utente: ${corsa.codiceUtente}`],
+          // stimaKm non è disponibile nel model, quindi lo lasciamo undefined
+          stimaKm: undefined
+        };
+      });
+    } else {
+      error.value = 'Errore nel caricamento delle corse';
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || 'Errore durante il caricamento delle corse';
+    console.error('Errore caricamento corse:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
 const corseFiltrate = computed(() => {
-  let filtered = corse.filter(corsa => {
+  let filtered = corse.value.filter((corsa: any) => {
     // Filtro per periodo di data
     const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
@@ -54,7 +80,7 @@ const corseFiltrate = computed(() => {
   });
 
   // Ordinamento
-  filtered.sort((a, b) => {
+  filtered.sort((a: any, b: any) => {
     if (sortBy.value === 'data-desc') {
       return new Date(b.data).getTime() - new Date(a.data).getTime();
     } else if (sortBy.value === 'data-asc') {
@@ -65,14 +91,44 @@ const corseFiltrate = computed(() => {
 
   return filtered;
 });
+
+// Carica le corse al mount del componente
+onMounted(() => {
+  caricaCorse();
+});
 </script>
 
 <template>
   <HomeLayout role="vettore">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
+        <h1>Corse Prenotate</h1>
+
+        <!-- Messaggio di errore -->
+        <div
+          v-if="error"
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          {{ error }}
+          <button
+            type="button"
+            class="btn-close"
+            @click="error = null"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-3 text-muted">Caricamento corse...</p>
+        </div>
+
         <!-- Filtri e ricerca -->
-        <div class="card mb-4">
+        <div v-else class="card mb-4">
           <div class="card-body">
             <div class="row g-3">
               <!-- Ordinamento -->
@@ -124,12 +180,11 @@ const corseFiltrate = computed(() => {
         </div>
 
         <!-- Lista corse usando il componente Corsa -->
-        <div class="mb-4 ">
-        <div class="card h-100">
+        <div class="card h-100 mb-4">
           <div class="card-header">
             <h5 class="card-title mb-0">
               <i class="bi bi-calendar-check me-2"></i>
-              Corse Effettuate ({{ corseFiltrate.length }})
+              Corse Prenotate ({{ corseFiltrate.length }})
             </h5>
           </div>
           <div class="card-body">
@@ -140,7 +195,7 @@ const corseFiltrate = computed(() => {
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
                 v-for="corsa in corseFiltrate"
-                :key="corsa.id"
+                :key="corsa._id || corsa.id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
@@ -150,7 +205,6 @@ const corseFiltrate = computed(() => {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </HomeLayout>

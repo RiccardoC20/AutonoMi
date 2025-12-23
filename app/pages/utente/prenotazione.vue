@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 
-// Vettori disponibili mock
-const vettoriDisponibili = [
-  { id: 1, nome: 'Mario Rossi Trasporti' },
-  { id: 2, nome: 'Laura Bianchi Delivery' },
-  { id: 3, nome: 'Giuseppe Verdi Logistics' },
-  { id: 4, nome: 'Anna Neri Transport' },
-  { id: 5, nome: 'Luca Gallo Express' }
-];
-
 // Dati del form
 const formData = ref({
   vettore: '',
@@ -30,29 +21,68 @@ const prenotaCorsa = async () => {
     return;
   }
 
+  // Ottieni token e userData da localStorage
+  const token = localStorage.getItem('auth_token');
+  const userDataStr = localStorage.getItem('user_data');
+  
+  if (!token || !userDataStr) {
+    message.value = 'Devi effettuare il login per prenotare una corsa';
+    return;
+  }
+
+  let userData;
+  try {
+    userData = JSON.parse(userDataStr);
+  } catch (e) {
+    message.value = 'Errore nel caricamento dei dati utente. Effettua nuovamente il login.';
+    return;
+  }
+
+  if (!userData.codiceUtente) {
+    message.value = 'Codice utente non trovato. Effettua nuovamente il login.';
+    return;
+  }
+
   isLoading.value = true;
   message.value = '';
 
   try {
-    // Simula chiamata API
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Chiamata API reale
+    const response = await $fetch<{
+      success: boolean;
+      message: string;
+      richiestaCorsa: any;
+    }>('/api/richieste-corsa/crea', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: {
+        codiceUtente: userData.codiceUtente,
+        codiceVettore: parseInt(formData.value.vettore),
+        partenza: formData.value.partenza.trim(),
+        arrivo: formData.value.arrivo.trim(),
+        data: formData.value.data,
+        orario: formData.value.ora
+      }
+    });
 
-    // In produzione qui chiameresti l'API
-    console.log('Prenotazione corsa:', formData.value);
+    if (response.success) {
+      message.value = 'Prenotazione effettuata con successo!';
 
-    message.value = 'Prenotazione effettuata con successo!';
-
-    // Reset form
-    formData.value = {
-      vettore: '',
-      partenza: '',
-      arrivo: '',
-      data: '',
-      ora: ''
-    };
-
-  } catch (error) {
-    message.value = 'Errore durante la prenotazione. Riprova.';
+      // Reset form
+      formData.value = {
+        vettore: '',
+        partenza: '',
+        arrivo: '',
+        data: '',
+        ora: ''
+      };
+    } else {
+      message.value = 'Errore durante la prenotazione. Riprova.';
+    }
+  } catch (error: any) {
+    message.value = error.data?.message || 'Errore durante la prenotazione. Riprova.';
     console.error('Errore prenotazione:', error);
   } finally {
     isLoading.value = false;
@@ -99,25 +129,18 @@ const getMinTime = () => {
               <div class="mb-3">
                 <label for="vettore" class="form-label fw-bold">
                   <i class="bi bi-truck text-primary me-1"></i>
-                  Vettore *
+                  Codice Vettore *
                 </label>
-                <select
+                <input
                   id="vettore"
                   v-model="formData.vettore"
-                  class="form-select form-select-lg"
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Inserisci il codice vettore"
                   required
                 >
-                  <option value="" disabled>Seleziona un vettore</option>
-                  <option
-                    v-for="vettore in vettoriDisponibili"
-                    :key="vettore.id"
-                    :value="vettore.id"
-                  >
-                    {{ vettore.nome }}
-                  </option>
-                </select>
                 <div class="form-text">
-                  Scegli il vettore per la tua corsa
+                  Inserisci il codice del vettore per la tua corsa
                 </div>
               </div>
 
