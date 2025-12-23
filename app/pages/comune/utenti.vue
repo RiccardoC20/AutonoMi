@@ -1,57 +1,68 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Utente from '../../components/Utente.vue';
+import { type UtenteType } from '../../../composables/useAuth'
 
-// Dati mock per gli utenti (solo le proprietà necessarie per il componente Utente)
-const utenti = [
-  {
-    id: 1,
-    codiceUtente: '01',
-    nome: 'Mario',
-    cognome: 'Rossi',
-    statoAbbonamento: 'active'
-  },
-  {
-    id: 2,
-    codiceUtente: '02',
-    nome: 'Laura',
-    cognome: 'Bianchi',
-    statoAbbonamento: 'active'
-  },
-  {
-    id: 3,
-    codiceUtente: '03',
-    nome: 'Giuseppe',
-    cognome: 'Verdi',
-    statoAbbonamento: 'active'
-  },
-  {
-    id: 4,
-    codiceUtente: '04',
-    nome: 'Anna',
-    cognome: 'Neri',
-    statoAbbonamento: 'inactive'
-  },
-  {
-    id: 5,
-    codiceUtente: '05',
-    nome: 'Luca',
-    cognome: 'Gallo',
-    statoAbbonamento: 'active'
-  }
-];
+
+
+const error = ref<string | null>(null);
+const utenti = ref<UtenteType[]>([]);
+const loading = ref(false);
 
 // Barra di ricerca
 const searchTerm = ref('');
 
 // Lista utenti filtrata
 const utentiFiltrati = computed(() => {
-  if (!searchTerm.value) return utenti;
+  if (!searchTerm.value) return utenti.value;
 
-  return utenti.filter(utente =>
+  return utenti.value.filter(utente =>
     utente.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    utente.cognome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
     utente.codiceUtente.toLowerCase().includes(searchTerm.value.toLowerCase())
   );
+});
+
+// Carica dati iniziali
+const loadData = async () => {
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    //carica utenti
+    const response = await $fetch<{
+      success: boolean;
+      data: UtenteType[];
+    }>('/api/utente/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      utenti.value = response.data;
+    } else {
+      error.value = "Errore durante il caricamento degli utenti";
+    }
+
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati";
+    console.error('Errore loadData:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Carica dati al mount
+onMounted(() => {
+  loadData();
 });
 </script>
 
@@ -60,6 +71,24 @@ const utentiFiltrati = computed(() => {
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
         <h1>Gestione Utenti</h1>
+
+        <!-- Messaggio di errore -->
+        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-2 text-muted">Caricamento dati...</p>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div v-else>
           <!-- Barra di ricerca -->
           <div class="card mb-4">
             <div class="card-body">
@@ -76,35 +105,37 @@ const utentiFiltrati = computed(() => {
             </div>
           </div>
 
-    <!-- Lista utenti usando il componente Utente -->
-    <div class="mb-4">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="card-title mb-0">
-            <i class="bi bi-people me-2"></i>
-            Lista Utenti ({{ utentiFiltrati.length }})
-          </h5>
-        </div>
-        <div class="card-body">
-          <div v-if="utentiFiltrati.length === 0" class="text-center py-4">
-            <i class="bi bi-people text-muted fs-1 mb-2"></i>
-            <p class="text-muted">Nessun utente trovato con la ricerca effettuata</p>
-          </div>
-          <div v-else class="d-flex flex-column gap-3">
-            <Utente
-              v-for="utente in utentiFiltrati"
-              :key="utente.id"
-              :nome="utente.nome"
-              :cognome="utente.cognome"
-              :codiceUtente="utente.codiceUtente"
-              :statoAbbonamento="utente.statoAbbonamento"
-            />
+          <!-- Lista utenti usando il componente Utente -->
+          <div class="mb-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-people me-2"></i>
+                  Lista Utenti ({{ utentiFiltrati.length }})
+                </h5>
+              </div>
+              <div class="card-body">
+                <div v-if="utentiFiltrati.length === 0" class="text-center py-4">
+                  <i class="bi bi-people text-muted fs-1 mb-2"></i>
+                  <p class="text-muted">
+                    {{ searchTerm ? 'Nessun utente trovato con la ricerca effettuata' : 'Nessun utente disponibile' }}
+                  </p>
+                </div>
+                <div v-else class="d-flex flex-column gap-3">
+                  <Utente
+                    v-for="utente in utentiFiltrati"
+                    :key="utente._id"
+                    :nome="utente.nome"
+                    :cognome="utente.cognome"
+                    :codiceUtente="utente.codiceUtente"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-      </div>
-  </div>
   </HomeLayout>
 </template>
 

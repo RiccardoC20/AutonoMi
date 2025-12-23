@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" :style="{ backgroundColor: color, width: '200px' }">
+  <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" :class="role">
     <nav class="nav flex-column flex-grow-1">
       <NuxtLink
         v-for="link in links"
@@ -54,10 +54,6 @@ export default {
       type: Array,
       default: () => []
     },
-    color: {
-      type: String,
-      default: "#1c1f2b"
-    },
     role: {
       type: String,
       default: "utente"
@@ -79,10 +75,19 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 1vh;
   overflow-y: auto;
   width: 200px;
-  z-index: 1000; /* Assicura che stia sopra gli altri elementi */
+}
+
+.sidebar.comune{
+  background-color: var(--color-comune-sideBar);
+}
+.sidebar.vettore{
+  background-color: var(--color-vettore-sideBar);
+}
+.sidebar.utente{
+  background-color: var(--color-utente-sideBar);
 }
 
 .nav-link:hover {

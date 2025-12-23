@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
     const token = jwt.sign(
       {
         userId: comune._id.toString(),
+        nome: comune.nome,
         role: 'comune'
       },
       jwtSecret,
@@ -54,7 +55,10 @@ export default defineEventHandler(async (event) => {
     // Restituisce lo status
     return {
       success: true,
-      token
+      token,
+      user:{
+        nome: comune.nome
+      }
     };
   } catch (error) {
     console.error('Errore in comune.post.js:', error);

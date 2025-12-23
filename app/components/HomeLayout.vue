@@ -2,7 +2,6 @@
   <div class="d-flex min-vh-100">
     <SideBar
       :links="navigationLinks"
-      :color="sidebarColor"
       :role="role"
     />
 
@@ -20,9 +19,9 @@
         </div>
 
         <!-- Utente -->
-        <div v-if="role === 'utente'" class="d-flex flex-column">
-          <h1 class="mb-0 fw-bold">{{ userInfo.nome }} </h1>
-          <span class="text-muted">#{{ userInfo.codiceUtente }}</span>
+        <div v-if="role === 'utente' && utenteInfo" class="d-flex flex-column">
+          <h1 class="mb-0 fw-bold">{{ utenteInfo.nome || 'Utente' }}</h1>
+          <span v-if="utenteInfo.codiceUtente" class="text-muted">#{{ utenteInfo.codiceUtente }}</span>
         </div>
       </div>
 
@@ -47,37 +46,43 @@ export default {
       validator: (value) => ['utente', 'vettore', 'comune'].includes(value)
     },
   },
-  setup() {
+  setup(props) {
     // Per utente, carica i dati dall'autenticazione
     const { user, loadUserFromStorage } = useAuth();
-    
-    // Carica dati utente dal localStorage se disponibili
-    if (typeof window !== 'undefined') {
-      loadUserFromStorage();
-    }
 
     return {
-      user
+      user,
+      loadUserFromStorage,
+
     };
+  },
+  mounted() {
+    // Carica dati utente dopo il mount
+      this.loadUserFromStorage();
   },
   computed: {
     // Nome comune (mock, in produzione verrà da API)
     nomeComune() {
-      return 'Comune di Trento';
+      return this.user?.nome || 'Comune ';
     },
     nomeVettore() {
-      return 'Agenzia di Trento';
+      return this.user?.nome || 'Agenzia di Trasporti';
     },
     // Informazioni utente
-    userInfo() {
-      if (this.role === 'utente') {
+    utenteInfo() {
+        const currentUser = this.user;
+        if (currentUser) {
+          return {
+            nome: `${currentUser.nome || ''} ${currentUser.cognome || ''}`.trim() || 'Utente',
+            cognome: currentUser.cognome || '',
+            codiceUtente: currentUser.codiceUtente || ''
+          };
+        }
         return {
-          nome: 'Mario',
-          cognome: 'Rossi',
-          codiceUtente: '123456'
-        };
+          nome: 'Utente',
+          cognome: '',
+          codiceUtente: ''
       }
-      return null;
     },
     navigationLinks() {
       const baseLinks = [
@@ -95,8 +100,8 @@ export default {
             { to: '/utente/prenotazione', label: 'Prenota', icon: 'bi bi-plus' },
             { to: '/utente/corse-prenotate', label: 'Prenotate', icon: 'bi bi-calendar' },
             { to: '/utente/corse-effettuate', label: 'Storico', icon: 'bi bi-clock' },
-            { to: '/utente/invio-candidatura', label: 'Candidatura', icon: 'bi bi-send' },
-            { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' }
+            { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
+            { to: '/utente/invio-candidatura', label: 'Invio-Candidatura', icon: 'bi bi-send' },
           ];
 
         case 'vettore':
@@ -118,14 +123,6 @@ export default {
 
         default:
           return baseLinks;
-      }
-    },
-    sidebarColor() {
-      switch (this.role) {
-        case 'utente': return '#0066CC';
-        case 'vettore': return '#e6713e';
-        case 'comune': return '#00C383';
-        default: return '#343a40';
       }
     }
   }
