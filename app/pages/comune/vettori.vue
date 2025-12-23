@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Vettore from '../../components/Vettore.vue';
-import { type VettoreType , type ComuneType} from '~~/composables/useAuth';
+import { type VettoreType , type ComuneType} from '~~/composables/dataType';
 
 const error = ref<string | null>(null);
 const vettori = ref<VettoreType[]>([]);
@@ -107,7 +107,7 @@ const eliminaVettore = async (vettoreId: string) => {
   }
 };
 
-// Carica dati al mount
+// Carica dati 
 onMounted(() => {
   loadData();
 });
