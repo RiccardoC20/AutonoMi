@@ -1,88 +1,76 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import { useAuth, type UtenteType , type CorsaType} from '../../../composables/useAuth';
+import Corsa from '../../components/Corsa.vue';
+import { ref, computed, onMounted } from 'vue';
 
-
-
-const error = ref<string | null>(null);
-const user = ref<UtenteType | null>(null);
-const corse = ref<CorsaType[]>([]);
+// Stato delle corse
+const corse = ref<any[]>([]);
 const loading = ref(false);
+const error = ref<string | null>(null);
 
 // Filtri di ricerca e ordinamento
 const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
 const dateFrom = ref('');
 const dateTo = ref('');
 
-
-// Carica corse prenotate
-const getCorsePrenotate = async (token: string) => {
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      corse: CorsaType[];
-    }>('/api/corsa', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.success) {
-      corse.value = response.corse;
-    } else {
-      error.value = "Errore durante il caricamento delle corse prenotate";
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento delle corse prenotate";
-    console.error('Errore getCorsePrenotate:', err);
-  }
-};
-
-// Carica dati utente
-const getUtente = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    error.value = "Token non trovato. Effettua il login.";
-    return;
-  }
-
+// Funzione per caricare le corse dal backend
+const caricaCorse = async () => {
   loading.value = true;
   error.value = null;
 
   try {
+    // Ottieni token JWT da localStorage
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      error.value = 'Devi effettuare il login per visualizzare le corse';
+      loading.value = false;
+      return;
+    }
+
+    // Chiamata API per ottenere le corse
     const response = await $fetch<{
       success: boolean;
-      user: UtenteType;
-    }>('/api/utente/me', {
+      data: any[];
+      count: number;
+    }>('/api/corse/utente/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    
+
     if (response.success) {
-      user.value = response.user;
-      
-      // Carica corse prenotate
-      await getCorsePrenotate(token);
+      corse.value = response.data.map(corsa => {
+        // Combina data e orario per creare un Date completo
+        const dataCompleta = new Date(corsa.data);
+        if (corsa.orario) {
+          const [ore, minuti] = corsa.orario.split(':');
+          dataCompleta.setHours(parseInt(ore, 10), parseInt(minuti, 10), 0, 0);
+        }
+        
+        return {
+          ...corsa,
+          id: corsa._id,
+          data: dataCompleta,
+          // Usa codiceVettore come extra per il componente Corsa
+          extra: [`Vettore: ${corsa.codiceVettore}`],
+          // stimaKm non è disponibile nel model, quindi lo lasciamo undefined
+          stimaKm: undefined
+        };
+      });
     } else {
-      error.value = "Errore durante il caricamento dei dati dell'utente";
+      error.value = 'Errore nel caricamento delle corse';
     }
   } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento dei dati dell'utente";
-    console.error('Errore getUser:', err);
+    error.value = err.data?.message || 'Errore durante il caricamento delle corse';
+    console.error('Errore caricamento corse:', err);
   } finally {
     loading.value = false;
   }
 };
 
 const corseFiltrate = computed(() => {
-  let filtered = corse.value.filter(corsa => {
+  let filtered = corse.value.filter((corsa: any) => {
     // Filtro per periodo di data
     const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
@@ -92,7 +80,7 @@ const corseFiltrate = computed(() => {
   });
 
   // Ordinamento
-  filtered.sort((a, b) => {
+  filtered.sort((a: any, b: any) => {
     if (sortBy.value === 'data-desc') {
       return new Date(b.data).getTime() - new Date(a.data).getTime();
     } else if (sortBy.value === 'data-asc') {
@@ -104,9 +92,9 @@ const corseFiltrate = computed(() => {
   return filtered;
 });
 
-// Carica dati al mount
+// Carica le corse al mount del componente
 onMounted(() => {
-  getUtente();
+  caricaCorse();
 });
 </script>
 
@@ -117,11 +105,41 @@ onMounted(() => {
         <h1>Corse Prenotate</h1>
 
         <!-- Messaggio di errore -->
-        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
-          <i class="bi bi-exclamation-triangle me-2"></i>
+        <div
+          v-if="error"
+          class="alert alert-danger alert-dismissible fade show mb-4"
+          role="alert"
+        >
           {{ error }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            @click="error = null"
+            aria-label="Close"
+          ></button>
         </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-3 text-muted">Caricamento corse...</p>
+        </div>
+
+        <!-- Filtri e controlli -->
+        <div v-if="!loading" class="mb-4"> 
+        <div class="mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <!-- Ordinamento -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Ordina per:</label>
+              <select v-model="sortBy" class="form-select">
+                <option value="data-desc">Più recenti prima</option>
+                <option value="data-asc">Più vecchie prima</option>
+              </select>
+            </div>
 
         <!-- Loading -->
         <div v-if="loading" class="text-center py-5">
@@ -187,38 +205,37 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Lista corse prenotate -->
-        <div class="mb-4">
-          <div class="card h-100">
-            <div class="card-header">
-              <h5 class="card-title mb-0">
-                <i class="bi bi-calendar-check me-2"></i>
-                Corse Prenotate ({{ corseFiltrate.length }})
-              </h5>
+      <!-- Lista corse prenotate -->
+      <div v-if="!loading" class="mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="bi bi-calendar-check me-2"></i>
+              Corse Prenotate ({{ corseFiltrate.length }})
+            </h5>
+          </div>
+          <div class="card-body">
+            <div v-if="corseFiltrate.length === 0" class="text-center py-4">
+              <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+              <p class="text-muted">Nessuna corsa prenotata</p>
             </div>
-            <div class="card-body">
-              <div v-if="corseFiltrate.length === 0" class="text-center py-4">
-                <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
-                <p class="text-muted">Nessuna corsa prenotata</p>
-              </div>
-              <div v-else class="d-flex flex-column gap-3">
-                <Corsa
-                  v-for="corsa in corseFiltrate"
-                  :key="corsa.id"
-                  :partenza="corsa.partenza"
-                  :arrivo="corsa.arrivo"
-                  :data="corsa.data"
-                  :stimaKm="corsa.stimaKm"
-                  :codiceVettore="corsa.codiceVettore"
-                  :nomeVettore="corsa.nomeVettore"
-                  :codiceUtente="corsa.codiceUtente"
-                />
-              </div>
+            <div v-else class="d-flex flex-column gap-3">
+              <Corsa
+                v-for="corsa in corseFiltrate"
+                :key="corsa._id || corsa.id"
+                :partenza="corsa.partenza"
+                :arrivo="corsa.arrivo"
+                :data="corsa.data"
+                :stimaKm="corsa.stimaKm"
+                :extra="corsa.extra"
+              />
             </div>
           </div>
         </div>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   </HomeLayout>
 </template>

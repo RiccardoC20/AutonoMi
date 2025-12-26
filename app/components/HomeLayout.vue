@@ -109,7 +109,8 @@ export default {
             ...baseLinks,
             { to: '/vettore/corse-prenotate', label: 'Corse', icon: 'bi bi-car-front' },
             { to: '/vettore/corse-effettuate', label: 'Completate', icon: 'bi bi-check' },
-            { to: '/vettore/richieste', label: 'Richieste', icon: 'bi bi-bell' }
+            { to: '/vettore/richieste', label: 'Richieste', icon: 'bi bi-bell' },
+            { to: '/vettore/inserisci-corsa', label: 'Nuova corsa', icon: '' },
           ];
 
         case 'comune':

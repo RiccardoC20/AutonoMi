@@ -3,7 +3,7 @@ import HomeLayout from '../../components/HomeLayout.vue';
 
 // Dati del form
 const formData = ref({
-  vettore: '',
+  codiceUtente: '',
   partenza: '',
   arrivo: '',
   data: '',
@@ -13,20 +13,20 @@ const formData = ref({
 const isLoading = ref(false);
 const message = ref('');
 
-// Funzione per prenotare una corsa
-const prenotaCorsa = async () => {
+// Funzione per prenotare una corsa per conto dell'utente
+const prenotaPerUtente = async () => {
   // Validazione base
-  if (!formData.value.vettore || !formData.value.partenza || !formData.value.arrivo || !formData.value.data || !formData.value.ora) {
+  if (!formData.value.codiceUtente || !formData.value.partenza || !formData.value.arrivo || !formData.value.data || !formData.value.ora) {
     message.value = 'Compila tutti i campi obbligatori';
     return;
   }
 
-  // Ottieni token e userData da localStorage
+  // Ottieni token e dati vettore da localStorage
   const token = localStorage.getItem('auth_token');
   const userDataStr = localStorage.getItem('user_data');
   
   if (!token || !userDataStr) {
-    message.value = 'Devi effettuare il login per prenotare una corsa';
+    message.value = "Devi effettuare il login come vettore per prenotare a nome di un utente";
     return;
   }
 
@@ -34,12 +34,12 @@ const prenotaCorsa = async () => {
   try {
     userData = JSON.parse(userDataStr);
   } catch (e) {
-    message.value = 'Errore nel caricamento dei dati utente. Effettua nuovamente il login.';
+    message.value = 'Errore nel caricamento dei dati vettore. Effettua nuovamente il login.';
     return;
   }
 
-  if (!userData.codiceUtente) {
-    message.value = 'Codice utente non trovato. Effettua nuovamente il login.';
+  if (!userData.codiceVettore) {
+    message.value = 'Codice vettore non trovato. Effettua nuovamente il login.';
     return;
   }
 
@@ -47,19 +47,19 @@ const prenotaCorsa = async () => {
   message.value = '';
 
   try {
-    // Chiamata API reale
+    // Chiamata API
     const response = await $fetch<{
       success: boolean;
       message: string;
       richiestaCorsa: any;
-    }>('/api/richieste-corsa/crea', {
+    }>('/api/corse/crea', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
       },
       body: {
-        codiceUtente: userData.codiceUtente,
-        codiceVettore: parseInt(formData.value.vettore),
+        codiceUtente: formData.value.codiceUtente.trim(),
+        codiceVettore: parseInt(userData.codiceVettore),
         partenza: formData.value.partenza.trim(),
         arrivo: formData.value.arrivo.trim(),
         data: formData.value.data,
@@ -68,22 +68,22 @@ const prenotaCorsa = async () => {
     });
 
     if (response.success) {
-      message.value = 'Prenotazione effettuata con successo!';
+      message.value = 'Prenotazione creata con successo!';
 
       // Reset form
       formData.value = {
-        vettore: '',
+        codiceUtente: '',
         partenza: '',
         arrivo: '',
         data: '',
         ora: ''
       };
     } else {
-      message.value = 'Errore durante la prenotazione. Riprova.';
+      message.value = response.message || 'Errore durante la creazione della prenotazione. Riprova.';
     }
   } catch (error: any) {
-    message.value = error.data?.message || 'Errore durante la prenotazione. Riprova.';
-    console.error('Errore prenotazione:', error);
+    message.value = error.data?.message || 'Errore durante la creazione della prenotazione. Riprova.';
+    console.error('Errore prenotazione per utente:', error);
   } finally {
     isLoading.value = false;
   }
@@ -105,10 +105,10 @@ const getMinTime = () => {
 </script>
 
 <template>
-  <HomeLayout role="utente" >
+  <HomeLayout role="vettore">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <h1>Nuova Prenotazione</h1>
+        <h1>Prenota per Utente</h1>
         <div class="card shadow">
 
           <div class="card-body">
@@ -124,23 +124,23 @@ const getMinTime = () => {
               {{ message }}
             </div>
 
-            <form @submit.prevent="prenotaCorsa">
-              <!-- Campo Vettore -->
+            <form @submit.prevent="prenotaPerUtente">
+              <!-- Campo Codice Utente -->
               <div class="mb-3">
-                <label for="vettore" class="form-label fw-bold">
-                  <i class="bi bi-truck text-primary me-1"></i>
-                  Codice Vettore *
+                <label for="codiceUtente" class="form-label fw-bold">
+                  <i class="bi bi-person-lines-fill text-primary me-1"></i>
+                  Codice Utente *
                 </label>
                 <input
-                  id="vettore"
-                  v-model="formData.vettore"
+                  id="codiceUtente"
+                  v-model="formData.codiceUtente"
                   type="text"
                   class="form-control form-control-lg"
-                  placeholder="Inserisci il codice vettore"
+                  placeholder="Inserisci il codice utente"
                   required
                 >
                 <div class="form-text">
-                  Inserisci il codice del vettore per la tua corsa
+                  Inserisci il codice dell'utente per cui prenoti
                 </div>
               </div>
 
@@ -229,7 +229,7 @@ const getMinTime = () => {
                 >
                   <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
-                  {{ isLoading ? 'Prenotazione in corso...' : 'Prenota Corsa' }}
+                  {{ isLoading ? 'Creazione in corso...' : 'Prenota per Utente' }}
                 </button>
               </div>
             </form>
@@ -249,7 +249,7 @@ const getMinTime = () => {
             <div class="card-footer p-2">
               <ul class="mb-0 small">
                 <li>La prenotazione può essere effettuata fino a 24 ore prima</li>
-                <li>Riceverai una conferma via email con i dettagli del vettore</li>
+                <li>L'utente riceverà una conferma via email con i dettagli</li>
                 <li>I costi verranno calcolati in base alla distanza effettiva</li>
               </ul>
             </div>

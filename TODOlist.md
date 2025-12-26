@@ -32,5 +32,5 @@ Cosa fare dopo il 19.
 - vedere per i log
 - vedere openApi
 
-
+- togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
