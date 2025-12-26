@@ -141,69 +141,46 @@ onMounted(() => {
               </select>
             </div>
 
-        <!-- Loading -->
-        <div v-if="loading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-          </div>
-          <p class="mt-2 text-muted">Caricamento dati...</p>
-        </div>
+            <!-- Filtro data -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Filtra per data:</label>
+              <button class="btn btn-outline-secondary w-100 mb-2" data-bs-toggle="collapse" data-bs-target="#dateFiltersUser">
+                <i class="bi bi-calendar-range me-2"></i>Imposta Periodo
+              </button>
 
-        <!-- Contenuto principale -->
-        <div v-else>
-          <!-- Filtri e controlli --> 
-          <div class="mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <!-- Ordinamento -->
-              <div class="mb-3">
-                <label class="form-label fw-bold">Ordina per:</label>
-                <select v-model="sortBy" class="form-select">
-                  <option value="data-desc">Più recenti prima</option>
-                  <option value="data-asc">Più vecchie prima</option>
-                </select>
-              </div>
-
-              <!-- Filtro data -->
-              <div class="mb-3">
-                <label class="form-label fw-bold">Filtra per data:</label>
-                <button class="btn btn-outline-secondary w-100 mb-2" data-bs-toggle="collapse" data-bs-target="#dateFiltersUser">
-                  <i class="bi bi-calendar-range me-2"></i>Imposta Periodo
-                </button>
-
-                <!-- Filtri data espandibili -->
-                <div class="collapse" id="dateFiltersUser">
-                  <div class="row g-2 mt-2">
-                    <div class="col-6">
-                      <label class="form-label small">Dal:</label>
-                      <input
-                        v-model="dateFrom"
-                        type="date"
-                        class="form-control form-control-sm"
-                      >
-                    </div>
-                    <div class="col-6">
-                      <label class="form-label small">Al:</label>
-                      <input
-                        v-model="dateTo"
-                        type="date"
-                        class="form-control form-control-sm"
-                      >
-                    </div>
-                    <div class="col-12 mt-2">
-                      <button
-                        class="btn btn-outline-danger btn-sm w-100"
-                        @click="dateFrom = ''; dateTo = ''"
-                      >
-                        <i class="bi bi-x-circle me-1"></i>Rimuovi Filtri
-                      </button>
-                    </div>
+              <!-- Filtri data espandibili -->
+              <div class="collapse" id="dateFiltersUser">
+                <div class="row g-2 mt-2">
+                  <div class="col-6">
+                    <label class="form-label small">Dal:</label>
+                    <input
+                      v-model="dateFrom"
+                      type="date"
+                      class="form-control form-control-sm"
+                    >
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small">Al:</label>
+                    <input
+                      v-model="dateTo"
+                      type="date"
+                      class="form-control form-control-sm"
+                    >
+                  </div>
+                  <div class="col-12 mt-2">
+                    <button
+                      class="btn btn-outline-danger btn-sm w-100"
+                      @click="dateFrom = ''; dateTo = ''"
+                    >
+                      <i class="bi bi-x-circle me-1"></i>Rimuovi Filtri
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
       <!-- Lista corse prenotate -->
       <div v-if="!loading" class="mb-4">
@@ -231,7 +208,6 @@ onMounted(() => {
               />
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
