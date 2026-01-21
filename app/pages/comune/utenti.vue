@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Utente from '../../components/Utente.vue';
-import { type UtenteType } from '../../../composables/useAuth'
+import { type UtenteType } from '../../../composables/dataType'
 
 
 

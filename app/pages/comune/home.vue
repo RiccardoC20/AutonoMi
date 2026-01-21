@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import DashboardCard from '../../components/DashboardCard.vue';
-import { type CorsaType , type UtenteType } from '../../../composables/useAuth';
+import { type CorsaType , type UtenteType } from '../../../composables/dataType';
 
 // Interfaccia per Utente
 

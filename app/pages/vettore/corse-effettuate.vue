@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import { type CorsaType, type UtenteType } from '../../../composables/useAuth';
+import { type CorsaType } from '../../../composables/dataType';
 
 // Interfaccia per Corsa temporanea
 
 
 const error = ref<string | null>(null);
-const user = ref<UtenteType | null>(null);
 const corseEffettuate = ref<CorsaType[]>([]);
 const loading = ref(false);
 
@@ -15,8 +14,20 @@ const searchTerm = ref('');
 const sortBy = ref('data'); // 'data', 'costo', 'valutazione', 'km'
 
 // Carica corse effettuate
-const getCorseEffettuate = async (token: string) => {
+const getCorseEffettuate = async () => {
+  loading.value = true;
+  error.value = null;
+
   try {
+    // Ottieni token JWT da localStorage
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      error.value = "Token non trovato. Effettua il login.";
+      loading.value = false;
+      return;
+    }
+
+    // Chiamata API per ottenere le corse
     const response = await $fetch<{
       success: boolean;
       corse: CorsaType[];
@@ -35,50 +46,11 @@ const getCorseEffettuate = async (token: string) => {
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento delle corse effettuate";
     console.error('Errore getCorseEffettuate:', err);
-  }
-};
-
-// Carica dati utente
-const getVettore = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    error.value = "Token non trovato. Effettua il login.";
-    return;
-  }
-
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      user: UtenteType;
-    }>('/api/vettore/me', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.success) {
-      user.value = response.user;
-      
-      // Carica corse effettuate
-      await getCorseEffettuate(token);
-    } else {
-      error.value = "Errore durante il caricamento dei dati del vettore";
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento dei dati del vettore";
-    console.error('Errore getVettore:', err);
-  } finally {
+  }finally{
     loading.value = false;
   }
 };
+
 
 const corseFiltrate = computed(() => {
   let filtered = corseEffettuate.value.filter(corsa => {
@@ -119,7 +91,7 @@ const statistiche = computed(() => {
 
 // Carica dati al mount
 onMounted(() => {
-  getVettore();
+  getCorseEffettuate();
 });
 </script>
 
@@ -214,7 +186,7 @@ onMounted(() => {
               <div v-else class="d-flex flex-column gap-3">
                 <Corsa
                   v-for="corsa in corseFiltrate"
-                  :key="corsa.id"
+                  :key="corsa._id"
                   :partenza="corsa.partenza"
                   :arrivo="corsa.arrivo"
                   :data="corsa.data"

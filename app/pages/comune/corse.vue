@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
-import { type CorsaType } from '~~/composables/useAuth';
+import { type CorsaType } from '~~/composables/dataType';
 
 const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
@@ -164,7 +164,7 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
                 v-for="corsa in corseFiltrate"
-                :key="corsa.id"
+                :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"

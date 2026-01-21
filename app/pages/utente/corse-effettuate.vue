@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import { type CorsaType, type UtenteType } from '../../../composables/useAuth';
+import { type CorsaType, type UtenteType } from '../../../composables/dataType';
 
 // Interfaccia per Corsa temporanea
 
@@ -214,7 +214,7 @@ onMounted(() => {
               <div v-else class="d-flex flex-column gap-3">
                 <Corsa
                   v-for="corsa in corseFiltrate"
-                  :key="corsa.id"
+                  :key="corsa._id"
                   :partenza="corsa.partenza"
                   :arrivo="corsa.arrivo"
                   :data="corsa.data"

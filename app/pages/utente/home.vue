@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import { useAuth, type UtenteType , type CorsaType} from '../../../composables/useAuth';
+import { type UtenteType , type CorsaType} from '../../../composables/dataType';
 
 
 const error = ref<string | null>(null);
@@ -237,7 +237,7 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
                 v-for="corsa in corsePrenotate"
-                :key="corsa.id"
+                :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
@@ -267,7 +267,7 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
                 v-for="corsa in corseEffettuate"
-                :key="corsa.id"
+                :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
