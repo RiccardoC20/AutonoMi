@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Ottiene il prossimo codice vettore incrementale
-    const codiceVettore = await getNextSequenceValue('vettori');
+    const codiceVettore = (await getNextSequenceValue('vettori')).toString();
 
     // Genera password temporanea randomica di 8 caratteri
     const passwordPlain = generateRandomPassword(8);

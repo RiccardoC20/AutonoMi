@@ -1,6 +1,6 @@
-import connectDB from "../../utils/mongo";
-import Corsa from "../../models/corsa.model";
-import useAuth from "../../utils/useAuth";
+import connectDB from "../../../utils/mongo";
+import Corsa from "../../../models/corsa.model";
+import useAuth from "../../../utils/useAuth";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -19,26 +19,14 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Converte a numero se necessario
-    const codiceVettoreNum = typeof codiceVettore === 'number' 
-      ? codiceVettore 
-      : parseInt(codiceVettore, 10);
-
-    if (isNaN(codiceVettoreNum)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Codice vettore non valido'
-      });
-    }
-
     // Cerca tutte le corse per questo codiceVettore
     const corse = await Corsa.find({ 
-      codiceVettore: codiceVettoreNum 
+      codiceVettore: codiceVettore
     })
     .sort({ createdAt: -1 }) // Ordina per data di creazione (più recenti prima)
     .exec();
 
-    console.log(`Trovate ${corse.length} corse per codiceVettore ${codiceVettoreNum}`);
+    console.log(`Trovate ${corse.length} corse per codiceVettore ${codiceVettore}`);
 
     // Restituisce le corse
     return {

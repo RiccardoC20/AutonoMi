@@ -31,7 +31,7 @@ export interface CorsaType {
 }
 export interface VettoreType {
   _id: string;
-  codiceVettore: number;
+  codiceVettore: string;
   nome: string;
   email: string;
   numeroTelefono?: string;
