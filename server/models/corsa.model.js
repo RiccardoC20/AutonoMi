@@ -21,10 +21,6 @@ const CorsaSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  orario: {
-    type: String,
-    required: true
-  },
   effettuata: {
     type: Boolean,
     required: true

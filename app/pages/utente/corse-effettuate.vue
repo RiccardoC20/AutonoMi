@@ -20,7 +20,7 @@ const getCorseEffettuate = async (token: string) => {
     const response = await $fetch<{
       success: boolean;
       corse: CorsaType[];
-    }>('/api/corsa', {
+    }>('/api/corse/utente/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -86,7 +86,7 @@ const corseFiltrate = computed(() => {
     const matchesSearch = corsa.partenza.toLowerCase().includes(searchLower) ||
                          corsa.arrivo.toLowerCase().includes(searchLower) ||
                          (corsa.codiceVettore && corsa.codiceVettore.toLowerCase().includes(searchLower)) ||
-                         (corsa.nomeVettore && corsa.nomeVettore.toLowerCase().includes(searchLower)) ||
+                         (corsa.codiceUtente && corsa.codiceUtente.toLowerCase().includes(searchLower)) ||
                          (corsa.prezzo && corsa.prezzo.toString().includes(searchLower));
 
     return matchesSearch;
@@ -222,7 +222,7 @@ onMounted(() => {
                   :kmEffettivi="corsa.kmEffettivi"
                   :prezzo="corsa.prezzo"
                   :codiceVettore="corsa.codiceVettore"
-                  :nomeVettore="corsa.nomeVettore"
+                  :codiceUtente="corsa.codiceUtente"
                 />
               </div>
             </div>

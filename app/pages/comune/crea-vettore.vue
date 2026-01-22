@@ -53,13 +53,11 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white text-center">
-            <h2 class="h4 mb-0">Crea Nuovo Vettore</h2>
-          </div>
+  <HomeLayout role="comune">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
+        <h1>Crea vettore</h1>
+
 
           <div class="card-body">
             <!-- Messaggio di successo -->
@@ -150,7 +148,7 @@ async function handleSubmit() {
               <div class="d-grid gap-2">
                 <button
                   type="submit"
-                  class="btn btn-primary"
+                  class="button-color"
                   :disabled="loading || !nome.trim() || !email.trim() || !numeroTelefono.trim() || !sede.trim()"
                 >
                   <span v-if="loading">
@@ -177,7 +175,15 @@ async function handleSubmit() {
           </div>
         </div>
       </div>
-    </div>
-  </div>
+  </HomeLayout>
 </template>
 
+<style scoped>
+.content-wrapper {
+  max-width: 1200px;
+  width: 50%;
+}
+.button-color{
+  background-color: var(--color-comune-sideBar);
+}
+</style>

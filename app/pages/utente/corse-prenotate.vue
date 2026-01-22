@@ -2,9 +2,10 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
 import { ref, computed, onMounted } from 'vue';
+import type { CorsaType } from '~~/composables/dataType';
 
 // Stato delle corse
-const corse = ref<any[]>([]);
+const corse = ref<CorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
@@ -30,7 +31,7 @@ const caricaCorse = async () => {
     // Chiamata API per ottenere le corse
     const response = await $fetch<{
       success: boolean;
-      data: any[];
+      data: CorsaType[];
       count: number;
     }>('/api/corse/utente/get', {
       method: 'GET',
@@ -40,24 +41,7 @@ const caricaCorse = async () => {
     });
 
     if (response.success) {
-      corse.value = response.data.map(corsa => {
-        // Combina data e orario per creare un Date completo
-        const dataCompleta = new Date(corsa.data);
-        if (corsa.orario) {
-          const [ore, minuti] = corsa.orario.split(':');
-          dataCompleta.setHours(parseInt(ore, 10), parseInt(minuti, 10), 0, 0);
-        }
-        
-        return {
-          ...corsa,
-          id: corsa._id,
-          data: dataCompleta,
-          // Usa codiceVettore come extra per il componente Corsa
-          extra: [`Vettore: ${corsa.codiceVettore}`],
-          // stimaKm non è disponibile nel model, quindi lo lasciamo undefined
-          stimaKm: undefined
-        };
-      });
+      corse.value = response.data;
     } else {
       error.value = 'Errore nel caricamento delle corse';
     }
@@ -199,12 +183,15 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
                 v-for="corsa in corseFiltrate"
-                :key="corsa._id || corsa.id"
+                :key="corsa._id || corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
                 :stimaKm="corsa.stimaKm"
-                :extra="corsa.extra"
+                :kmEffettivi="corsa.kmEffettivi"
+                :prezzo="corsa.prezzo"
+                :codiceVettore="corsa.codiceVettore"
+                :codiceUtente="corsa.codiceUtente"
               />
             </div>
           </div>
