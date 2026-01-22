@@ -19,10 +19,10 @@ COSE DA FARE NEL PROGETTO:
 
 ___________________________
 Cosa fare dopo il 19.
+- comune login deve avere il suo colore FATTO
 
 - creare tutte le chiamate per far funzionare il FE
 - Da valutare se creare un file .css per i tre colori principali
-- comune login deve avere il suo colore 
 - in comune posso visualizzare gli utenti (e i vettori) ed eliminarli (anche file pdf)
 
 - D2 iniziare seriamente a scriverlo
@@ -34,3 +34,4 @@ Cosa fare dopo il 19.
 
 - togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
+- aggiornare il valore di ritorno delle chiamate api con un DataType specifico

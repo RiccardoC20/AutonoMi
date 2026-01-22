@@ -12,6 +12,40 @@ const formData = ref({
 
 const isLoading = ref(false);
 const message = ref('');
+const vettori = ref<any[]>([]);
+const loadingVettori = ref(false);
+
+// Carica i vettori al mount del componente
+onMounted(async () => {
+  await caricaVettori();
+});
+
+// Funzione per caricare i vettori
+const caricaVettori = async () => {
+  loadingVettori.value = true;
+  try {
+    const token = localStorage.getItem('auth_token');
+    const response = await $fetch<{
+      success: boolean;
+      vettori: any[];
+    }>('/api/vettore/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    
+
+    if (response.success) {
+      vettori.value = response.vettori;
+    }
+  } catch (error) {
+    console.error('Errore caricamento vettori:', error);
+  } finally {
+    loadingVettori.value = false;
+  }
+};
 
 // Funzione per prenotare una corsa
 const prenotaCorsa = async () => {
@@ -131,14 +165,18 @@ const getMinTime = () => {
                   <i class="bi bi-truck text-primary me-1"></i>
                   Codice Vettore *
                 </label>
-                <input
+                <select 
                   id="vettore"
-                  v-model="formData.vettore"
-                  type="text"
-                  class="form-control form-control-lg"
-                  placeholder="Inserisci il codice vettore"
+                  v-model="formData.vettore" 
+                  class="form-select" 
+                  :disabled="loadingVettori"
                   required
                 >
+                  <option value="">{{ loadingVettori ? 'Caricamento...' : 'Seleziona un vettore' }}</option>
+                  <option v-for="vettore in vettori" :key="vettore.id" :value="vettore.id">
+                    {{ vettore.nome }}
+                  </option>
+                </select>
                 <div class="form-text">
                   Inserisci il codice del vettore per la tua corsa
                 </div>
