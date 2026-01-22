@@ -4,7 +4,6 @@ import { type UtenteType , type CorsaType} from '../../../composables/dataType';
 
 
 const error = ref<string | null>(null);
-const user = ref<UtenteType | null>(null);
 const corsePrenotate = ref<CorsaType[]>([]);
 const corseEffettuate = ref<CorsaType[]>([]);
 const loading = ref(false);
@@ -34,10 +33,7 @@ const getCorsePrenotate = async (token: string) => {
     
     if (response.success) {
       // Converti le date da stringhe a Date objects
-      corsePrenotate.value = response.corse.map(corsa => ({
-        ...corsa,
-        data: parseDate(corsa.data)
-      }));
+      corsePrenotate.value = response.corse;
     } else {
       error.value = "Errore durante il caricamento delle corse prenotate";
     }
@@ -72,11 +68,7 @@ const getCorseEffettuate = async (token: string) => {
 };
 
 // Carica dati utente
-const getUser = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
+const getCorse = async () => {
   const token = localStorage.getItem('auth_token');
   if (!token) {
     error.value = "Token non trovato. Effettua il login.";
@@ -86,37 +78,11 @@ const getUser = async () => {
   loading.value = true;
   error.value = null;
 
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      user: UtenteType;
-    }>('/api/utente/me', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.success) {
-      user.value = response.user;
-      
-      // Carica corse prenotate ed effettuate
-      await Promise.all([
-        getCorsePrenotate(token),
-        getCorseEffettuate(token)
-      ]);
-      
-      // TODO: Aggiorna chilometriTotali e chilometriUtilizzati dai dati utente
-      // quando disponibili dall'API
-    } else {
-      error.value = "Errore durante il caricamento dei dati dell'utente";
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento dei dati dell'utente";
-    console.error('Errore getUser:', err);
-  } finally {
-    loading.value = false;
-  }
+  getCorsePrenotate(token);
+  getCorseEffettuate(token);
+
+  loading.value = false;
+  
 };
 
 // Calcola chilometri utilizzati dalle corse effettuate
@@ -126,7 +92,8 @@ const chilometriUsati = computed(() => {
 
 // Carica dati al mount
 onMounted(() => {
-  getUser();
+  getCorse();
+
 });
 </script>
 
@@ -243,7 +210,7 @@ onMounted(() => {
                 :data="corsa.data"
                 :stimaKm="corsa.stimaKm"
                 :codiceVettore="corsa.codiceVettore"
-                :nomeVettore="corsa.nomeVettore"
+                :codiceUtente="corsa.codiceUtente"
               />
             </div>
           </div>
@@ -275,7 +242,7 @@ onMounted(() => {
                 :kmEffettivi="corsa.kmEffettivi"
                 :prezzo="corsa.prezzo"
                 :codiceVettore="corsa.codiceVettore"
-                :nomeVettore="corsa.nomeVettore"
+                :codiceUtente="corsa.codiceUtente"
               />
             </div>
           </div>

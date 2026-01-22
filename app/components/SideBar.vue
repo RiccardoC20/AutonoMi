@@ -17,7 +17,7 @@
         type="button" 
         class="nav-link text-white text-decoration-none d-flex align-items-center p-2 rounded small w-100 border-0 bg-transparent"
         data-bs-toggle="modal" 
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#logoutBackdrop"
       >
         <i class="bi bi-box-arrow-right me-2"></i>
         Logout
@@ -26,7 +26,7 @@
   </div>
 
 <!-- Modal Logout -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="logoutBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">

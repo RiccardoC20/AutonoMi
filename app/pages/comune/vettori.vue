@@ -74,10 +74,6 @@ const loadData = async () => {
 
 // Funzione per eliminare vettore
 const eliminaVettore = async (vettoreId: string) => {
-  if (!confirm('Sei sicuro di voler eliminare questo vettore?')) {
-    return;
-  }
-
   const token = localStorage.getItem('auth_token');
   if (!token) {
     error.value = "Token non trovato. Effettua il login.";
