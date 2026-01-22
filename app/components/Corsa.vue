@@ -18,11 +18,11 @@
     <i class="bi bi-clock me-1"></i>
     {{ data?.toLocaleTimeString() }}
   </div>
-  <div class="text-truncate fw-bold" style="width: 5rem;">
+  
+  <!-- Campi opzionali -->
+  <div v-if="stimaKm" class="text-truncate fw-bold " style="width: 5rem;">
     {{ stimaKm }} km
   </div>
-
-  <!-- Campi opzionali -->
   <div v-if="kmEffettivi" class="text-truncate fw-bold text-success" style="width: 5rem;">
     {{ kmEffettivi }} km
   </div>
