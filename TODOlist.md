@@ -35,3 +35,6 @@ Cosa fare dopo il 19.
 - togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico
+
+
+- aggiungere api utente get e [ID].delete (delete elimina anche il pdf da supabase)
