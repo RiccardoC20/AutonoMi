@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { VettoreType } from '~~/composables/dataType';
 import HomeLayout from '../../components/HomeLayout.vue';
 
 // Dati del form
@@ -12,7 +13,7 @@ const formData = ref({
 
 const isLoading = ref(false);
 const message = ref('');
-const vettori = ref<any[]>([]);
+const vettori = ref<VettoreType[]>([]);
 const loadingVettori = ref(false);
 
 // Carica i vettori al mount del componente
@@ -27,7 +28,7 @@ const caricaVettori = async () => {
     const token = localStorage.getItem('auth_token');
     const response = await $fetch<{
       success: boolean;
-      vettori: any[];
+      data: VettoreType[];
     }>('/api/vettore/get', {
       method: 'GET',
       headers: {
@@ -35,10 +36,9 @@ const caricaVettori = async () => {
       }
     });
 
-    
 
     if (response.success) {
-      vettori.value = response.vettori;
+      vettori.value = response.data;
     }
   } catch (error) {
     console.error('Errore caricamento vettori:', error);
@@ -173,7 +173,7 @@ const getMinTime = () => {
                   required
                 >
                   <option value="">{{ loadingVettori ? 'Caricamento...' : 'Seleziona un vettore' }}</option>
-                  <option v-for="vettore in vettori" :key="vettore.id" :value="vettore.id">
+                  <option v-for="vettore in vettori" :key="vettore.codiceVettore" :value="vettore.codiceVettore">
                     {{ vettore.nome }}
                   </option>
                 </select>

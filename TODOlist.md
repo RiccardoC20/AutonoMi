@@ -21,6 +21,9 @@ ___________________________
 Cosa fare dopo il 19.
 - comune login deve avere il suo colore FATTO
 
+- fare il creaVettore da parte del comune nella sidebar e correggere il colore
+- lista candidature deve avere la sidebar
+
 - creare tutte le chiamate per far funzionare il FE
 - Da valutare se creare un file .css per i tre colori principali
 - in comune posso visualizzare gli utenti (e i vettori) ed eliminarli (anche file pdf)
@@ -35,3 +38,5 @@ Cosa fare dopo il 19.
 - togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico
+
+- il vettore per qualche motivo "Non ha i permessi per eliminare una corsa"

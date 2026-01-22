@@ -228,9 +228,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-12">
+  <HomeLayout role="comune">
+    <div class="d-flex justify-content-center">
+      <div class="content-wrapper p-4">
         <h1 class="h3 mb-4">Lista Candidature</h1>
 
         <!-- Messaggio di errore -->
@@ -417,7 +417,7 @@ onMounted(() => {
       class="modal-backdrop fade show"
       @click="closeConfirmModal"
     ></div>
-  </div>
+  </HomeLayout>
 </template>
 
 <style scoped>
@@ -455,4 +455,10 @@ onMounted(() => {
 .modal.show {
   display: block !important;
 }
+
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+
 </style>

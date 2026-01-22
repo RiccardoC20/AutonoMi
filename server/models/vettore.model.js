@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const vettoreSchema = new mongoose.Schema({
   codiceVettore: {
-    type: Number,
+    type: String,
     required: true,
     unique: true
   },

@@ -63,10 +63,10 @@ export default {
   computed: {
     // Nome comune (mock, in produzione verrà da API)
     nomeComune() {
-      return this.user?.nome || 'Comune ';
+      return this.user?.nome;
     },
     nomeVettore() {
-      return this.user?.nome || 'Agenzia di Trasporti';
+      return this.user?.nome;
     },
     // Informazioni utente
     utenteInfo() {
@@ -119,7 +119,8 @@ export default {
             { to: '/comune/utenti', label: 'Utenti', icon: 'bi bi-people' },
             { to: '/comune/vettori', label: 'Vettori', icon: 'bi bi-truck' },
             { to: '/comune/corse', label: 'Corse', icon: 'bi bi-car-front' },
-            { to: '/comune/candidature', label: 'Candidature', icon: 'bi bi-file-text' }
+            { to: '/comune/candidature', label: 'Candidature', icon: 'bi bi-file-text' },
+            { to: '/comune/crea-vettore', label: 'Crea vettore', icon: 'bi bi-car-front' }
           ];
 
         default:

@@ -25,7 +25,7 @@ const getCorsePrenotate = async (token: string) => {
     const response = await $fetch<{
       success: boolean;
       corse: CorsaType[];
-    }>('/api/corsa', {
+    }>('/api/corse/utente/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -53,7 +53,7 @@ const getCorseEffettuate = async (token: string) => {
     const response = await $fetch<{
       success: boolean;
       corse: CorsaType[];
-    }>('/api/corsa', {
+    }>('/api/corse/utente/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

@@ -6,7 +6,7 @@ const RichiesteCorsaSchema = new mongoose.Schema({
     required: true
   },
   codiceVettore: {
-    type: Number,
+    type: String,
     required: true
   },
   partenza: {

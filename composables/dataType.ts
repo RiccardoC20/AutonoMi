@@ -18,16 +18,16 @@ export interface CandidaturaType {
   cellulare: string;
 }
 export interface CorsaType {
-  _id: number;
+  _id: string;
   partenza: string;
   arrivo: string;
   data: Date;
+  effettuata: boolean;
   stimaKm: number;
   kmEffettivi?: number;
   prezzo?: number;
-  codiceUtente?: string;
-  codiceVettore?: string;
-  nomeVettore?: string;
+  codiceUtente: string;
+  codiceVettore: string;
 }
 export interface VettoreType {
   _id: string;

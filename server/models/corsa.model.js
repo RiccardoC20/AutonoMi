@@ -6,7 +6,7 @@ const CorsaSchema = new mongoose.Schema({
     required: true
   },
   codiceVettore: {
-    type: Number,
+    type: String,
     required: true
   },
   partenza: {
@@ -19,10 +19,6 @@ const CorsaSchema = new mongoose.Schema({
   },
   data: {
     type: Date,
-    required: true
-  },
-  orario: {
-    type: String,
     required: true
   },
   effettuata: {
