@@ -20,6 +20,7 @@ COSE DA FARE NEL PROGETTO:
 ___________________________
 Cosa fare dopo il 19.
 - comune login deve avere il suo colore FATTO
+- il vettore per qualche motivo "Non ha i permessi per eliminare una corsa" FATTO
 
 - fare il creaVettore da parte del comune nella sidebar e correggere il colore
 - lista candidature deve avere la sidebar
@@ -38,5 +39,12 @@ Cosa fare dopo il 19.
 - togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico
+- eliminare pdf da supabase quando elimino  utente da comune 
+- la route vuota deve portarmi a login/utente
 
-- il vettore per qualche motivo "Non ha i permessi per eliminare una corsa"
+
+1 - creare una vettore : get corse effettuate e corse prenotate
+2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata
+3 - creare una get corse prenotate ed effettuate lato utente
+
+4** - rimane tutto il problema del chilometraggio residuo durante la prenotazione corsa / passaggio da richiesta corsa a prenotazione corsa.

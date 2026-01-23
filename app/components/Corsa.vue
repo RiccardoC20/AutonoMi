@@ -12,11 +12,11 @@
   </div>
   <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-calendar-event me-1"></i>
-    {{ data?.toLocaleDateString() }}
+    {{ dataOggi }}
   </div>
   <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-clock me-1"></i>
-    {{ data?.toLocaleTimeString() }}
+    {{ oraAttuale }}
   </div>
   
   <!-- Campi opzionali -->
@@ -44,10 +44,10 @@
 <script>
   export default {
     name: "Corsa",
-    props: {
+    props: { 
       partenza: String,
       arrivo: String,
-      data: Date,
+      data: String,
       stimaKm: Number,
       kmEffettivi: {
         type: Number,
@@ -65,6 +65,24 @@
         type: String,
         default: null
       }
+    },
+
+    computed: {
+      dataOggi() {
+        return new Intl.DateTimeFormat('it-IT', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        }).format(new Date())
+      },
+
+      oraAttuale() {
+        return new Intl.DateTimeFormat('it-IT', {
+          hour: '2-digit',
+          minute: '2-digit'
+        }).format(new Date())
+      }
     }
   }
+
 </script>

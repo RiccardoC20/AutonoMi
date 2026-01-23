@@ -21,7 +21,7 @@ export interface CorsaType {
   _id: string;
   partenza: string;
   arrivo: string;
-  data: Date;
+  data: string;
   effettuata: boolean;
   stimaKm: number;
   kmEffettivi?: number;
