@@ -55,38 +55,18 @@ const caricaCorse = async () => {
   }
 };
 
-// const corseFiltrate = computed(() => {
-//   let filtered = corse.value.filter((corsa: any) => {
-//     // Filtro per periodo di data
-//     const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-//     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
-//     const matchesDateTo = !dateTo.value || !corsaDate || corsaDate <= dateTo.value;
+const corseFiltrate = computed(() => {
+  return {
+    effettuate: corse.value.filter(c => c.effettuata === true),
+    prenotate: corse.value.filter(c => c.effettuata === false)
+  }
+})
 
-//     return matchesDateFrom && matchesDateTo;
-//   });
-
-//   // Ordinamento
-//   filtered.sort((a: any, b: any) => {
-//     if (sortBy.value === 'data-desc') {
-//       return new Date(b.data).getTime() - new Date(a.data).getTime();
-//     } else if (sortBy.value === 'data-asc') {
-//       return new Date(a.data).getTime() - new Date(b.data).getTime();
-//     }
-//     return 0;
-//   });
-
-//   return filtered;
-// });
 
 // Carica le corse al mount del componente
 onMounted(() => {
   caricaCorse();
 });
-
-console.log("stampa delle corse trovate dalla chiamate get")
-corse.value.forEach((corsa, index) => {
-  console.log(index, corsa)
-})
 
 
 </script>
@@ -95,7 +75,7 @@ corse.value.forEach((corsa, index) => {
   <HomeLayout role="vettore">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Corse Prenotate</h1>
+        <h1>Corse</h1>
 
         <!-- Messaggio di errore -->
         <div
@@ -116,12 +96,12 @@ corse.value.forEach((corsa, index) => {
 
      
 
-        <!-- Lista corse usando il componente Corsa -->
-        <div class="card h-100 mb-4">
+        <!-- Lista corse prenotate -->
+        <div class="card mb-4">
           <div class="card-header">
             <h5 class="card-title mb-0">
               <i class="bi bi-calendar-check me-2"></i>
-              Corse ({{ corse.length }})
+              Corse Prenotate ({{ corseFiltrate.prenotate.length }})
             </h5>
           </div>
           <!-- Loading -->
@@ -132,22 +112,58 @@ corse.value.forEach((corsa, index) => {
           <p class="mt-3 text-muted">Caricamento corse...</p>
           </div> -->
           <div class="card-body">
-            <div v-if="corse.length === 0" class="text-center py-4">
+            <div v-if="corseFiltrate.prenotate.length === 0" class="text-center py-4">
               <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
               <p class="text-muted">Nessuna corsa prenotata</p>
             </div>
             <div v-else class="d-flex flex-column gap-3">
               <Corsa
-                v-for="corsa in corse"
+                v-for="corsa in corseFiltrate.prenotate"
                 :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :codiceVettore="corsa.codiceVettore"
                 :data="corsa.data"
+                :effettuata="corsa.effettuata"
               />
             </div>
           </div>
         </div>
+
+         <!-- Lista corse effettuate -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="bi bi-calendar-check me-2"></i>
+              Corse effettuate ({{ corseFiltrate.effettuate.length }})
+            </h5>
+          </div>
+          <!-- Loading -->
+          <!-- <div v-if="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-3 text-muted">Caricamento corse...</p>
+          </div> -->
+          <div class="card-body">
+            <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
+              <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+              <p class="text-muted">Nessuna corsa effettuata</p>
+            </div>
+            <div v-else class="d-flex flex-column gap-3">
+              <Corsa
+                v-for="corsa in corseFiltrate.effettuate"
+                :key="corsa._id"
+                :partenza="corsa.partenza"
+                :arrivo="corsa.arrivo"
+                :codiceVettore="corsa.codiceVettore"
+                :data="corsa.data"
+                :effettuata="corsa.effettuata"
+              />
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </HomeLayout>

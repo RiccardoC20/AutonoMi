@@ -38,6 +38,38 @@
     <i class="bi bi-truck me-1"></i>
     {{ nomeVettore }}
   </div>
+
+  <!-- Bottone per completare la corsa -->
+  <div v-if="!effettuata" class="ms-auto">
+    <button 
+      type="button" 
+      class="btn btn-success btn-sm"
+      data-bs-toggle="modal" 
+      data-bs-target="#corsaEffettuataBackdrop"
+    >
+    Effettua
+    <i class="bi bi-check-circle me-1"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Modal Logout -->
+<div class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Corsa Effettua?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Questa corsa è stata effettuata?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="$emit('corsaEffettuata')">Conferma</button>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -49,6 +81,10 @@
       arrivo: String,
       data: String,
       stimaKm: Number,
+      effettuata : {
+        type: Boolean,
+        default: null
+      },
       kmEffettivi: {
         type: Number,
         default: null
@@ -66,6 +102,7 @@
         default: null
       }
     },
+    emits: ['corsaEffettuata'],
 
     computed: {
       dataOggi() {

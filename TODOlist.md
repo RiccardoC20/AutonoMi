@@ -41,7 +41,8 @@ Cosa fare dopo il 19.
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico
 - eliminare pdf da supabase quando elimino  utente da comune 
 - la route vuota deve portarmi a login/utente
-
+- cambiare il date formate di invio candidature
+- chiamata get di tutte le cors per il comune 
 
 1 - creare una vettore : get corse effettuate e corse prenotate
 2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata
