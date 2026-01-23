@@ -9,25 +9,10 @@ export default defineEventHandler(async (event) => {
 
     await connectDB();
 
-    // Estrae codiceUtente dal payload del token JWT
-    // Il codiceUtente può essere direttamente nel payload o nel campo user
-    const codiceUtente = payload?.codiceUtente;
-    
-    if (!codiceUtente) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Codice utente non trovato nel token'
-      });
-    }
-
     // Cerca tutte le corse per questo codiceUtente
-    const corse = await Corsa.find({ 
-      codiceUtente: codiceUtente 
-    })
+    const corse = await Corsa.find( {} )
     .sort({ createdAt: -1 }) // Ordina per data di creazione (più recenti prima)
     .exec();
-
-    console.log(`Trovate ${corse.length} corse per codiceUtente ${codiceUtente}`);
 
     // Restituisce le corse
     return {
@@ -46,7 +31,7 @@ export default defineEventHandler(async (event) => {
       count: corse.length
     };
   } catch (error) {
-    console.error('Errore in get.js (corse/utente):', error);
+    console.error('Errore in get.js (corse/comune):', error);
     
     // Se è già un errore creato con createError, rilancialo
     if (error.statusCode) {
