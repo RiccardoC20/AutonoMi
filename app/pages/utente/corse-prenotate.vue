@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import Corsa from '../../components/Corsa.vue';
+import Corsa from '../../components/CorsaPrenotataVettore.vue';
 import { ref, computed, onMounted } from 'vue';
 import type { CorsaType } from '~~/composables/dataType';
 

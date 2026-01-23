@@ -18,18 +18,11 @@
     <i class="bi bi-clock me-1"></i>
     {{ oraCorsa }}
   </div>
+  <div class="text-truncate fw-bold " style="width: 5rem;">
+    {{ km }} km
+  </div>
   
   <!-- Campi opzionali -->
-  <div v-if="stimaKm" class="text-truncate fw-bold " style="width: 5rem;">
-    {{ stimaKm }} km
-  </div>
-  <div v-if="kmEffettivi" class="text-truncate fw-bold text-success" style="width: 5rem;">
-    {{ kmEffettivi }} km
-  </div>
-  <div v-if="prezzo" class="text-truncate fw-bold text-info" style="width: 7rem;">
-    <i class="bi bi-currency-euro me-1"></i>
-    {{ prezzo }}€
-  </div>
   <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 7rem;">
     <i class="bi bi-person me-1"></i>
     {{ codiceUtente }}
@@ -40,7 +33,7 @@
   </div>
 
   <!-- Bottone per completare la corsa -->
-  <div v-if="!effettuata" class="ms-auto">
+  <div class="ms-auto">
     <button 
       type="button" 
       class="btn btn-success btn-sm"
@@ -54,7 +47,7 @@
 </div>
 
 <!-- Modal Corse -->
-<div v-if="!effettuata" class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -80,19 +73,11 @@
       partenza: String,
       arrivo: String,
       data: String,
-      stimaKm: Number,
+      km: Number,
       effettuata : {
         type: Boolean,
         default: null,
         required: false
-      },
-      kmEffettivi: {
-        type: Number,
-        default: null
-      },
-      prezzo: {
-        type: [Number, String],
-        default: null
       },
       codiceUtente: {
         type: String,

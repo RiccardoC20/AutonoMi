@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
-import Corsa from '../../components/Corsa.vue';
+import Corsa from '../../components/CorsaPrenotataVettore.vue';
 import { type CorsaType } from '~~/composables/dataType';
 
 const error = ref<string | null>(null);
@@ -13,29 +13,29 @@ const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
 const dateFrom = ref('');
 const dateTo = ref('');
 
-const corseFiltrate = computed(() => {
-  let filtered = corse.value.filter(corsa => {
+// const corseFiltrate = computed(() => {
+//   let filtered = corse.value.filter(corsa => {
 
-    // Filtro per periodo di data
-    const corsaDate = corsa.data?.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-    const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
-    const matchesDateTo = !dateTo.value || !corsaDate || corsaDate <= dateTo.value;
+//     // Filtro per periodo di data
+//     const corsaDate = corsa.data?.toString().split('T')[0]; // Formato YYYY-MM-DD
+//     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
+//     const matchesDateTo = !dateTo.value || !corsaDate || corsaDate <= dateTo.value;
 
-    return matchesDateFrom && matchesDateTo;
-  });  
+//     return matchesDateFrom && matchesDateTo;
+//   });  
 
-  // Ordinamento
-  filtered.sort((a, b) => {
-    if (sortBy.value === 'data-desc') {
-      return new Date(b.data).getTime() - new Date(a.data).getTime();
-    } else if (sortBy.value === 'data-asc') {
-      return new Date(a.data).getTime() - new Date(b.data).getTime();
-    }
-    return 0;
-  });
+//   // Ordinamento
+//   filtered.sort((a, b) => {
+//     if (sortBy.value === 'data-desc') {
+//       return new Date(b.data).getTime() - new Date(a.data).getTime();
+//     } else if (sortBy.value === 'data-asc') {
+//       return new Date(a.data).getTime() - new Date(b.data).getTime();
+//     }
+//     return 0;
+//   });
 
-  return filtered;
-});
+//   return filtered;
+// });
 
 //carica corse
 const loadData = async () =>{
@@ -53,7 +53,7 @@ const loadData = async () =>{
     const response = await $fetch<{
       success: boolean;
       data: CorsaType[];
-    }>('/api/corsa/get', {
+    }>('/api/corse/comune/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -72,8 +72,15 @@ const loadData = async () =>{
   } finally {
     loading.value = false;
   }
+};
 
-}
+const corseFiltrate = computed(() => {
+  return {
+    effettuate: corse.value.filter(c => c.effettuata === true),
+    prenotate: corse.value.filter(c => c.effettuata === false)
+  }
+})
+
 const corsaEffettuata = async (vettoreId: string) => {
   const token = localStorage.getItem('auth_token');
   if (!token) {
@@ -176,35 +183,44 @@ onMounted(() => {
             </div>
           </div>
 
-    <!-- Lista corse-->
-    <div class="mb-4 ">
-        <div class="card h-100">
-          <div class="card-header">
-            <h5 class="card-title mb-0">
-              <i class="bi bi-calendar-check me-2"></i>
-              Corse Effettuate ({{ corseFiltrate.length }})
-            </h5>
-          </div>
-          <div class="card-body">
-            <div v-if="corseFiltrate.length === 0" class="text-center py-4">
-              <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
-              <p class="text-muted">Nessuna corsa prenotata</p>
+        <!-- Lista corse-->
+        <div class="mb-4 ">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-calendar-check me-2"></i>
+                Corse Effettuate ({{ corseFiltrate.effettuate.length }})
+              </h5>
             </div>
-            <div v-else class="d-flex flex-column gap-3">
-              <Corsa
-                v-for="corsa in corseFiltrate"
-                :key="corsa._id"
-                :partenza="corsa.partenza"
-                :arrivo="corsa.arrivo"
-                :data="corsa.data"
-                :stimaKm="corsa.stimaKm"
-                :codiceUtente="corsa.codiceUtente"
-                @corsaEffettuata="corsaEffettuata(corsa._id)"
-              />
+            <div class="card-body">
+              <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
+                <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+                <p class="text-muted">Nessuna corsa prenotata</p>
+              </div>
+              <div v-else class="d-flex flex-column gap-3">
+                <CorsaPrenotata
+                  v-for="corsa in corseFiltrate.prenotate"
+                  :key="corsa._id"
+                  :partenza="corsa.partenza"
+                  :arrivo="corsa.arrivo"
+                  :data="corsa.data"
+                  :km="corsa.km"
+                  :codiceUtente="corsa.codiceUtente"
+                  @corsaEffettuata="corsaEffettuata(corsa._id)"
+                />
+                <CorsaEffettuata
+                  v-for="corsa in corseFiltrate.effettuate"
+                  :key="corsa._id"
+                  :partenza="corsa.partenza"
+                  :arrivo="corsa.arrivo"
+                  :data="corsa.data"
+                  :km="corsa.km"
+                  :codiceUtente="corsa.codiceUtente"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </HomeLayout>

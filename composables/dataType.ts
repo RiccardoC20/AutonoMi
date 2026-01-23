@@ -23,9 +23,7 @@ export interface CorsaType {
   arrivo: string;
   data: string;
   effettuata: boolean;
-  stimaKm: number;
-  kmEffettivi?: number;
-  prezzo?: number;
+  km: number;
   codiceUtente: string;
   codiceVettore: string;
 }

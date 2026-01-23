@@ -8,10 +8,6 @@ const corse = ref<CorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-// Filtri di ricerca e ordinamento
-const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
-const dateFrom = ref('');
-const dateTo = ref('');
 
 // Funzione per caricare le corse dal backend
 const caricaCorse = async () => {
@@ -117,12 +113,13 @@ onMounted(() => {
               <p class="text-muted">Nessuna corsa prenotata</p>
             </div>
             <div v-else class="d-flex flex-column gap-3">
-              <Corsa
+              <CorsaPrenotataVettore
                 v-for="corsa in corseFiltrate.prenotate"
                 :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :codiceVettore="corsa.codiceVettore"
+                :km="corsa.km"
                 :data="corsa.data"
                 :effettuata="corsa.effettuata"
               />
@@ -157,6 +154,7 @@ onMounted(() => {
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :codiceVettore="corsa.codiceVettore"
+                :km="corsa.km"
                 :data="corsa.data"
                 :effettuata="corsa.effettuata"
               />
