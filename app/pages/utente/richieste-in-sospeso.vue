@@ -187,9 +187,7 @@ onMounted(() => {
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
-                :stimaKm="corsa.stimaKm"
-                :kmEffettivi="corsa.kmEffettivi"
-                :prezzo="corsa.prezzo"
+                :km="corsa.km"
                 :codiceVettore="corsa.codiceVettore"
                 :codiceUtente="corsa.codiceUtente"
               />

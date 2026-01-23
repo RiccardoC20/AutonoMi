@@ -97,11 +97,10 @@ export default {
         case 'utente':
           return [
             ...baseLinks,
-            { to: '/utente/prenotazione', label: 'Richiedi', icon: 'bi bi-plus' },
-            { to: '/utente/corse-prenotate', label: 'Corse', icon: 'bi bi-calendar' },
-            { to: '/utente/corse-effettuate', label: 'Storico', icon: 'bi bi-clock' },
+            { to: '/utente/prenotazione', label: 'Nuova corsa', icon: 'bi bi-plus' },
+            { to: '/utente/richieste-in-sospeso', label: 'Richieste', icon: 'bi bi-clock' },
             { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
-            { to: '/utente/invio-candidatura', label: 'Invio-Candidatura', icon: 'bi bi-send' },
+            { to: '/invio-candidatura', label: 'Invia Candidatura', icon: 'bi bi-send' },
           ];
 
         case 'vettore':

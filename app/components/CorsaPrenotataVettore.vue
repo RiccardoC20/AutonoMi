@@ -59,7 +59,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="$emit('corsaEffettuata')">Conferma</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="$emit('corsaEffettuata', id)">Conferma</button>
       </div>
     </div>
   </div>
@@ -70,6 +70,7 @@
   export default {
     name: "Corsa",
     props: { 
+      id: String,
       partenza: String,
       arrivo: String,
       data: String,

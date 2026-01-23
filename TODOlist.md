@@ -1,4 +1,4 @@
-COSE DA FARE NEL PROGETTO:
+ DEPRECATO - COSE DA FARE NEL PROGETTO:
 
 - rimuovere il plug in del CDN di bootstrap perché senza volerlo abbiamo installato le dipendenze di bootstrap e quindi il plug in con il link è inutile
 
@@ -45,6 +45,9 @@ Cosa fare dopo il 19.
 - chiamata get di tutte le cors per il comune 
 - nella pagina vettore fa una get e prende le richieste di tutti i vettori non solo di se stesso
 - in richieste di corsa di vettore se slidi la richiesta di candidatura overlappa la sidebar
+- Blocchi informativi in ogni pagina che descrivono cosa stanno vedendo
+- mail automatica quando la richiesta viene rifiutata
+- La pagina "richieste-in-sospeso" va tutta rifatta da capo 
 
 1 - creare una vettore : get corse effettuate e corse prenotate
 2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata

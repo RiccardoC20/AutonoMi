@@ -58,6 +58,43 @@ const corseFiltrate = computed(() => {
   }
 })
 
+/**
+ * onCorsaEffettuata è un handler di corsaEffettuata del components : CorsaPrenotataVettore.
+ * nel passaggio di parametri a CosaPrenotataVettore. Al click del popoup viene fatto:
+ *  
+ *  @click="$emit('corsaEffettuata', id)"
+ * 
+ * tra i parametri di ricezione del components c'è: 
+ * 
+ *      emits: ['corsaEffettuata'],
+ * 
+ * questo viene passato dal costruttore in : 
+ *    
+ *    :data="corsa.data"
+      :effettuata="corsa.effettuata"
+      @corsaEffettuata="onCorsaEffettuata"
+
+ *  è grazie a questo che la seguente funzione diventa handler di emit e i parametri successivamente
+ *  passati.
+ * 
+ */
+const onCorsaEffettuata = async (id : String) => {
+  console.log('corsaEffettuata id=', id);
+  try {
+    const token = localStorage.getItem('auth_token');
+    if (!token) throw new Error('Token non trovato');
+    await $fetch('/api/corse/vettore/effettua', {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+      body: { id }
+    });
+    await caricaCorse();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
 
 // Carica le corse al mount del componente
 onMounted(() => {
@@ -115,7 +152,7 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <CorsaPrenotataVettore
                 v-for="corsa in corseFiltrate.prenotate"
-                :key="corsa._id"
+                :id="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :codiceVettore="corsa.codiceVettore"
@@ -157,6 +194,7 @@ onMounted(() => {
                 :km="corsa.km"
                 :data="corsa.data"
                 :effettuata="corsa.effettuata"
+                @corsaEffettuata="onCorsaEffettuata"
               />
             </div>
           </div>
