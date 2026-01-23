@@ -52,7 +52,8 @@ export default defineEventHandler(async (event) => {
         data: richiesta.data,
         orario: richiesta.orario,
         createdAt: richiesta.createdAt,
-        updatedAt: richiesta.updatedAt
+        updatedAt: richiesta.updatedAt,
+        km: richiesta.km
       })),
       count: richieste.length
     };

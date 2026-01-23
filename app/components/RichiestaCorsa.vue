@@ -2,7 +2,7 @@
 
 <template>
 <div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto">
-  <div class="text-truncate fw-bold" style="width: 15rem;">
+  <div class="text-truncate fw-bold" style="width: 10rem;">
     <i class="bi bi-house-door-fill me-1"></i>
     {{ partenza }}
   </div>
@@ -20,7 +20,8 @@
   </div>
   
   <!-- Campi opzionali -->
-  <div v-if="km" class="text-truncate fw-bold " style="width: 5rem;">
+  <div v-if="km" class="text-truncate" style="width: 5rem;">
+    <i class="bi bi-car-front-fill"></i>
     {{ km }} km
   </div>
   <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 7rem;">

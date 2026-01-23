@@ -2,9 +2,11 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/Corsa.vue';
 import { ref, onMounted } from 'vue';
+import RichiestaCorsa from '~/components/RichiestaCorsa.vue';
+import type { RichiestaCorsaType } from '~~/composables/dataType';
 
 // Stato delle richieste
-const richieste = ref<any[]>([]);
+const richieste = ref<RichiestaCorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
@@ -81,7 +83,7 @@ const apriRifiutaModal = (richiesta: any) => {
 };
 
 // Funzione per confermare l'accettazione: elimina la richiesta e crea una corsa
-const confermaAccetta = async () => {
+const accettaRichiesta = async () => {
   if (!richiestaSelezionata.value) return;
 
   processing.value = true;
@@ -148,7 +150,7 @@ const confermaAccetta = async () => {
 };
 
 // Funzione per confermare il rifiuto e cancellare la richiesta
-const confermaRifiuta = async () => {
+const rifiutaRichiesta = async () => {
   if (!richiestaSelezionata.value) return;
 
   processing.value = true;
@@ -245,7 +247,7 @@ onMounted(() => {
                       :partenza="richiesta.partenza"
                       :arrivo="richiesta.arrivo"
                       :data="richiesta.data"
-                      :extra="richiesta.extra"
+                      :km="richiesta.km"
                     />
                   </div>
                   <div class="d-flex gap-2">
@@ -302,7 +304,8 @@ onMounted(() => {
               <strong>Partenza:</strong> {{ richiestaSelezionata.partenza }}<br>
               <strong>Arrivo:</strong> {{ richiestaSelezionata.arrivo }}<br>
               <strong>Data:</strong> {{ richiestaSelezionata.data?.toLocaleDateString() }}<br>
-              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}
+              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}<br>
+              <strong>Km:</strong> {{ richiestaSelezionata.km }}              
             </div>
           </div>
           <div class="modal-footer">
@@ -316,7 +319,7 @@ onMounted(() => {
             <button
               type="button"
               class="btn btn-success"
-              @click="confermaAccetta"
+              @click="accettaRichiesta"
             >
               <i class="bi bi-check-circle me-1"></i>
               Conferma Accettazione
@@ -360,7 +363,8 @@ onMounted(() => {
               <strong>Partenza:</strong> {{ richiestaSelezionata.partenza }}<br>
               <strong>Arrivo:</strong> {{ richiestaSelezionata.arrivo }}<br>
               <strong>Data:</strong> {{ richiestaSelezionata.data?.toLocaleDateString() }}<br>
-              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}
+              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}<br>
+              <strong>Km:</strong> {{ richiestaSelezionata.km }}              
             </div>
           </div>
           <div class="modal-footer">
@@ -375,7 +379,7 @@ onMounted(() => {
             <button
               type="button"
               class="btn btn-danger"
-              @click="confermaRifiuta"
+              @click="rifiutaRichiesta"
               :disabled="processing"
             >
               <span v-if="processing" class="spinner-border spinner-border-sm me-2"></span>

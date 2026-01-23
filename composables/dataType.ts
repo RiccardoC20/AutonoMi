@@ -29,6 +29,15 @@ export interface CorsaType {
   codiceUtente: string;
   codiceVettore: string;
 }
+export interface RichiestaCorsaType {
+  _id: string;
+  partenza: string;
+  arrivo: string;
+  data: string;
+  km: number;
+  codiceUtente: string;
+  codiceVettore: string;
+}
 export interface VettoreType {
   _id: string;
   codiceVettore: string;
