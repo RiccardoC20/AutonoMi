@@ -9,18 +9,15 @@ export default defineEventHandler(async (event) => {
 
     // Legge il body della richiesta
     const body = await readBody(event);
-    const { codiceUtente, codiceVettore, partenza, arrivo, data, orario } = body;
+    const { codiceUtente, codiceVettore, partenza, arrivo, data, km} = body;
 
     // Validazione campi obbligatori
-    if (!codiceUtente || !codiceVettore || !partenza || !arrivo || !data || !orario) {
+    if (!codiceUtente || !codiceVettore || !partenza || !arrivo || !data || !km) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Tutti i campi sono obbligatori'
       });
     }
-
-    // Combina data e orario in un oggetto Date
-    const dataCompleta = new Date(`${data}T${orario}`);
 
     // Crea la corsa con effettuata = false
     const corsa = await Corsa.create({
@@ -28,8 +25,8 @@ export default defineEventHandler(async (event) => {
       codiceVettore,
       partenza,
       arrivo,
-      data: dataCompleta,
-      orario,
+      data,
+      km,
       effettuata: false
     });
 
@@ -46,7 +43,7 @@ export default defineEventHandler(async (event) => {
         partenza: corsa.partenza,
         arrivo: corsa.arrivo,
         data: corsa.data,
-        orario: corsa.orario,
+        km: corsa.km,
         effettuata: corsa.effettuata,
         createdAt: corsa.createdAt
       }
