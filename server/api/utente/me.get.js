@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
     await connectDB();
 
     // Ottiene il token dall'header Authorization
-    /*
     const authHeader = getHeader(event, 'authorization');
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -16,10 +15,9 @@ export default defineEventHandler(async (event) => {
         statusMessage: 'Token non fornito'
       });
     }
-*/
+
     const token = authHeader.substring(7); // Rimuove "Bearer "
     const jwtSecret = process.env.JWT_SECRET
-    
 
     // Verifica e decodifica il token
     let decoded;
