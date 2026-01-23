@@ -1,5 +1,6 @@
 import connectDB from "../../../utils/mongo";
 import Corsa from "../../../models/corsa.model";
+import Utente from "../../../models/utente.model";
 
 
 export default defineEventHandler(async (event) => {
@@ -19,6 +20,32 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    // Controllo Budget
+
+    const utente = await Utente.findOne({codiceUtente});
+        
+    if (!utente) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Utente non trovato'
+      });
+    } else if (utente.budget < km) {
+      throw createError({
+        statusMessage: 'Budget insufficiente per effettuare il viaggio'
+      })
+    }
+    
+
+    // Scala budget
+
+    const newBudget = utente.budget - km
+    const updatedUser = await Utente.findOneAndUpdate(
+      { codiceUtente: utente.codiceUtente },
+      { $set: { budget: newBudget } },
+      { new: true, upsert: true }
+    );
+    console.log("utente ", utente.codiceUtente, " modificato.\nBudget residuo ", newBudget)
+    
     // Crea la corsa con effettuata = false
     const corsa = await Corsa.create({
       codiceUtente,
