@@ -1,3 +1,9 @@
+FATTO:
+- Richieste nuove con generazione km e controllo budget
+- Corse nuove da accettazione richiesta con controllo budget e decurtazione budget
+- Corse nuove da vettore con generazione km, controllo budget e decurtazione budget
+
+
 COSE DA FARE NEL PROGETTO:
 
 - rimuovere il plug in del CDN di bootstrap perché senza volerlo abbiamo installato le dipendenze di bootstrap e quindi il plug in con il link è inutile
