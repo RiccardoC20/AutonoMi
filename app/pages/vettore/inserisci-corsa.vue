@@ -49,8 +49,8 @@ const prenotaPerUtente = async () => {
   try {
     // Chiamata API
     const km = (Math.random() * 11 + 5).toFixed(1)
-    const fullDate = new Date(`${formData.value.data.trim()}
-      T${formData.value.data.trim()}`)
+    const fullDate = new Date(`${formData.value.data}T${formData.value.ora}`)
+    console.log("FULL DATE: ", fullDate)
     const response = await $fetch<{
       success: boolean;
       message: string;
@@ -62,11 +62,11 @@ const prenotaPerUtente = async () => {
       },
       body: {
         codiceUtente: formData.value.codiceUtente.trim(),
-        codiceVettore: parseInt(userData.codiceVettore),
+        codiceVettore: userData.codiceVettore,
         partenza: formData.value.partenza.trim(),
         arrivo: formData.value.arrivo.trim(),
         data: fullDate,
-        km
+        km: km
       }
     });
 
