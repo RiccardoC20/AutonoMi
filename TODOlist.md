@@ -43,6 +43,8 @@ Cosa fare dopo il 19.
 - la route vuota deve portarmi a login/utente
 - cambiare il date formate di invio candidature
 - chiamata get di tutte le cors per il comune 
+- nella pagina vettore fa una get e prende le richieste di tutti i vettori non solo di se stesso
+- in richieste di corsa di vettore se slidi la richiesta di candidatura overlappa la sidebar
 
 1 - creare una vettore : get corse effettuate e corse prenotate
 2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata

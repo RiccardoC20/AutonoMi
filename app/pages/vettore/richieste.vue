@@ -251,7 +251,7 @@ onMounted(() => {
                   class="d-flex align-items-center gap-3"
                 >
                   <div class="flex-grow-1">
-                    <Corsa
+                    <RichiestaCorsa
                       :partenza="richiesta.partenza"
                       :arrivo="richiesta.arrivo"
                       :data="richiesta.data"

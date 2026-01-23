@@ -19,7 +19,7 @@
         </div>
 
         <!-- Utente -->
-        <div v-if="role === 'utente' && utenteInfo" class="d-flex flex-column">
+        <div v-if="role === 'utente' && utenteInfo" class="d-flex">
           <h1 class="mb-0 fw-bold">{{ utenteInfo.nome || 'Utente' }}</h1>
           <span v-if="utenteInfo.codiceUtente" class="text-muted">#{{ utenteInfo.codiceUtente }}</span>
         </div>

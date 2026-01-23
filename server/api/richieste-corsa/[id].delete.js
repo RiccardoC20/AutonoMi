@@ -29,13 +29,11 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Verifica che la richiesta appartenga al vettore loggato
-    const codiceVettore = payload?.codiceVettore;
-    const codiceVettoreNum = typeof codiceVettore === 'number' 
-      ? codiceVettore 
-      : parseInt(codiceVettore, 10);
+    // Verifica che la richiesta appartenga al vettore loggato o all'utente loggato
+    const codiceVettoreStr = payload?.codiceVettore;
+    const codiceUtenteStr = payload?.codiceUtente;
 
-    if (richiesta.codiceVettore !== codiceVettoreNum) {
+    if (richiesta.codiceVettore !== codiceVettoreStr && richiesta.codiceUtente !== codiceUtenteStr ) {
       throw createError({
         statusCode: 403,
         statusMessage: 'Non hai i permessi per eliminare questa richiesta'

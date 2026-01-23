@@ -12,11 +12,11 @@
   </div>
   <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-calendar-event me-1"></i>
-    {{ dataOggi }}
+    {{ dataCorsa }}
   </div>
   <div class="text-truncate" style="width: 8rem;">
     <i class="bi bi-clock me-1"></i>
-    {{ oraAttuale }}
+    {{ oraCorsa }}
   </div>
   
   <!-- Campi opzionali -->
@@ -53,8 +53,8 @@
   </div>
 </div>
 
-<!-- Modal Logout -->
-<div class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- Modal Corse -->
+<div v-if="!effettuata" class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -83,7 +83,8 @@
       stimaKm: Number,
       effettuata : {
         type: Boolean,
-        default: null
+        default: null,
+        required: false
       },
       kmEffettivi: {
         type: Number,
@@ -105,19 +106,25 @@
     emits: ['corsaEffettuata'],
 
     computed: {
-      dataOggi() {
+      dataCorsa() {
+        if (!this.data) return ''
+        const d = new Date(this.data)
+
         return new Intl.DateTimeFormat('it-IT', {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric'
-        }).format(new Date())
+        }).format(new Date(d))
       },
 
-      oraAttuale() {
+      oraCorsa() {
+        if (!this.data) return ''
+        const d = new Date(this.data)
+
         return new Intl.DateTimeFormat('it-IT', {
           hour: '2-digit',
           minute: '2-digit'
-        }).format(new Date())
+        }).format(new Date(d))
       }
     }
   }
