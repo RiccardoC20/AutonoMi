@@ -112,21 +112,11 @@ const confermaAccetta = async () => {
     }
 
     // Poi crea la corsa con effettuata = false
-    // Prepara la data nel formato corretto per l'API
-    const dataFormato = richiesta.data instanceof Date 
-      ? richiesta.data.toISOString().split('T')[0] 
-      : new Date(richiesta.data).toISOString().split('T')[0];
-    
-    const orarioFormato = richiesta.orario || 
-      (richiesta.data instanceof Date 
-        ? `${richiesta.data.getHours().toString().padStart(2, '0')}:${richiesta.data.getMinutes().toString().padStart(2, '0')}`
-        : '00:00');
-
     const createResponse = await $fetch<{
       success: boolean;
       message: string;
       corsa: any;
-    }>('/api/corse/crea', {
+    }>('/api/corse/vettore/crea', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -136,8 +126,8 @@ const confermaAccetta = async () => {
         codiceVettore: richiesta.codiceVettore,
         partenza: richiesta.partenza,
         arrivo: richiesta.arrivo,
-        data: dataFormato,
-        orario: orarioFormato
+        data: richiesta.data,
+        km: richiesta.km
       }
     });
 
