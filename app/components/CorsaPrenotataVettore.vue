@@ -18,7 +18,7 @@
     <i class="bi bi-clock me-1"></i>
     {{ oraCorsa }}
   </div>
-  <div class="text-truncate fw-bold " style="width: 5rem;">
+  <div v-if="km" class="text-truncate fw-bold " style="width: 5rem;">
     {{ km }} km
   </div>
   
@@ -75,11 +75,6 @@
       arrivo: String,
       data: String,
       km: Number,
-      effettuata : {
-        type: Boolean,
-        default: null,
-        required: false
-      },
       codiceUtente: {
         type: String,
         default: null

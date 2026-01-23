@@ -39,6 +39,7 @@ export default defineEventHandler(async (event) => {
         partenza: corsa.partenza,
         arrivo: corsa.arrivo,
         data: corsa.data,
+        km: corsa.km,
         effettuata: corsa.effettuata,
         createdAt: corsa.createdAt,
         updatedAt: corsa.updatedAt

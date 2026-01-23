@@ -42,11 +42,6 @@
       arrivo: String,
       data: String,
       km: Number,
-      effettuata : {
-        type: Boolean,
-        default: null,
-        required: false
-      },
       codiceUtente: {
         type: String,
         default: null

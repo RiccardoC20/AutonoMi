@@ -50,7 +50,6 @@ const caricaCorse = async () => {
     loading.value = false;
   }
 };
-
 const corseFiltrate = computed(() => {
   return {
     effettuate: corse.value.filter(c => c.effettuata === true),
@@ -158,7 +157,6 @@ onMounted(() => {
                 :codiceVettore="corsa.codiceVettore"
                 :km="corsa.km"
                 :data="corsa.data"
-                :effettuata="corsa.effettuata"
               />
             </div>
           </div>
