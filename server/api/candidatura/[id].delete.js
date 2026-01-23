@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Salva i dati dell'utente per l'email prima di eliminare la candidatura
+    // Salva i dati dell'utente per la'email prim di eliminare la candidatura
     const emailUtente = candidatura.utente?.email;
     const nomeUtente = candidatura.utente?.nome;
 
@@ -74,9 +74,9 @@ export default defineEventHandler(async (event) => {
       const testoEmail = `
 Gentile ${nomeUtente},
 
-Ti informiamo che la tua candidatura per AutonoMi è stata rifiutata.
+La informiamo che la tua candidatura per AutonoMi è stata rifiutata.
 
-Ci dispiace comunicarti questa decisione. Se desideri maggiori informazioni, puoi contattarci.
+Ci dispiace comunicarle questa decisione. Se desidera maggiori informazioni, può contattarci.
 
 Cordiali saluti,
 Team AutonoMi

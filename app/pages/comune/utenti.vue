@@ -8,20 +8,11 @@ import { type UtenteType } from '../../../composables/dataType'
 const error = ref<string | null>(null);
 const utenti = ref<UtenteType[]>([]);
 const loading = ref(false);
+const utenteDaEliminare = ref<string | null>(null);
 
 // Barra di ricerca
 const searchTerm = ref('');
 
-// Lista utenti filtrata
-const utentiFiltrati = computed(() => {
-  if (!searchTerm.value) return utenti.value;
-
-  return utenti.value.filter(utente =>
-    utente.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-    utente.cognome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-    utente.codiceUtente.toLowerCase().includes(searchTerm.value.toLowerCase())
-  );
-});
 
 // Carica dati iniziali
 const getUtenti = async () => {
@@ -60,19 +51,29 @@ const getUtenti = async () => {
   }
 };
 
+const apriModalElimina = (id: string) => {
+  utenteDaEliminare.value = id;
+  console.log("id: " + id)
+};
+
+const confermaEliminazione = async () => {
+  if (!utenteDaEliminare.value) return;
+  await eliminaUtente(utenteDaEliminare.value);
+  utenteDaEliminare.value = null;
+};
 // Funzione per eliminare utente
-const eliminaUtente = async (vettoreId: string) => {
+const eliminaUtente = async (_id:string) => {
   const token = localStorage.getItem('auth_token');
   if (!token) {
     error.value = "Token non trovato. Effettua il login.";
     return;
   }
-
+  console.log('ID ricevuto:', _id);
   try {
     const response = await $fetch<{
       success: boolean;
       message: string;
-    }>(`/api/utente/${vettoreId}`, {
+    }>(`/api/utente/${_id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -80,7 +81,6 @@ const eliminaUtente = async (vettoreId: string) => {
     });
 
     if (response.success) {
-      // Ricarica la lista dei vettori
       await getUtenti();
     } else {
       error.value = "Errore durante l'eliminazione dell'utente";
@@ -142,25 +142,26 @@ onMounted(() => {
               <div class="card-header">
                 <h5 class="card-title mb-0">
                   <i class="bi bi-people me-2"></i>
-                  Lista Utenti ({{ utentiFiltrati.length }})
+                  Lista Utenti ({{ utenti.length }})
                 </h5>
               </div>
               <div class="card-body">
-                <div v-if="utentiFiltrati.length === 0" class="text-center py-4">
+                <div v-if="utenti.length === 0" class="text-center py-4">
                   <i class="bi bi-people text-muted fs-1 mb-2"></i>
                   <p class="text-muted">
                     {{ searchTerm ? 'Nessun utente trovato con la ricerca effettuata' : 'Nessun utente disponibile' }}
                   </p>
                 </div>
                 <div v-else class="d-flex flex-column gap-3">
-                  <Utente
-                    v-for="utente in utentiFiltrati"
-                    :key="utente._id"
-                    :nome="utente.nome"
-                    :cognome="utente.cognome"
-                    :codiceUtente="utente.codiceUtente"
-                    @elimina="eliminaUtente(utente._id)"
-                  />
+                <Utente
+                  v-for="utente in utenti"
+                  :key="utente._id"
+                  :_id="utente._id"
+                  :nome="utente.nome"
+                  :cognome="utente.cognome"
+                  :codiceUtente="utente.codiceUtente"
+                  @richiedi-eliminazione="apriModalElimina"
+                />
                 </div>
               </div>
             </div>
@@ -169,6 +170,29 @@ onMounted(() => {
       </div>
     </div>
   </HomeLayout>
+<div class="modal fade" id="removeUtenteBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Elimina Utente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Vuoi eliminare questo utente?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          @click="confermaEliminazione"
+        >
+          Conferma
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <style scoped>

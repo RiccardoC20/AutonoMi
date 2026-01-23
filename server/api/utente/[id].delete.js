@@ -1,5 +1,6 @@
 import connectDB from "../../utils/mongo";
 import Utente from "../../models/utente.model";
+import { getSupabaseClient } from "../../utils/supabase";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,6 +24,25 @@ export default defineEventHandler(async (event) => {
         statusCode: 404,
         statusMessage: 'Utente non trovato'
       });
+    }
+    const codiceUtente = utente.codiceUtente
+    const supabase = getSupabaseClient();
+    const bucketName = process.env.SUPABASE_STORAGE_BUCKET;
+    const fileName = `${codiceUtente}.pdf`;
+    const filePath = "utenti/" + fileName;
+
+    console.log("codiceUtente " + codiceUtente)
+
+    const { error: deleteError } = await supabase.storage
+      .from(bucketName)
+      .remove([filePath]);
+    
+    if (deleteError) {
+      console.error('Errore eliminazione file PDF da Supabase:', deleteError);
+      // Non blocchiamo l'eliminazione dell'utente se il file non esiste o c'è un errore
+      // ma loggiamo l'errore per debug
+    } else {
+      console.log(`File PDF ${filePath} eliminato con successo da Supabase`);
     }
 
     // Elimina l'utente
