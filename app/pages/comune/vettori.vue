@@ -6,6 +6,7 @@ import { type VettoreType , type ComuneType} from '~~/composables/dataType';
 const error = ref<string | null>(null);
 const vettori = ref<VettoreType[]>([]);
 const loading = ref(false);
+const vettoreDaEliminare = ref<string | null>(null);
 
 // Barra di ricerca
 const searchTerm = ref('');
@@ -71,7 +72,16 @@ const loadData = async () => {
     loading.value = false;
   }
 };
+const apriModalElimina = (id: string) => {
+  vettoreDaEliminare.value = id;
+  console.log("id: " + id)
+};
 
+const confermaEliminazione = async () => {
+  if (!vettoreDaEliminare.value) return;
+  await eliminaVettore(vettoreDaEliminare.value);
+  vettoreDaEliminare.value = null;
+};
 // Funzione per eliminare vettore
 const eliminaVettore = async (vettoreId: string) => {
   const token = localStorage.getItem('auth_token');
@@ -168,10 +178,11 @@ onMounted(() => {
                   <Vettore
                     v-for="vettore in vettoriFiltrati"
                     :key="vettore._id"
+                    :_id="vettore._id"
                     :codiceVettore="vettore.codiceVettore.toString()"
                     :nome="vettore.nome"
                     :email="vettore.email"
-                    @elimina="eliminaVettore(vettore._id)"
+                    @elimina="apriModalElimina"
                   />
                 </div>
               </div>
@@ -181,6 +192,29 @@ onMounted(() => {
       </div>
     </div>
   </HomeLayout>
+<div class="modal fade" id="removeUtenteBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Elimina Utente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Vuoi eliminare questo utente?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          @click="confermaEliminazione"
+        >
+          Conferma
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <style scoped>
