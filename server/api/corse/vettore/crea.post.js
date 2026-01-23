@@ -1,6 +1,6 @@
-import connectDB from "../../utils/mongo";
-import RichiestaCorsa from "../../models/richiestaCorsa.model";
-import useAuth from "../../utils/useAuth";
+import connectDB from "../../../utils/mongo";
+import Corsa from "../../../models/corsa.model";
+
 
 export default defineEventHandler(async (event) => {
   try {
@@ -22,35 +22,37 @@ export default defineEventHandler(async (event) => {
     // Combina data e orario in un oggetto Date
     const dataCompleta = new Date(`${data}T${orario}`);
 
-    // Crea la richiesta di corsa
-    const richiestaCorsa = await RichiestaCorsa.create({
+    // Crea la corsa con effettuata = false
+    const corsa = await Corsa.create({
       codiceUtente,
       codiceVettore,
       partenza,
       arrivo,
       data: dataCompleta,
-      orario
+      orario,
+      effettuata: false
     });
 
-    console.log("Richiesta corsa creata con successo:", richiestaCorsa._id);
+    console.log("Corsa creata con successo:", corsa._id);
 
-    // Restituisce la richiesta creata
+    // Restituisce la corsa creata
     return {
       success: true,
-      message: 'Richiesta di corsa creata con successo',
-      richiestaCorsa: {
-        _id: richiestaCorsa._id,
-        codiceUtente: richiestaCorsa.codiceUtente,
-        codiceVettore: richiestaCorsa.codiceVettore,
-        partenza: richiestaCorsa.partenza,
-        arrivo: richiestaCorsa.arrivo,
-        data: richiestaCorsa.data,
-        orario: richiestaCorsa.orario,
-        createdAt: richiestaCorsa.createdAt
+      message: 'Corsa creata con successo',
+      corsa: {
+        _id: corsa._id,
+        codiceUtente: corsa.codiceUtente,
+        codiceVettore: corsa.codiceVettore,
+        partenza: corsa.partenza,
+        arrivo: corsa.arrivo,
+        data: corsa.data,
+        orario: corsa.orario,
+        effettuata: corsa.effettuata,
+        createdAt: corsa.createdAt
       }
     };
   } catch (error) {
-    console.error('Errore in crea.post.js (richieste-corsa):', error);
+    console.error('Errore in crea.post.js (corse):', error);
     
     // Se è già un errore creato con createError, rilancialo
     if (error.statusCode) {
@@ -59,7 +61,7 @@ export default defineEventHandler(async (event) => {
     
     throw createError({
       statusCode: 500,
-      statusMessage: error.message || 'Errore durante la creazione della richiesta di corsa'
+      statusMessage: error.message || 'Errore durante la creazione della corsa'
     });
   }
 });

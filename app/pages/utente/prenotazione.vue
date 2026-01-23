@@ -86,7 +86,7 @@ const prenotaCorsa = async () => {
       success: boolean;
       message: string;
       richiestaCorsa: any;
-    }>('/api/richieste-corsa/crea', {
+    }>('/api/richieste-corsa/utente/crea', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`

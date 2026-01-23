@@ -21,8 +21,8 @@ const RichiesteCorsaSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  orario: {
-    type: String,
+  km: {
+    type: Number,
     required: true
   }
 }, {

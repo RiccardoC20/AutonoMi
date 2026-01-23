@@ -21,6 +21,10 @@ const CorsaSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  km: {
+    type: Number,
+    required: true
+  },
   effettuata: {
     type: Boolean,
     required: true

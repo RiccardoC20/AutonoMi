@@ -52,7 +52,7 @@ const prenotaPerUtente = async () => {
       success: boolean;
       message: string;
       richiestaCorsa: any;
-    }>('/api/corse/crea', {
+    }>('/api/corse/vettore/crea', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
