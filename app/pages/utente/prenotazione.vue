@@ -142,7 +142,7 @@ const getMinTime = () => {
   <HomeLayout role="utente" >
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <h1>Nuova Prenotazione</h1>
+        <h1>Nuova Richiesta Corsa</h1>
         <div class="card shadow">
 
           <div class="card-body">
@@ -267,7 +267,7 @@ const getMinTime = () => {
                 >
                   <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
-                  {{ isLoading ? 'Prenotazione in corso...' : 'Prenota Corsa' }}
+                  {{ isLoading ? 'Prenotazione in corso...' : 'Invia Richiesta' }}
                 </button>
               </div>
             </form>

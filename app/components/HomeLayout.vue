@@ -97,7 +97,7 @@ export default {
         case 'utente':
           return [
             ...baseLinks,
-            { to: '/utente/prenotazione', label: 'Prenota', icon: 'bi bi-plus' },
+            { to: '/utente/prenotazione', label: 'Richiedi', icon: 'bi bi-plus' },
             { to: '/utente/corse-prenotate', label: 'Corse', icon: 'bi bi-calendar' },
             { to: '/utente/corse-effettuate', label: 'Storico', icon: 'bi bi-clock' },
             { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
