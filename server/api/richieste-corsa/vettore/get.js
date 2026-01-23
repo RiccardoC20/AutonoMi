@@ -1,6 +1,6 @@
-import connectDB from "../../utils/mongo";
-import RichiestaCorsa from "../../models/richiestaCorsa.model";
-import useAuth from "../../utils/useAuth";
+import connectDB from "../../../utils/mongo";
+import RichiestaCorsa from "../../../models/richiestaCorsa.model";
+import useAuth from "../../../utils/useAuth";
 
 export default defineEventHandler(async (event) => {
   try {
