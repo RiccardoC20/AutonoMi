@@ -50,14 +50,12 @@ export default defineEventHandler(async (event) => {
     const testoEmail = `
 Benvenuto in AutonoMi
 
-Ciao ${nome},
-
-Le tue credenziali di accesso sono state create con successo.
+Le sue credenziali di accesso sono state create con successo.
 
 Codice Vettore: ${codiceVettore}
 Password: ${passwordPlain}
 
-Importante: Ti consigliamo di cambiare la password al primo accesso.
+Importante: le consigliamo di cambiare la password al primo accesso.
 
 Saluti,
 Team AutonoMi

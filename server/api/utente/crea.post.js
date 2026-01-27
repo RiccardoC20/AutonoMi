@@ -117,14 +117,12 @@ export default defineEventHandler(async (event) => {
     const testoEmail = `
 Benvenuto in AutonoMi
 
-Ciao ${nome},
-
-La tua candidatura è stata accettata e le tue credenziali di accesso sono state create con successo.
+La sua candidatura è stata accettata e le sue credenziali di accesso sono state create con successo.
 
 Codice Utente: ${codiceUtente}
 Password: ${passwordPlain}
 
-Importante: Ti consigliamo di cambiare la password al primo accesso.
+Importante: Le consigliamo di cambiare la password al primo accesso.
 
 Saluti,
 Team AutonoMi

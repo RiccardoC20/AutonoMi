@@ -17,13 +17,15 @@ export default defineNuxtPlugin(() => {
     const pathRole = to.path.split('/')[1];
 
     if (!token) {
+      if(to.path === '/')
+        return navigateTo( 'utente/login')
       return navigateTo(`/${pathRole}/login`);
     }
     
     const tokenRole = jwtDecode(token).role;
     
     if (tokenRole != pathRole) {
-      return navigateTo(`/${tokenRole}/login`);
+      return navigateTo(`/${tokenRole}/home`);
     }
   });
 });

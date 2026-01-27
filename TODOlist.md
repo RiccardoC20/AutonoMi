@@ -1,6 +1,3 @@
-<<<<<<< HEAD
- DEPRECATO - COSE DA FARE NEL PROGETTO:
-=======
 FATTO:
 - Richieste nuove con generazione km e controllo budget
 - Corse nuove da accettazione richiesta con controllo budget e decurtazione budget
@@ -8,7 +5,6 @@ FATTO:
 
 
 COSE DA FARE NEL PROGETTO:
->>>>>>> 53477e3e1ddc0be2fd03d60814ccbad2d3cfbd0a
 
 - rimuovere il plug in del CDN di bootstrap perché senza volerlo abbiamo installato le dipendenze di bootstrap e quindi il plug in con il link è inutile
 
@@ -31,13 +27,19 @@ ___________________________
 Cosa fare dopo il 19.
 - comune login deve avere il suo colore FATTO
 - il vettore per qualche motivo "Non ha i permessi per eliminare una corsa" FATTO
+- eliminare pdf da supabase quando elimino  utente da comune FATTO
+- la route vuota deve portarmi a login/utente FATTO
+- Da valutare se creare un file .css per i tre colori principali FATTO
+- in comune posso visualizzare gli utenti (e i vettori) ed eliminarli (anche file pdf) FATTO 
+- fare il creaVettore da parte del comune nella sidebar e correggere il colore FATTO
+- lista candidature deve avere la sidebar FATTO
+- chiamata get di tutte le cors per il comune FATTO 
+- mail automatica quando la richiesta viene rifiutata FATTO
 
-- fare il creaVettore da parte del comune nella sidebar e correggere il colore
-- lista candidature deve avere la sidebar
 
-- creare tutte le chiamate per far funzionare il FE
-- Da valutare se creare un file .css per i tre colori principali
-- in comune posso visualizzare gli utenti (e i vettori) ed eliminarli (anche file pdf)
+- creare tutte le chiamate per far funzionare il FE 
+
+
 
 - D2 iniziare seriamente a scriverlo
 - Fare tutto il meccanismo delle corse con relativo branch 
@@ -49,14 +51,13 @@ Cosa fare dopo il 19.
 - togliere lo stampo di password hash e in chiaro ogni volta che ci si logga
 
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico
-- eliminare pdf da supabase quando elimino  utente da comune 
-- la route vuota deve portarmi a login/utente
+
+
 - cambiare il date formate di invio candidature
-- chiamata get di tutte le cors per il comune 
 - nella pagina vettore fa una get e prende le richieste di tutti i vettori non solo di se stesso
 - in richieste di corsa di vettore se slidi la richiesta di candidatura overlappa la sidebar
 - Blocchi informativi in ogni pagina che descrivono cosa stanno vedendo
-- mail automatica quando la richiesta viene rifiutata
+
 - La pagina "richieste-in-sospeso" va tutta rifatta da capo 
 
 1 - creare una vettore : get corse effettuate e corse prenotate
