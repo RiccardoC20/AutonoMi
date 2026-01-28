@@ -23,13 +23,9 @@
   </div>
   
   <!-- Campi opzionali -->
-  <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 7rem;">
+  <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 4rem;">
     <i class="bi bi-person me-1"></i>
     {{ codiceUtente }}
-  </div>
-  <div v-if="nomeVettore" class="text-truncate text-muted" style="width: 17.5rem;">
-    <i class="bi bi-truck me-1"></i>
-    {{ nomeVettore }}
   </div>
 
   <!-- Bottone per completare la corsa -->

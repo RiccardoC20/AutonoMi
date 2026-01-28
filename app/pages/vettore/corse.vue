@@ -154,9 +154,10 @@ onMounted(() => {
                 :id="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
-                :codiceVettore="corsa.codiceVettore"
+                :codiceUtente="corsa.codiceUtente"
                 :km="corsa.km"
                 :data="corsa.data"
+                @corsaEffettuata="onCorsaEffettuata"
               />
             </div>
           </div>
@@ -183,16 +184,15 @@ onMounted(() => {
               <p class="text-muted">Nessuna corsa effettuata</p>
             </div>
             <div v-else class="d-flex flex-column gap-3">
-              <Corsa
+              <CorsaEffettuata
                 v-for="corsa in corseFiltrate.effettuate"
                 :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
-                :codiceVettore="corsa.codiceVettore"
+                :codiceUtente="corsa.codiceUtente"
                 :km="corsa.km"
                 :data="corsa.data"
                 :effettuata="corsa.effettuata"
-                @corsaEffettuata="onCorsaEffettuata"
               />
             </div>
           </div>

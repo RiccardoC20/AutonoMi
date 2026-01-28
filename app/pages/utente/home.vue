@@ -5,18 +5,12 @@ import { type UtenteType , type CorsaType} from '../../../composables/dataType';
 
 const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
-// const corseEffettuate = ref<CorsaType[]>([]);
 const loading = ref(false);
 
 // Dati chilometri (default, verranno aggiornati con i dati reali)
 // const chilometriTotali = ref(1000);
 // const chilometriRimanenti = computed(() => chilometriTotali.value - chilometriUsati.value);
 
-// Funzione per convertire stringa data in Date object
-const parseDate = (date: Date | string): Date => {
-  if (date instanceof Date) return date;
-  return new Date(date);
-};
 
 // Carica corse prenotate
 const getCorse = async () => {
@@ -32,7 +26,7 @@ const getCorse = async () => {
 
     const response = await $fetch<{
       success: boolean;
-      corse: CorsaType[];
+      data: CorsaType[];
     }>('/api/corse/utente/get', {
       method: 'GET',
       headers: {
@@ -42,7 +36,7 @@ const getCorse = async () => {
     
     if (response.success) {
       // Converti le date da stringhe a Date objects
-      corse.value = response.corse;
+      corse.value = response.data;
     } else {
       error.value = "Errore durante il caricamento delle corse prenotate";
     }
@@ -52,6 +46,18 @@ const getCorse = async () => {
   }
 };
 
+const stats = computed( () => {
+  const chilometriTotali = 200;
+  const chilimetraggioUsato =  corse.value.reduce((sum, corse) => {
+    return ( sum + (corse.km || 0))
+  }, 0);
+  const percentualeKmUsati = chilometriTotali / chilimetraggioUsato;
+  return {
+    chilimetraggioUsato,
+    chilometriTotali,
+    percentualeKmUsati
+  }
+})
 // // Carica corse effettuate
 // const getCorseEffettuate = async (token: string) => {
 //   try {
@@ -126,8 +132,8 @@ onMounted(() => {
               Chilometraggio
             </h5>
             <div class="text-end">
-              <div class="fs-4 fw-bold text-primary">{{ }} km</div>
-              <small class="text-muted">Rimanenti su {{  }} km totali</small>
+              <div class="fs-4 fw-bold text-primary">{{ stats.chilometriTotali - stats.chilimetraggioUsato }} km</div>
+              <small class="text-muted">Rimanenti su {{ stats.chilometriTotali }} km totali</small>
             </div>
           </div>
           <div class="card-body">
@@ -141,12 +147,12 @@ onMounted(() => {
               <div class="progress" style="height: 30px;">
                 <div
                   class="progress-bar bg-success"
-                  :style="{ width: + '%' }"
+                  :style="{ width: stats.percentualeKmUsati + '%' }"
                 >
                 </div>
                 <div
                   class="progress-bar bg-light text-dark"
-                  :style="{ width: + '%' }"
+                  :style="{ width: (1 - stats.percentualeKmUsati) + '%' }"
                 >
                 </div>
               </div>
@@ -156,7 +162,7 @@ onMounted(() => {
             <div class="row text-center mt-4">
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-success">{{ }}</div>
+                  <div class="fs-4 fw-bold text-success">{{ stats.chilimetraggioUsato}}</div>
                   <small class="text-muted">Km da corse effettuate</small>
                 </div>
               </div>
@@ -174,7 +180,7 @@ onMounted(() => {
               </div>
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{  }}%</div>
+                  <div class="fs-4 fw-bold text-primary">{{stats.percentualeKmUsati}}%</div>
                   <small class="text-muted">Utilizzo chilometri</small>
                 </div>
               </div>
@@ -207,13 +213,15 @@ onMounted(() => {
           <p class="text-muted">Nessuna corsa prenotata</p>
         </div>
         <div v-else class="d-flex flex-column gap-3">
-          <Corsa
+          <CorsaPrenotata
             v-for="corsa in corseFiltrate.prenotate"
             :key="corsa._id"
             :partenza="corsa.partenza"
             :arrivo="corsa.arrivo"
             :codiceVettore="corsa.codiceVettore"
             :data="corsa.data"
+            :km="corsa.km"
+            :nomeVettore="corsa.codiceVettore"
             :effettuata="corsa.effettuata"
           />
         </div>
@@ -241,13 +249,15 @@ onMounted(() => {
           <p class="text-muted">Nessuna corsa effettuata</p>
         </div>
         <div v-else class="d-flex flex-column gap-3">
-          <Corsa
+          <CorsaEffettuata
             v-for="corsa in corseFiltrate.effettuate"
             :key="corsa._id"
             :partenza="corsa.partenza"
             :arrivo="corsa.arrivo"
             :codiceVettore="corsa.codiceVettore"
             :data="corsa.data"
+            :km="corsa.km"
+            :nomeVettore="corsa.codiceVettore"
             :effettuata="corsa.effettuata"
           />
         </div>
