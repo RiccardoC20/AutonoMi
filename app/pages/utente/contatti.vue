@@ -144,10 +144,6 @@ onMounted(() => {
                     {{ vettore.numeroTelefono }}
                   </a>
                 </div>
-                <button class="btn btn-outline-primary btn-sm">
-                  <i class="bi bi-telephone me-1"></i>
-                  Chiama
-                </button>
               </div>
             </div>
           </div>

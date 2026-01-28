@@ -20,13 +20,16 @@
   </div>
   
   <!-- Campi opzionali -->
-  <div v-if="km" class="text-truncate" style="width: 5rem;">
-    <i class="bi bi-car-front-fill"></i>
+  <div v-if="km" class="text-truncate" style="width: 8rem;">
     {{ km }} km
   </div>
   <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 7rem;">
     <i class="bi bi-person me-1"></i>
     {{ codiceUtente }}
+  </div>
+    <div v-if="nomeVettore" class="text-truncate text-muted" style="width: 7rem;">
+    <i class="bi bi-car-front-fill"></i>
+    {{ nomeVettore }}
   </div>
 
 </div>

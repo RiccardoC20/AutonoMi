@@ -100,7 +100,7 @@ export default {
             { to: '/utente/prenotazione', label: 'Nuova corsa', icon: 'bi bi-plus' },
             { to: '/utente/richieste-in-sospeso', label: 'Richieste', icon: 'bi bi-clock' },
             { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
-            { to: '/invio-candidatura', label: 'Invia Candidatura', icon: 'bi bi-send' },
+            //{ to: '/invio-candidatura', label: 'Invia Candidatura', icon: 'bi bi-send' },
           ];
 
         case 'vettore':

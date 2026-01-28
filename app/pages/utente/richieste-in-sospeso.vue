@@ -2,10 +2,10 @@
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/CorsaPrenotataVettore.vue';
 import { ref, computed, onMounted } from 'vue';
-import type { CorsaType } from '~~/composables/dataType';
+import type { RichiestaCorsaType } from '~~/composables/dataType';
 
 // Stato delle corse
-const corse = ref<CorsaType[]>([]);
+const corse = ref<RichiestaCorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
@@ -31,9 +31,9 @@ const caricaCorse = async () => {
     // Chiamata API per ottenere le corse
     const response = await $fetch<{
       success: boolean;
-      data: CorsaType[];
+      data: RichiestaCorsaType[];
       count: number;
-    }>('/api/corse/utente/get', {
+    }>('/api/richieste-corsa/utente/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -86,7 +86,7 @@ onMounted(() => {
   <HomeLayout role="utente">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Corse Prenotate</h1>
+        <h1>Richieste Corse</h1>
 
         <!-- Messaggio di errore -->
         <div
@@ -166,35 +166,35 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Lista corse prenotate -->
+      <!-- Lista richieste corse -->
       <div v-if="!loading" class="mb-4">
         <div class="card h-100">
           <div class="card-header">
             <h5 class="card-title mb-0">
               <i class="bi bi-calendar-check me-2"></i>
-              Corse Prenotate ({{ corseFiltrate.length }})
+              Corse Richieste ({{ corse.length }})
             </h5>
           </div>
           <div class="card-body">
-            <div v-if="corseFiltrate.length === 0" class="text-center py-4">
+            <div v-if="corse.length === 0" class="text-center py-4">
               <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
               <p class="text-muted">Nessuna corsa prenotata</p>
             </div>
             <div v-else class="d-flex flex-column gap-3">
-              <Corsa
-                v-for="corsa in corseFiltrate"
-                :key="corsa._id || corsa._id"
+              <RichiestaCorsa
+                v-for="corsa in corse"
+                :key="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :data="corsa.data"
                 :km="corsa.km"
-                :codiceVettore="corsa.codiceVettore"
-                :codiceUtente="corsa.codiceUtente"
+                :nomeVettore="corsa.codiceVettore"
               />
             </div>
           </div>
         </div>
       </div>
+      
     </div>
     </div>
     </div>

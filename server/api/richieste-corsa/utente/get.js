@@ -9,36 +9,24 @@ export default defineEventHandler(async (event) => {
     
     await connectDB();
 
-    // Estrae codiceVettore dal payload del token JWT
-    const codiceVettore = payload?.codiceVettore;
+    // Estrae codiceUtente dal payload del token JWT
+    const codiceUtente = payload?.codiceUtente;
     
-    if (!codiceVettore) {
+    if (!codiceUtente) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Codice vettore non trovato nel token'
+        statusMessage: 'Codice Utente non trovato nel token'
       });
     }
-/*
-    // Converte a numero se necessario
-    const codiceVettoreNum = typeof codiceVettore === 'number' 
-      ? codiceVettore 
-      : parseInt(codiceVettore, 10);
 
-    if (isNaN(codiceVettoreNum)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Codice vettore non valido'
-      });
-    }
-*/
-    // Cerca tutte le richieste di corsa per questo codiceVettore
+    // Cerca tutte le richieste di corsa per questo codiceUtente
     const richieste = await RichiestaCorsa.find({ 
-      codiceVettore: codiceVettore 
+      codiceUtente: codiceUtente 
     })
     .sort({ createdAt: -1 }) // Ordina per data di creazione (più recenti prima)
     .exec();
 
-    console.log(`Trovate ${richieste.length} richieste per codiceVettore ${codiceVettoreNum}`);
+    console.log(`Trovate ${richieste.length} richieste per codiceUtente ${codiceUtente}`);
 
     // Restituisce le richieste
     return {
@@ -51,8 +39,6 @@ export default defineEventHandler(async (event) => {
         arrivo: richiesta.arrivo,
         data: richiesta.data,
         orario: richiesta.orario,
-        createdAt: richiesta.createdAt,
-        updatedAt: richiesta.updatedAt,
         km: richiesta.km
       })),
       count: richieste.length
