@@ -227,7 +227,7 @@ const getMinTime = () => {
               <div class="d-grid">
                 <button
                   type="submit"
-                  class="btn btn-primary btn-lg"
+                  class="btn btn-vettore btn-lg"
                   :disabled="isLoading"
                 >
                   <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -263,3 +263,12 @@ const getMinTime = () => {
     </div>
   </HomeLayout>
 </template>
+
+<style>
+.btn-vettore{
+  --bs-btn-bg: var(--color-vettore-button);
+
+  --bs-btn-hover-bg: var(--color-vettore-button-hover);
+}
+
+</style>

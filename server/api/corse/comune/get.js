@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 
     // Cerca tutte le corse per questo codiceUtente
     const corse = await Corsa.find( {} )
-    .sort({ createdAt: -1 }) // Ordina per data di creazione (più recenti prima)
+    .sort({ data: 1 }) // Ordina per data di creazione (più recenti prima)
     .exec();
 
     // Restituisce le corse
@@ -24,9 +24,8 @@ export default defineEventHandler(async (event) => {
         partenza: corsa.partenza,
         arrivo: corsa.arrivo,
         data: corsa.data,
+        km: corsa.km,
         effettuata: corsa.effettuata,
-        createdAt: corsa.createdAt,
-        updatedAt: corsa.updatedAt
       })),
       count: corse.length
     };

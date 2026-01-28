@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const richieste = await RichiestaCorsa.find({ 
       codiceUtente: codiceUtente 
     })
-    .sort({ createdAt: -1 }) // Ordina per data di creazione (più recenti prima)
+    .sort({ data: 1 }) // Ordina per data di creazione (più recenti prima)
     .exec();
 
     console.log(`Trovate ${richieste.length} richieste per codiceUtente ${codiceUtente}`);

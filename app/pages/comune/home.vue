@@ -9,22 +9,25 @@ import { type CorsaType , type UtenteType } from '../../../composables/dataType'
 const error = ref<string | null>(null);
 const loading = ref(false);
 const utenti = ref<UtenteType[]>([]);
-const corseEffettuate = ref<CorsaType[]>([]);
+const corse = ref<CorsaType[]>([]);
 
 // Statistiche calcolate
 const stats = computed(() => {
-  const abbonamentiAttivi = utenti.value.length * 40;
+  const corseEffettuate = corse.value.filter(c => c.effettuata === true);
+  const abbonamentiAttivi = utenti.value.length;
 
   // Chilometraggio usato = somma dei budget degli utenti
-  const chilometraggioUsato = utenti.value.reduce((sum, utente) => sum + (utente.budget || 0), 0);
+  const chilometraggioUsato = corseEffettuate.reduce((sum, corseEffettuate) => {
+    return ( sum + (corseEffettuate.km || 0))
+  }, 0);
   
   return {
     abbonamentiAttivi,
-    corseEffettuate: corseEffettuate.value.length,
+    corseEffettuate,
     chilometraggioUsato
   };
 });
-
+console.log("chilometraggio" + stats.value.chilometraggioUsato)
 // Carica utenti
 const getUtenti = async (token: string) => {
   try {
@@ -55,8 +58,8 @@ const getCorseEffettuate = async (token: string) => {
   try {
     const response = await $fetch<{
       success: boolean;
-      corse: CorsaType[];
-    }>('/api/corsa', {
+      data: CorsaType[];
+    }>('/api/corse/comune/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -64,7 +67,7 @@ const getCorseEffettuate = async (token: string) => {
     });
     
     if (response.success) {
-      corseEffettuate.value = response.corse;
+      corse.value = response.data;
     } else {
       error.value = "Errore durante il caricamento delle corse effettuate";
     }
@@ -76,10 +79,6 @@ const getCorseEffettuate = async (token: string) => {
 
 // Carica dati iniziali
 const loadData = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
   const token = localStorage.getItem('auth_token');
   if (!token) {
     error.value = "Token non trovato. Effettua il login.";
@@ -140,7 +139,7 @@ onMounted(() => {
         <div class="col-md-4 mb-3">
           <DashboardCard
             title="Corse Effettuate"
-            :value="stats.corseEffettuate"
+            :value="stats.corseEffettuate.length"
             icon="bi bi-car-front"
           />
         </div>
@@ -164,7 +163,7 @@ onMounted(() => {
               <div class="row text-center">
                 <div class="col-md-6">
                   <div class="fs-4 fw-bold text-success mb-1">
-                    {{ stats.abbonamentiAttivi }}€
+                    {{ stats.abbonamentiAttivi * 40 }}€
                   </div>
                   <small class="text-muted">Ricavi Abbonamenti</small>
                 </div>

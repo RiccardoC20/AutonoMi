@@ -1,10 +1,27 @@
 /* =========================
    VARIABILI GLOBALI PROGETTO
+COMUNE:
+verde scuro: 007A52
+verde normale: 00C383
+verde chiaro: 6DE8BF
+
+UTENTE:
+blu scuro: 0066CC
+blu normale: 00AAFF
+blu chiaro: 73a2fc
+
+VETTORE:
+arancione scuro: FFB253
+arancione normale: FFC277
+arancione chiaro: FFE6C8
    ========================= */
 
 :root{
     --color-utente-sideBar: #0066CC;
     --color-vettore-sideBar: #e6713e;
+    --color-vettore-button-hover: #FFB253;
+    --color-vettore-button: #FFC277;
     --color-comune-sideBar: #00C383;
 
+    
 }

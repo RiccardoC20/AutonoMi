@@ -130,12 +130,12 @@ onMounted(() => {
         </div>
 
 
-          <!-- Filtri e ricerca -->
+          <!-- Filtri e ricerca 
           <div class="card mb-4">
             <div class="card-body">
               <div class="row g-3">
 
-                <!-- Ordinamento -->
+                Ordinamento
                 <div class="col-md-3">
                   <select v-model="sortBy" class="form-select">
                     <option value="data-desc">Più recenti prima</option>
@@ -143,7 +143,7 @@ onMounted(() => {
                   </select>
                 </div>
 
-                <!-- Filtro data -->
+                 Filtro data 
                 <div class="col-md-3">
                   <button class="btn btn-outline-secondary w-100" data-bs-toggle="collapse" data-bs-target="#dateFilters">
                     <i class="bi bi-calendar-range me-2"></i>Filtro Data
@@ -151,7 +151,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Filtri data espandibili -->
+               Filtri data espandibili 
               <div class="collapse mt-3" id="dateFilters">
                 <div class="row g-3">
                   <div class="col-md-4">
@@ -180,16 +180,17 @@ onMounted(() => {
                   </div>
                 </div>
               </div>
+            
             </div>
           </div>
-
+        -->
         <!-- Lista corse-->
         <div class="mb-4 ">
           <div class="card h-100">
             <div class="card-header">
               <h5 class="card-title mb-0">
                 <i class="bi bi-calendar-check me-2"></i>
-                Corse Effettuate ({{ corseFiltrate.effettuate.length }})
+                Corse ({{ corse.length }})
               </h5>
             </div>
             <div class="card-body">

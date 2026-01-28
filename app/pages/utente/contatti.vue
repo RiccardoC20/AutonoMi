@@ -6,7 +6,7 @@ const error = ref<string | null>(null);
 const vettori = ref<VettoreType[]>([]);
 const comune = ref<ComuneType>();
 const loading = ref(false);
-
+/*
 const getComune = async (token: string) => {
   try {
     const response = await $fetch<{
@@ -30,7 +30,7 @@ const getComune = async (token: string) => {
     console.error('Errore getComune:', err);
   }
 };
-
+*/
 
 //Carica vettori
 const getVettori = async (token: string) => {
@@ -74,7 +74,7 @@ const loadData = async () => {
 
   try {
       await getVettori(token);
-      await getComune(token);
+     // await getComune(token);
 
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
@@ -102,8 +102,7 @@ onMounted(() => {
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-
-        <!-- Numero Comune -->
+    <!-- Numero Comune 
         <div class="card mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center">
@@ -118,10 +117,11 @@ onMounted(() => {
             </div>
           </div>
         </div>
-
-        <!-- Separatore -->
+      -->
+        <!-- Separatore 
         <hr class="my-4">
-
+        -->
+        
         <!-- Lista Vettori -->
         <div class="card">
           <div class="card-header">

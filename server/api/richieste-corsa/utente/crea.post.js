@@ -64,7 +64,6 @@ export default defineEventHandler(async (event) => {
         arrivo: richiestaCorsa.arrivo,
         data: richiestaCorsa.data,
         km: richiestaCorsa.km,
-        createdAt: richiestaCorsa.createdAt
       }
     };
   } catch (error) {

@@ -54,12 +54,12 @@ async function handleSubmit() {
 
 <template>
   <HomeLayout role="comune">
-    <div class="d-flex justify-content-center">
-      <div class="content-wrapper p-4">
+    <div class="d-flex justify-content-center ">
+      <div class="content-wrapper p-4 ">
         <h1>Crea vettore</h1>
 
 
-          <div class="card-body">
+          <div class="card-body card shadow-sm">
             <!-- Messaggio di successo -->
             <div
               v-if="success"

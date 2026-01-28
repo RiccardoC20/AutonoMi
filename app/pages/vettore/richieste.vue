@@ -35,7 +35,7 @@ const caricaRichieste = async () => {
       success: boolean;
       data: any[];
       count: number;
-    }>('/api/richieste-corsa/get', {
+    }>('/api/richieste-corsa/vettore/get', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
