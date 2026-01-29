@@ -65,35 +65,13 @@ const confermaEffettuata = async () => {
   corsaDaEffettuare.value = null;
 }
 
-/**
- *  DA CAMBIARE
- * onCorsaEffettuata è un handler di corsaEffettuata del components : CorsaPrenotataVettore.
- * nel passaggio di parametri a CosaPrenotataVettore. Al click del popoup viene fatto:
- *  
- *  @click="$emit('corsaEffettuata', id)"
- * 
- * tra i parametri di ricezione del components c'è: 
- * 
- *      emits: ['corsaEffettuata'],
- * 
- * questo viene passato dal costruttore in : 
- *    
- *    :data="corsa.data"
-      :effettuata="corsa.effettuata"
-      @corsaEffettuata="onCorsaEffettuata"
-
- *  è grazie a questo che la seguente funzione diventa handler di emit e i parametri successivamente
- *  passati.
- * 
- */
 const promuoviCorsa = async (id : string) => {
   try {
     const token = localStorage.getItem('auth_token');
     if (!token) throw new Error('Token non trovato');
-    await $fetch('/api/corse/vettore/effettua', {
+    await $fetch(`/api/corse/vettore/${id}`, {
       method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-      body: { id }
+      headers: { Authorization: `Bearer ${token}` }
     });
     await caricaCorse();
   } catch (err) {
