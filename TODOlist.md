@@ -50,3 +50,4 @@ COSE DA FARE NEL PROGETTO:
 - API per rendere una corsa effettuata  
 - io personalmente togliere il riquadro nero di corsa effettuata
 
+- in invio candidatura-Accettazione faccio un controllo se l'utente già esiste e nel caso update kilometri e pdf url
