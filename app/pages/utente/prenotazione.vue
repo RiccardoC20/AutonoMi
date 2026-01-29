@@ -143,6 +143,15 @@ const getMinTime = () => {
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
         <h1>Nuova Richiesta Corsa</h1>
+                <!-- Informazioni aggiuntive -->
+        <div class="card mt-3 mb-3 p-3" style="background-color:  var(--color-background)">
+            <div style="color: var(--color-card)">
+              <p class="mb-0 small text-center" style="padding: 0;">
+                Inserisci i dati per effettuare una richiesta di viaggio. L'approvazione della richiesta sarà a discrezione del vettore
+              </p>
+            </div>
+        </div>
+
         <div class="card shadow">
 
           <div class="card-body">
@@ -274,25 +283,6 @@ const getMinTime = () => {
           </div>
         </div>
 
-        <!-- Informazioni aggiuntive -->
-        <div class="card mt-3 border-info">
-          <div class="card-body p-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <small class="text-info fw-bold">
-              <i class="bi bi-info-circle me-1"></i>
-              Informazioni Importanti
-            </small>
-          </div>
-
-          <div class="collapse" id="collapseExample">
-            <div class="card-footer p-2">
-              <ul class="mb-0 small">
-                <li>La prenotazione può essere effettuata fino a 24 ore prima</li>
-                <li>Riceverai una conferma via email con i dettagli del vettore</li>
-                <li>I costi verranno calcolati in base alla distanza effettiva</li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>

@@ -51,7 +51,7 @@ const stats = computed( () => {
   const chilimetraggioUsato =  corse.value.reduce((sum, corse) => {
     return ( sum + (corse.km || 0))
   }, 0);
-  const percentualeKmUsati = chilometriTotali / chilimetraggioUsato;
+  const percentualeKmUsati = (chilometriTotali / chilimetraggioUsato).toFixed(1);
   return {
     chilimetraggioUsato,
     chilometriTotali,
@@ -152,7 +152,7 @@ onMounted(() => {
                 </div>
                 <div
                   class="progress-bar bg-light text-dark"
-                  :style="{ width: (1 - stats.percentualeKmUsati) + '%' }"
+                  :style="{ width: + '%' }"
                 >
                 </div>
               </div>
@@ -162,19 +162,19 @@ onMounted(() => {
             <div class="row text-center mt-4">
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-success">{{ stats.chilimetraggioUsato}}</div>
+                  <div class="fs-4 fw-bold text-primary">{{ stats.chilimetraggioUsato}}</div>
                   <small class="text-muted">Km da corse effettuate</small>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-info">{{ corseFiltrate.effettuate.length }}</div>
+                  <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.effettuate.length }}</div>
                   <small class="text-muted">Corse completate</small>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-warning">{{ corseFiltrate.prenotate.length }}</div>
+                  <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.prenotate.length }}</div>
                   <small class="text-muted">Corse prenotate</small>
                 </div>
               </div>
@@ -266,3 +266,8 @@ onMounted(() => {
   </HomeLayout>
 </template>
 
+<style>
+.proggressBar{
+  background-color: var(--color-utente-sideBar);
+}
+</style>

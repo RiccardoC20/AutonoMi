@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto border-secondary">
+    <div class="d-flex align-items-center gap-3 p-3 bg-light  rounded-3 w-auto border">
         <div class="text-truncate fw-bold" style="width: 15rem;">
             <i class="bi bi-house-door-fill me-1"></i>
             {{ partenza }}
