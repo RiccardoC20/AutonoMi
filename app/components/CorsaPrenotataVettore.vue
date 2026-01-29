@@ -2,6 +2,9 @@
 
 <template>
 <div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto">
+  <div v-if="id" class="fw-bold " style="width: 5rem;">
+    {{ id }} : id MOMENTANEO
+  </div>
   <div class="text-truncate fw-bold" style="width: 15rem;">
     <i class="bi bi-house-door-fill me-1"></i>
     {{ partenza }}
@@ -35,6 +38,7 @@
       class="btn btn-success btn-sm"
       data-bs-toggle="modal" 
       data-bs-target="#corsaEffettuataBackdrop"
+      @click="effettuaCorsa"
     >
     Effettua
     <i class="bi bi-check-circle me-1"></i>
@@ -43,7 +47,15 @@
 </div>
 
 <!-- Modal Corse -->
-<div class="modal fade" id="corsaEffettuataBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- <div 
+    class="modal fade" 
+    id="corsaEffettuataBackdrop" 
+    data-bs-backdrop="static" 
+    data-bs-keyboard="false" 
+    tabindex="-1" 
+    aria-labelledby="staticBackdropLabel" 
+    aria-hidden="true"
+  >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -53,13 +65,16 @@
       <div class="modal-body">
         Questa corsa è stata effettuata?
       </div>
+      <div v-if="id">
+        Stiamo parlando della corsa : {{ id }} 
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
         <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="$emit('corsaEffettuata', id)">Conferma</button>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 </template>
 
 <script>
@@ -80,8 +95,12 @@
         default: null
       }
     },
-    emits: ['corsaEffettuata'],
-
+    emits: ['effettuaCorsa'],
+    methods: {
+      effettuaCorsa() {
+        this.$emit('effettuaCorsa', this.id);
+      }
+    },
     computed: {
       dataCorsa() {
         if (!this.data) return ''
@@ -93,7 +112,6 @@
           year: 'numeric'
         }).format(new Date(d))
       },
-
       oraCorsa() {
         if (!this.data) return ''
         const d = new Date(this.data)

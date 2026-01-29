@@ -50,13 +50,13 @@ COSE DA FARE NEL PROGETTO:
 - API per rendere una corsa effettuata  
 - io personalmente togliere il riquadro nero di corsa effettuata
 
-1 - creare una vettore : get corse effettuate e corse prenotate
-2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata
-3 - creare una get corse prenotate ed effettuate lato utente
+- in invio candidatura-Accettazione faccio un controllo se l'utente già esiste e nel caso update kilometri e pdf url
 
-4** - rimane tutto il problema del chilometraggio residuo durante la prenotazione corsa / passaggio da richiesta corsa a prenotazione corsa.
+- rimuovere i filtri di ricerca nelle varie pagine
+- !!! non funziona il bottone di logout 
+- bottoni di comune: /comune/utenti non eliminano gli utenti? 
 
-
+_____________________
 
 API mancanti
 richieste-corsa/get.js

@@ -7,6 +7,7 @@ import { ref, computed, onMounted } from 'vue';
 const corse = ref<CorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
+const corsaDaEffettuare = ref<string | null>(null);
 
 
 // Funzione per caricare le corse dal backend
@@ -50,6 +51,7 @@ const caricaCorse = async () => {
     loading.value = false;
   }
 };
+// Funzione per dividere le corse in efffettuate e prenotate
 const corseFiltrate = computed(() => {
   return {
     effettuate: corse.value.filter(c => c.effettuata === true),
@@ -57,7 +59,14 @@ const corseFiltrate = computed(() => {
   }
 })
 
+const confermaEffettuata = async () => {
+  if (!corsaDaEffettuare.value) return;
+  await promuoviCorsa(corsaDaEffettuare.value);
+  corsaDaEffettuare.value = null;
+}
+
 /**
+ *  DA CAMBIARE
  * onCorsaEffettuata è un handler di corsaEffettuata del components : CorsaPrenotataVettore.
  * nel passaggio di parametri a CosaPrenotataVettore. Al click del popoup viene fatto:
  *  
@@ -77,8 +86,7 @@ const corseFiltrate = computed(() => {
  *  passati.
  * 
  */
-const onCorsaEffettuata = async (id : String) => {
-  console.log('corsaEffettuata id=', id);
+const promuoviCorsa = async (id : string) => {
   try {
     const token = localStorage.getItem('auth_token');
     if (!token) throw new Error('Token non trovato');
@@ -93,7 +101,10 @@ const onCorsaEffettuata = async (id : String) => {
   }
 }
 
-
+const apriModalEffettua = (id : string) => {
+  corsaDaEffettuare.value = id;
+  console.log("modal aperto con: " + id)
+};
 
 // Carica le corse al mount del componente
 onMounted(() => {
@@ -151,13 +162,14 @@ onMounted(() => {
             <div v-else class="d-flex flex-column gap-3">
               <CorsaPrenotataVettore
                 v-for="corsa in corseFiltrate.prenotate"
+                :key="corsa._id"
                 :id="corsa._id"
                 :partenza="corsa.partenza"
                 :arrivo="corsa.arrivo"
                 :codiceUtente="corsa.codiceUtente"
                 :km="corsa.km"
                 :data="corsa.data"
-                @corsaEffettuata="onCorsaEffettuata"
+                @effettuaCorsa="apriModalEffettua"
               />
             </div>
           </div>
@@ -201,6 +213,32 @@ onMounted(() => {
       </div>
     </div>
   </HomeLayout>
+<!-- Modal Corse da Prenotate a Effettuate -->
+<div 
+    class="modal fade" 
+    id="corsaEffettuataBackdrop" 
+    data-bs-backdrop="static" 
+    data-bs-keyboard="false" 
+    tabindex="-1" 
+    aria-labelledby="staticBackdropLabel" 
+    aria-hidden="true"
+  >
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Corsa Effettua?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Questa corsa è stata effettuata?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="confermaEffettuata">Conferma</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <style scoped>
