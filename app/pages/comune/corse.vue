@@ -8,35 +8,6 @@ const corse = ref<CorsaType[]>([]);
 const loading = ref(false);
 
 
-// Filtri di ricerca e ordinamento
-const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
-const dateFrom = ref('');
-const dateTo = ref('');
-
-// const corseFiltrate = computed(() => {
-//   let filtered = corse.value.filter(corsa => {
-
-//     // Filtro per periodo di data
-//     const corsaDate = corsa.data?.toString().split('T')[0]; // Formato YYYY-MM-DD
-//     const matchesDateFrom = !dateFrom.value || !corsaDate || corsaDate >= dateFrom.value;
-//     const matchesDateTo = !dateTo.value || !corsaDate || corsaDate <= dateTo.value;
-
-//     return matchesDateFrom && matchesDateTo;
-//   });  
-
-//   // Ordinamento
-//   filtered.sort((a, b) => {
-//     if (sortBy.value === 'data-desc') {
-//       return new Date(b.data).getTime() - new Date(a.data).getTime();
-//     } else if (sortBy.value === 'data-asc') {
-//       return new Date(a.data).getTime() - new Date(b.data).getTime();
-//     }
-//     return 0;
-//   });
-
-//   return filtered;
-// });
-
 //carica corse
 const loadData = async () =>{
 
@@ -120,7 +91,7 @@ onMounted(() => {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Monitoraggio Corse</h1>
+        <h1>Monitoraggio corse</h1>
 
         <!-- Messaggio di errore -->
         <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -130,62 +101,17 @@ onMounted(() => {
         </div>
 
 
-          <!-- Filtri e ricerca 
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row g-3">
-
-                Ordinamento
-                <div class="col-md-3">
-                  <select v-model="sortBy" class="form-select">
-                    <option value="data-desc">Più recenti prima</option>
-                    <option value="data-asc">Più vecchie prima</option>
-                  </select>
-                </div>
-
-                 Filtro data 
-                <div class="col-md-3">
-                  <button class="btn btn-outline-secondary w-100" data-bs-toggle="collapse" data-bs-target="#dateFilters">
-                    <i class="bi bi-calendar-range me-2"></i>Filtro Data
-                  </button>
-                </div>
-              </div>
-
-               Filtri data espandibili 
-              <div class="collapse mt-3" id="dateFilters">
-                <div class="row g-3">
-                  <div class="col-md-4">
-                    <label class="form-label small fw-bold">Data dal:</label>
-                    <input
-                      v-model="dateFrom"
-                      type="date"
-                      class="form-control"
-                    >
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label small fw-bold">Data al:</label>
-                    <input
-                      v-model="dateTo"
-                      type="date"
-                      class="form-control"
-                    >
-                  </div>
-                  <div class="col-md-4 d-flex align-items-end">
-                    <button
-                      class="btn btn-outline-danger w-100"
-                      @click="dateFrom = ''; dateTo = ''"
-                    >
-                      <i class="bi bi-x-circle me-2"></i>Rimuovi Filtro
-                    </button>
-                  </div>
-                </div>
-              </div>
-            
+        <!-- Informazioni aggiuntive -->
+        <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
+            <div >
+              <p class="mb-0 small text-center text-muted" style="padding: 0;">
+                In questa pagina visualizzi tutte le corse confermato
+              </p>
             </div>
-          </div>
-        -->
+        </div> 
+
         <!-- Lista corse-->
-        <div class="mb-4 ">
+        <div class="mb-4 mt-4">
           <div class="card h-100">
             <div class="card-header">
               <h5 class="card-title mb-0">

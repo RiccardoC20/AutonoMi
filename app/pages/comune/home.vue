@@ -16,10 +16,10 @@ const stats = computed(() => {
   const corseEffettuate = corse.value.filter(c => c.effettuata === true);
   const abbonamentiAttivi = utenti.value.length;
 
-  // Chilometraggio usato = somma dei budget degli utenti
+  // Chilometraggio usato = somma dei km delle corse effettuate
   const chilometraggioUsato = corseEffettuate.reduce((sum, corseEffettuate) => {
     return ( sum + (corseEffettuate.km || 0))
-  }, 0);
+  }, 0).toFixed(2);
   
   return {
     abbonamentiAttivi,
@@ -168,7 +168,7 @@ onMounted(() => {
                   <small class="text-muted">Ricavi Abbonamenti</small>
                 </div>
                 <div class="col-md-6">
-                  <div class="fs-4 fw-bold text-info mb-1">
+                  <div class="fs-4 fw-bold text-success mb-1">
                     40€
                   </div>
                   <small class="text-muted">Ricavo per Abbonamento</small>

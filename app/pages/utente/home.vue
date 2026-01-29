@@ -122,7 +122,7 @@ onMounted(() => {
 
 <template>
   <HomeLayout role="utente">
-    <div class="content-wrapper p-4 mt-0">
+    <div class="content-wrapper p-4 mt-0 mx-auto">
       <div class="row mb-4">
         <div class="col-12">
           <div class="card">

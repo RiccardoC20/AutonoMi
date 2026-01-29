@@ -96,7 +96,7 @@ onMounted(() => {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Gestione Utenti</h1>
+        <h1>Gestione utenti</h1>
 
         <!-- Messaggio di errore -->
         <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -113,13 +113,22 @@ onMounted(() => {
           <p class="mt-2 text-muted">Caricamento dati...</p>
         </div>
 
+        <!-- Informazioni aggiuntive -->
+        <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
+            <div >
+              <p class="mb-0 small text-center text-muted" style="padding: 0;">
+                La lista di tutti gli utenti attualmente registrati al servizo. 
+              </p>
+            </div>
+        </div>
+
         <!-- Lista utenti usando il componente Utente -->
-        <div class="mb-4">
+        <div class="mb-4 mt-4">
           <div class="card h-100">
             <div class="card-header">
               <h5 class="card-title mb-0">
                 <i class="bi bi-people me-2"></i>
-                Lista Utenti ({{ utenti.length }})
+                Lista utenti ({{ utenti.length }})
               </h5>
             </div>
             <div class="card-body">

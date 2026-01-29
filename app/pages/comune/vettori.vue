@@ -8,18 +8,6 @@ const vettori = ref<VettoreType[]>([]);
 const loading = ref(false);
 const vettoreDaEliminare = ref<string | null>(null);
 
-// Barra di ricerca
-const searchTerm = ref('');
-
-// Lista vettori filtrata
-const vettoriFiltrati = computed(() => {
-  if (!searchTerm.value) return vettori.value;
-
-  return vettori.value.filter(vettore =>
-    vettore.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-    vettore.codiceVettore.toString().includes(searchTerm.value)
-  );
-});
 
 // Carica vettori
 const getVettori = async (token: string) => {
@@ -123,7 +111,7 @@ onMounted(() => {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Gestione Vettori</h1>
+        <h1>Gestione vettori</h1>
 
         <!-- Messaggio di errore -->
         <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -140,55 +128,40 @@ onMounted(() => {
           <p class="mt-2 text-muted">Caricamento dati...</p>
         </div>
 
-        <!-- Contenuto principale -->
-        <div v-else>
-          <!-- Barra di ricerca -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <input
-                    v-model="searchTerm"
-                    type="text"
-                    class="form-control"
-                    placeholder="Cerca per nome o codice vettore..."
-                  >
-                </div>
-              </div>
+        <!-- Informazioni aggiuntive -->
+        <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
+            <div >
+              <p class="mb-0 small text-center text-muted" style="padding: 0;">
+                In questa pagina visualizzi tutte le richieste di corsa, da te create, ancora in sospeso. Starà al vettore approvarle o no.
+              </p>
             </div>
-          </div>
+        </div>
 
-          <!-- Lista vettori -->
-          <div class="mb-4">
-            <div class="card h-100">
-              <div class="card-header">
-                <h5 class="card-title mb-0">
-                  <i class="bi bi-truck me-2"></i>
-                  Lista Vettori ({{ vettoriFiltrati.length }})
-                </h5>
-              </div>
-              <div class="card-body">
-                <div v-if="vettoriFiltrati.length === 0" class="text-center py-4">
-                  <i class="bi bi-truck text-muted fs-1 mb-2"></i>
-                  <p class="text-muted">
-                    {{ searchTerm ? 'Nessun vettore trovato con la ricerca effettuata' : 'Nessun vettore disponibile' }}
-                  </p>
-                </div>
-                <div v-else class="d-flex flex-column gap-3">
-                  <Vettore
-                    v-for="vettore in vettoriFiltrati"
-                    :key="vettore._id"
-                    :_id="vettore._id"
-                    :codiceVettore="vettore.codiceVettore.toString()"
-                    :nome="vettore.nome"
-                    :email="vettore.email"
-                    @elimina="apriModalElimina"
-                  />
-                </div>
+        <!-- Lista vettori -->
+        <div class="mb-4 mt-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-truck me-2"></i>
+                Lista vettori ({{ vettori.length }})
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-column gap-3">
+                <Vettore
+                  v-for="vettore in vettori"
+                  :key="vettore._id"
+                  :_id="vettore._id"
+                  :codiceVettore="vettore.codiceVettore.toString()"
+                  :nome="vettore.nome"
+                  :email="vettore.email"
+                  @elimina="apriModalElimina"
+                />
               </div>
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   </HomeLayout>

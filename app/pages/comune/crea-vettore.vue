@@ -56,8 +56,7 @@ async function handleSubmit() {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center ">
       <div class="content-wrapper p-4 ">
-        <h1>Crea vettore</h1>
-
+        <h1>Nuovo vettore</h1>
 
           <div class="card-body card shadow-sm">
             <!-- Messaggio di successo -->
@@ -148,7 +147,7 @@ async function handleSubmit() {
               <div class="d-grid gap-2">
                 <button
                   type="submit"
-                  class="button-color"
+                  class="btn button-color text-white"
                   :disabled="loading || !nome.trim() || !email.trim() || !numeroTelefono.trim() || !sede.trim()"
                 >
                   <span v-if="loading">
@@ -159,7 +158,7 @@ async function handleSubmit() {
                     Creazione in corso...
                   </span>
                   <span v-else>
-                    Crea Vettore
+                    Crea vettore
                   </span>
                 </button>
                 <button
