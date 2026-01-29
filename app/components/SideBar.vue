@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" :class="role">
+  <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" style="z-index: 999;" :class="role" >
     <nav class="nav flex-column flex-grow-1">
       <NuxtLink
         v-for="link in links"
