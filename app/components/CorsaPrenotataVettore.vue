@@ -2,9 +2,6 @@
 
 <template>
 <div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto">
-  <div v-if="id" class="fw-bold " style="width: 5rem;">
-    {{ id }} : id MOMENTANEO
-  </div>
   <div class="text-truncate fw-bold" style="width: 15rem;">
     <i class="bi bi-house-door-fill me-1"></i>
     {{ partenza }}
@@ -46,35 +43,6 @@
   </div>
 </div>
 
-<!-- Modal Corse -->
-<!-- <div 
-    class="modal fade" 
-    id="corsaEffettuataBackdrop" 
-    data-bs-backdrop="static" 
-    data-bs-keyboard="false" 
-    tabindex="-1" 
-    aria-labelledby="staticBackdropLabel" 
-    aria-hidden="true"
-  >
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Corsa Effettua?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Questa corsa è stata effettuata?
-      </div>
-      <div v-if="id">
-        Stiamo parlando della corsa : {{ id }} 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="$emit('corsaEffettuata', id)">Conferma</button>
-      </div>
-    </div>
-  </div>
-</div> -->
 </template>
 
 <script>
