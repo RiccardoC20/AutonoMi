@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" style="z-index: 999;" :class="role" >
+  <div class="d-flex flex-column p-3 text-white sidebar" style="z-index: 999;" :class="role" >
     <nav class="nav flex-column flex-grow-1">
       <NuxtLink
         v-for="link in links"
@@ -38,9 +38,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="logout()">Conferma</button>
+        <button type="button" :class="['btn', `btn-${role}`]" data-bs-dismiss="modal" @click="logout()">Conferma</button>
       </div>
-    </div>
+    </div>  
   </div>
 </div>
  
@@ -75,7 +75,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  height: 1vh;
+  height: 100vh;
   overflow-y: auto;
   width: 200px;
 }

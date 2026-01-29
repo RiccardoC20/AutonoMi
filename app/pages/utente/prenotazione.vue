@@ -142,12 +142,13 @@ const getMinTime = () => {
   <HomeLayout role="utente" >
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <h1>Nuova Richiesta Corsa</h1>
-                <!-- Informazioni aggiuntive -->
+        <h1>Nuova richiesta corsa</h1>
+        <!-- Informazioni aggiuntive -->
         <div class="card mt-3 mb-3 p-3" style="background-color:  var(--color-background)">
-            <div style="color: var(--color-card)">
-              <p class="mb-0 small text-center" style="padding: 0;">
-                Inserisci i dati per effettuare una richiesta di viaggio. L'approvazione della richiesta sarà a discrezione del vettore
+            <div >
+              <p class="mb-0 small text-center text-muted" style="padding: 0;">
+                Inserisci i dati per effettuare una richiesta di viaggio. <br> 
+                L'approvazione della richiesta sarà a discrezione del vettore.
               </p>
             </div>
         </div>
@@ -213,7 +214,7 @@ const getMinTime = () => {
               <!-- Campo Arrivo -->
               <div class="mb-3">
                 <label for="arrivo" class="form-label fw-bold">
-                  <i class="bi bi-flag text-success me-1"></i>
+                  <i class="bi bi-flag text-primary me-1"></i>
                   Arrivo *
                 </label>
                 <input
@@ -232,7 +233,7 @@ const getMinTime = () => {
               <!-- Campo Data -->
               <div class="mb-3">
                 <label for="data" class="form-label fw-bold">
-                  <i class="bi bi-calendar-event text-info me-1"></i>
+                  <i class="bi bi-calendar-event text-primary me-1"></i>
                   Data *
                 </label>
                 <input
@@ -251,7 +252,7 @@ const getMinTime = () => {
               <!-- Campo Ora -->
               <div class="mb-4">
                 <label for="ora" class="form-label fw-bold">
-                  <i class="bi bi-clock text-warning me-1"></i>
+                  <i class="bi bi-clock text-primary me-1"></i>
                   Ora *
                 </label>
                 <input
@@ -276,7 +277,7 @@ const getMinTime = () => {
                 >
                   <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
-                  {{ isLoading ? 'Prenotazione in corso...' : 'Invia Richiesta' }}
+                  {{ isLoading ? 'Prenotazione in corso...' : 'Invia richiesta' }}
                 </button>
               </div>
             </form>

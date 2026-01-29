@@ -14,14 +14,15 @@
         </div>
 
         <!-- Vettore -->
-        <div v-if="role === 'vettore'" class="d-flex align-items-center">
-          <h1 class="mb-0 fw-bold">{{ nomeVettore }}</h1>
+        <div v-if="role === 'vettore'" class="d-flex flex-column">
+          <h1 class="mb-0 fw-bold">{{ nomeVettore || 'Vettore'}}</h1>
+          <h5 v-if="utenteInfo.codiceVettore" class="text-muted">Codice vettore #{{ utenteInfo.codiceVettore }}</h5>
         </div>
 
         <!-- Utente -->
-        <div v-if="role === 'utente' && utenteInfo" class="d-flex">
+        <div v-if="role === 'utente' && utenteInfo" class="d-flex flex-column">
           <h1 class="mb-0 fw-bold">{{ utenteInfo.nome || 'Utente' }}</h1>
-          <span v-if="utenteInfo.codiceUtente" class="text-muted">#{{ utenteInfo.codiceUtente }}</span>
+          <h5 v-if="utenteInfo.codiceUtente" class="text-muted">Codice utente #{{ utenteInfo.codiceUtente }}</h5>
         </div>
       </div>
 
@@ -75,13 +76,15 @@ export default {
           return {
             nome: `${currentUser.nome || ''} ${currentUser.cognome || ''}`.trim() || 'Utente',
             cognome: currentUser.cognome || '',
-            codiceUtente: currentUser.codiceUtente || ''
+            codiceUtente: currentUser.codiceUtente || '',
+            codiceVettore: currentUser.codiceVettore || ''
           };
         }
         return {
           nome: 'Utente',
           cognome: '',
-          codiceUtente: ''
+          codiceUtente: '',
+          codiceVettore: ''
       }
     },
     navigationLinks() {

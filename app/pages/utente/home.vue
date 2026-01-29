@@ -122,144 +122,143 @@ onMounted(() => {
 
 <template>
   <HomeLayout role="utente">
+    <div class="content-wrapper p-4 mt-0">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-speedometer2 me-2"></i>
+                Chilometraggio
+              </h5>
+              <div class="text-end">
+                <div class="fs-4 fw-bold text-primary">{{ stats.chilometriTotali - stats.chilimetraggioUsato }} km</div>
+                <small class="text-muted">Rimanenti su {{ stats.chilometriTotali }} km totali</small>
+              </div>
+            </div>
+            <div class="card-body">
 
-    <div class="row mt-4 mb-4">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">
-              <i class="bi bi-speedometer2 me-2"></i>
-              Chilometraggio
-            </h5>
-            <div class="text-end">
-              <div class="fs-4 fw-bold text-primary">{{ stats.chilometriTotali - stats.chilimetraggioUsato }} km</div>
-              <small class="text-muted">Rimanenti su {{ stats.chilometriTotali }} km totali</small>
+              <!-- Grafico a barre semplice -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Utilizzati</span>
+                  <span>Rimanenti</span>
+                </div>
+                <div class="progress" style="height: 30px;">
+                  <div
+                    class="progress-bar bg-success"
+                    :style="{ width: stats.percentualeKmUsati + '%' }"
+                  >
+                  </div>
+                  <div
+                    class="progress-bar bg-light text-dark"
+                    :style="{ width: + '%' }"
+                  >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Statistiche aggiuntive -->
+              <div class="row text-center mt-4">
+                <div class="col-md-3">
+                  <div class="border rounded p-3">
+                    <div class="fs-4 fw-bold text-primary">{{ stats.chilimetraggioUsato}}</div>
+                    <small class="text-muted">Km da corse effettuate</small>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="border rounded p-3">
+                    <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.effettuate.length }}</div>
+                    <small class="text-muted">Corse completate</small>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="border rounded p-3">
+                    <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.prenotate.length }}</div>
+                    <small class="text-muted">Corse prenotate</small>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="border rounded p-3">
+                    <div class="fs-4 fw-bold text-primary">{{stats.percentualeKmUsati}}%</div>
+                    <small class="text-muted">Utilizzo chilometri</small>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="card-body">
+        </div>
+      </div>
 
-            <!-- Grafico a barre semplice -->
-            <div class="mb-3">
-              <div class="d-flex justify-content-between mb-2">
-                <span>Utilizzati</span>
-                <span>Rimanenti</span>
-              </div>
-              <div class="progress" style="height: 30px;">
-                <div
-                  class="progress-bar bg-success"
-                  :style="{ width: stats.percentualeKmUsati + '%' }"
-                >
-                </div>
-                <div
-                  class="progress-bar bg-light text-dark"
-                  :style="{ width: + '%' }"
-                >
-                </div>
-              </div>
-            </div>
-
-            <!-- Statistiche aggiuntive -->
-            <div class="row text-center mt-4">
-              <div class="col-md-3">
-                <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{ stats.chilimetraggioUsato}}</div>
-                  <small class="text-muted">Km da corse effettuate</small>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.effettuate.length }}</div>
-                  <small class="text-muted">Corse completate</small>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{ corseFiltrate.prenotate.length }}</div>
-                  <small class="text-muted">Corse prenotate</small>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="border rounded p-3">
-                  <div class="fs-4 fw-bold text-primary">{{stats.percentualeKmUsati}}%</div>
-                  <small class="text-muted">Utilizzo chilometri</small>
-                </div>
-              </div>
-            </div>
+      <!-- Lista corse prenotate -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-calendar-check me-2"></i>
+            Corse Prenotate ({{ corseFiltrate.prenotate.length }})
+          </h5>
+        </div>
+        <!-- Loading -->
+        <!-- <div v-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Caricamento...</span>
+        </div>
+        <p class="mt-3 text-muted">Caricamento corse...</p>
+        </div> -->
+        <div class="card-body">
+          <div v-if="corseFiltrate.prenotate.length === 0" class="text-center py-4">
+            <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+            <p class="text-muted">Nessuna corsa prenotata</p>
+          </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <CorsaPrenotata
+              v-for="corsa in corseFiltrate.prenotate"
+              :key="corsa._id"
+              :partenza="corsa.partenza"
+              :arrivo="corsa.arrivo"
+              :codiceVettore="corsa.codiceVettore"
+              :data="corsa.data"
+              :km="corsa.km"
+              :nomeVettore="corsa.codiceVettore"
+              :effettuata="corsa.effettuata"
+            />
           </div>
         </div>
       </div>
-    </div>
 
-
-
-    <!-- Lista corse prenotate -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="card-title mb-0">
-          <i class="bi bi-calendar-check me-2"></i>
-          Corse Prenotate ({{ corseFiltrate.prenotate.length }})
-        </h5>
-      </div>
-      <!-- Loading -->
-      <!-- <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Caricamento...</span>
-      </div>
-      <p class="mt-3 text-muted">Caricamento corse...</p>
-      </div> -->
-      <div class="card-body">
-        <div v-if="corseFiltrate.prenotate.length === 0" class="text-center py-4">
-          <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
-          <p class="text-muted">Nessuna corsa prenotata</p>
+      <!-- Lista corse effettuate -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-calendar-check me-2"></i>
+            Corse effettuate ({{ corseFiltrate.effettuate.length }})
+          </h5>
         </div>
-        <div v-else class="d-flex flex-column gap-3">
-          <CorsaPrenotata
-            v-for="corsa in corseFiltrate.prenotate"
-            :key="corsa._id"
-            :partenza="corsa.partenza"
-            :arrivo="corsa.arrivo"
-            :codiceVettore="corsa.codiceVettore"
-            :data="corsa.data"
-            :km="corsa.km"
-            :nomeVettore="corsa.codiceVettore"
-            :effettuata="corsa.effettuata"
-          />
+        <!-- Loading -->
+        <!-- <div v-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Caricamento...</span>
         </div>
-      </div>
-    </div>
-
-    <!-- Lista corse effettuate -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="card-title mb-0">
-          <i class="bi bi-calendar-check me-2"></i>
-          Corse effettuate ({{ corseFiltrate.effettuate.length }})
-        </h5>
-      </div>
-      <!-- Loading -->
-      <!-- <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Caricamento...</span>
-      </div>
-      <p class="mt-3 text-muted">Caricamento corse...</p>
-      </div> -->
-      <div class="card-body">
-        <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
-          <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
-          <p class="text-muted">Nessuna corsa effettuata</p>
-        </div>
-        <div v-else class="d-flex flex-column gap-3">
-          <CorsaEffettuata
-            v-for="corsa in corseFiltrate.effettuate"
-            :key="corsa._id"
-            :partenza="corsa.partenza"
-            :arrivo="corsa.arrivo"
-            :codiceVettore="corsa.codiceVettore"
-            :data="corsa.data"
-            :km="corsa.km"
-            :nomeVettore="corsa.codiceVettore"
-            :effettuata="corsa.effettuata"
-          />
+        <p class="mt-3 text-muted">Caricamento corse...</p>
+        </div> -->
+        <div class="card-body">
+          <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
+            <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+            <p class="text-muted">Nessuna corsa effettuata</p>
+          </div>
+          <div v-else class="d-flex flex-column gap-3">
+            <CorsaEffettuata
+              v-for="corsa in corseFiltrate.effettuate"
+              :key="corsa._id"
+              :partenza="corsa.partenza"
+              :arrivo="corsa.arrivo"
+              :codiceVettore="corsa.codiceVettore"
+              :data="corsa.data"
+              :km="corsa.km"
+              :nomeVettore="corsa.codiceVettore"
+              :effettuata="corsa.effettuata"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -270,4 +269,10 @@ onMounted(() => {
 .proggressBar{
   background-color: var(--color-utente-sideBar);
 }
+
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
 </style>
+  

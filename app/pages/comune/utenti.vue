@@ -3,15 +3,10 @@ import HomeLayout from '../../components/HomeLayout.vue';
 import Utente from '../../components/Utente.vue';
 import { type UtenteType } from '../../../composables/dataType'
 
-
-
 const error = ref<string | null>(null);
 const utenti = ref<UtenteType[]>([]);
 const loading = ref(false);
 const utenteDaEliminare = ref<string | null>(null);
-
-// Barra di ricerca
-const searchTerm = ref('');
 
 
 // Carica dati iniziali
@@ -118,51 +113,30 @@ onMounted(() => {
           <p class="mt-2 text-muted">Caricamento dati...</p>
         </div>
 
-        <!-- Contenuto principale -->
-        <div v-else>
-          <!-- Barra di ricerca -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <input
-                    v-model="searchTerm"
-                    type="text"
-                    class="form-control"
-                    placeholder="Cerca per nome o codice utente..."
-                  >
-                </div>
-              </div>
+        <!-- Lista utenti usando il componente Utente -->
+        <div class="mb-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-people me-2"></i>
+                Lista Utenti ({{ utenti.length }})
+              </h5>
             </div>
-          </div>
-
-          <!-- Lista utenti usando il componente Utente -->
-          <div class="mb-4">
-            <div class="card h-100">
-              <div class="card-header">
-                <h5 class="card-title mb-0">
-                  <i class="bi bi-people me-2"></i>
-                  Lista Utenti ({{ utenti.length }})
-                </h5>
+            <div class="card-body">
+              <div v-if="utenti.length === 0" class="text-center py-4">
+                <i class="bi bi-people text-muted fs-1 mb-2"></i>
+                
               </div>
-              <div class="card-body">
-                <div v-if="utenti.length === 0" class="text-center py-4">
-                  <i class="bi bi-people text-muted fs-1 mb-2"></i>
-                  <p class="text-muted">
-                    {{ searchTerm ? 'Nessun utente trovato con la ricerca effettuata' : 'Nessun utente disponibile' }}
-                  </p>
-                </div>
-                <div v-else class="d-flex flex-column gap-3">
-                <Utente
-                  v-for="utente in utenti"
-                  :key="utente._id"
-                  :_id="utente._id"
-                  :nome="utente.nome"
-                  :cognome="utente.cognome"
-                  :codiceUtente="utente.codiceUtente"
-                  @richiedi-eliminazione="apriModalElimina"
-                />
-                </div>
+              <div v-else class="d-flex flex-column gap-3">
+              <Utente
+                v-for="utente in utenti"
+                :key="utente._id"
+                :_id="utente._id"
+                :nome="utente.nome"
+                :cognome="utente.cognome"
+                :codiceUtente="utente.codiceUtente"
+                @richiedi-eliminazione="apriModalElimina"
+              />
               </div>
             </div>
           </div>
@@ -170,6 +144,8 @@ onMounted(() => {
       </div>
     </div>
   </HomeLayout>
+  
+<!-- Modal per eliminare l'utente -->
 <div class="modal fade" id="removeUtenteBackdrop" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

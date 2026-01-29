@@ -28,6 +28,11 @@ FATTO:
 2 . creare un bottone lato vettore che porta una corsa da effettuata a prenotata FATTO
 3 - creare una get corse prenotate ed effettuate lato utente FATTO
 4** - rimane tutto il problema del chilometraggio residuo durante la prenotazione corsa / passaggio da richiesta corsa a prenotazione corsa. FATTO
+
+- funziona l'api updateCorsa
+- !!! non funziona il bottone di logout FATTO
+- bottoni di comune: /comune/utenti non eliminano gli utenti FUNZIONA
+
 _______________________________________________
 COSE DA FARE NEL PROGETTO:
 
@@ -53,9 +58,8 @@ COSE DA FARE NEL PROGETTO:
 - in invio candidatura-Accettazione faccio un controllo se l'utente già esiste e nel caso update kilometri e pdf url
 
 - rimuovere i filtri di ricerca nelle varie pagine
-- !!! non funziona il bottone di logout 
-- bottoni di comune: /comune/utenti non eliminano gli utenti? 
-
+- pagina lista Candidature
+- sistemare il frontend
 _____________________
 
 API mancanti

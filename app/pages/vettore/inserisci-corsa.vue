@@ -111,7 +111,15 @@ const getMinTime = () => {
   <HomeLayout role="vettore">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <h1>Prenota per Utente</h1>
+        <h1>Prenota per utente</h1>
+        <!-- Informazioni aggiuntive -->
+        <div class="card mt-3 mb-3 p-3" style="background-color:  var(--color-background)">
+            <div >
+              <p class="mb-0 small text-center text-muted" style="padding: 0;">
+                Prenotazione in chiamata della corsa di un utente. 
+              </p>
+            </div>
+        </div>
         <div class="card shadow">
 
           <div class="card-body">
@@ -131,7 +139,7 @@ const getMinTime = () => {
               <!-- Campo Codice Utente -->
               <div class="mb-3">
                 <label for="codiceUtente" class="form-label fw-bold">
-                  <i class="bi bi-person-lines-fill text-primary me-1"></i>
+                  <i class="bi bi-person-lines-fill text-warning me-1"></i>
                   Codice Utente *
                 </label>
                 <input
@@ -150,7 +158,7 @@ const getMinTime = () => {
               <!-- Campo Partenza -->
               <div class="mb-3">
                 <label for="partenza" class="form-label fw-bold">
-                  <i class="bi bi-house-door text-primary me-1"></i>
+                  <i class="bi bi-house-door text-warning me-1"></i>
                   Partenza *
                 </label>
                 <input
@@ -169,7 +177,7 @@ const getMinTime = () => {
               <!-- Campo Arrivo -->
               <div class="mb-3">
                 <label for="arrivo" class="form-label fw-bold">
-                  <i class="bi bi-flag text-success me-1"></i>
+                  <i class="bi bi-flag text-warning me-1"></i>
                   Arrivo *
                 </label>
                 <input
@@ -188,7 +196,7 @@ const getMinTime = () => {
               <!-- Campo Data -->
               <div class="mb-3">
                 <label for="data" class="form-label fw-bold">
-                  <i class="bi bi-calendar-event text-info me-1"></i>
+                  <i class="bi bi-calendar-event text-warning me-1"></i>
                   Data *
                 </label>
                 <input
@@ -236,26 +244,6 @@ const getMinTime = () => {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-
-        <!-- Informazioni aggiuntive -->
-        <div class="card mt-3 border-info">
-          <div class="card-body p-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <small class="text-info fw-bold">
-              <i class="bi bi-info-circle me-1"></i>
-              Informazioni Importanti
-            </small>
-          </div>
-
-          <div class="collapse" id="collapseExample">
-            <div class="card-footer p-2">
-              <ul class="mb-0 small">
-                <li>La prenotazione può essere effettuata fino a 24 ore prima</li>
-                <li>L'utente riceverà una conferma via email con i dettagli</li>
-                <li>I costi verranno calcolati in base alla distanza effettiva</li>
-              </ul>
-            </div>
           </div>
         </div>
 

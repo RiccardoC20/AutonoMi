@@ -6,31 +6,6 @@ const error = ref<string | null>(null);
 const vettori = ref<VettoreType[]>([]);
 const comune = ref<ComuneType>();
 const loading = ref(false);
-/*
-const getComune = async (token: string) => {
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      data: ComuneType;
-      count: number;
-    }>('/api/comune/get', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.success) {
-      comune.value = response.data;
-    } else {
-      error.value = "Errore durante il caricamento del comune";
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento del comune";
-    console.error('Errore getComune:', err);
-  }
-};
-*/
 
 //Carica vettori
 const getVettori = async (token: string) => {
@@ -74,7 +49,6 @@ const loadData = async () => {
 
   try {
       await getVettori(token);
-     // await getComune(token);
 
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
@@ -102,25 +76,6 @@ onMounted(() => {
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-    <!-- Numero Comune 
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-building text-primary fs-3 me-3"></i>
-              <div>
-                <h5 class="mb-1">Comune</h5>
-                <a :href="`tel:${comune?.numeroTelefono?.replace(/\s/g, '')}`" class="text-decoration-none fs-5 fw-bold">
-                  <i class="bi bi-telephone-fill me-2"></i>
-                  {{ comune?.numeroTelefono }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      -->
-        <!-- Separatore 
-        <hr class="my-4">
-        -->
         
         <!-- Lista Vettori -->
         <div class="card">
@@ -139,7 +94,7 @@ onMounted(() => {
               >
                 <div>
                   <h6 class="mb-1">{{ vettore.nome }}</h6>
-                  <a :href="`tel:${vettore.numeroTelefono?.replace(/\s/g, '')}`" class="text-decoration-none">
+                  <a  class="text-decoration-none" >
                     <i class="bi bi-telephone-fill me-2 text-primary"></i>
                     {{ vettore.numeroTelefono }}
                   </a>
