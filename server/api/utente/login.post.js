@@ -34,9 +34,7 @@ export default defineEventHandler(async (event) => {
     // Nota: se la password nel DB è hashata con $2y$ (bcrypt PHP), 
     // bcrypt Node.js può gestirla, ma potrebbe essere necessario un workaround
 
-    console.log("password clear: " + password)
     const rounds = parseInt(process.env.BCRYPT_ROUNDS, 10); 
-    console.log("hash: " + await bcrypt.hash(password, rounds))
     const passwordMatch = await bcrypt.compare(password, utente.password);
 
     if (!passwordMatch) {

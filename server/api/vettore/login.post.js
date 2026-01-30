@@ -56,11 +56,11 @@ export default defineEventHandler(async (event) => {
         userId: vettore._id.toString(),
         codiceVettore: vettore.codiceVettore,
         email: vettore.email,
-        role: 'vettore' // Aggiunge il role al token
+        role: 'vettore' 
       },
       jwtSecret,
       {
-        expiresIn: '7d' // Token valido per 7 giorni
+        expiresIn: '7d'
       }
     );
 

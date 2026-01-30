@@ -33,11 +33,15 @@ FATTO:
 - !!! non funziona il bottone di logout FATTO
 - bottoni di comune: /comune/utenti non eliminano gli utenti FUNZIONA
 - Abbiamo una cartella con della documentazione FATTO
+- STAMPA ANCORA LE PASSWORD in CHIARO FATTO
+
+
 
 _______________________________________________
 COSE DA FARE NEL PROGETTO:
 
 - vedere per i log
+- tutti i bottoni della sidebar e "navigateTo()" devono usare le rootname
 - Capire a cosa serve la cartella pages (che nuxt con crea page fa in automatico oltre a quelle dentro app)
 - maps api 
 - Nella documentazione definire come devono essere salvate e nominate le variabili d'ambiente
@@ -50,7 +54,6 @@ COSE DA FARE NEL PROGETTO:
 - component Utente e Vettore da sistemare
 - le candidature sono da cambiare graficamente
 - alcune api sono fatte con cursor e provano ancora a fare l'autenticazione senza middleware
-- STAMPA ANCORA LE PASSWORD in CHIARO
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico 
 - in Richieste corse la variabile usata è "corse" da cambiare
 
