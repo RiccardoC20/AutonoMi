@@ -79,7 +79,7 @@
   </div>
   
   <div v-if="status" class="col-1 effettuata">
-    <strong>Effettuta  </strong>
+    Effettuta  
     <span class="bi bi-circle-fill"></span>
   </div>
 </div>

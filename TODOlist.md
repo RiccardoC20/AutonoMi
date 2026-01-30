@@ -32,6 +32,7 @@ FATTO:
 - funziona l'api updateCorsa
 - !!! non funziona il bottone di logout FATTO
 - bottoni di comune: /comune/utenti non eliminano gli utenti FUNZIONA
+- Abbiamo una cartella con della documentazione FATTO
 
 _______________________________________________
 COSE DA FARE NEL PROGETTO:

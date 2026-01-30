@@ -77,7 +77,7 @@
   </div>
   
   <div v-if="status" class="col-2 prenotata">
-    <strong>Prenotata </strong>
+    Prenotata 
     <span class="bi bi-circle-fill"></span>
   </div>
 

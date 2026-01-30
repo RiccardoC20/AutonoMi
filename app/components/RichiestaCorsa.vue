@@ -82,7 +82,7 @@
   </div>
   
   <div v-if="status" class="col-1 pending">
-    <strong>Richiesta  </strong>
+    Richiesta  
     <span class="bi bi-circle-fill"></span>
   </div>
 
