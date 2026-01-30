@@ -80,7 +80,10 @@ arancione chiaro: FFE6C8
 }
 .btn-comune{
   --bs-btn-bg: #00C383;
-  --bs-btn-hover-bg: #6de8bfc8;
+  --bs-btn-hover-bg: #6de8bf;
+}
+.btn-comune-crea-vettore{
+   background-color: #007A52;
 }
 
 
