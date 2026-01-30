@@ -16,10 +16,10 @@ const stats = computed(() => {
   const corseEffettuate = corse.value.filter(c => c.effettuata === true);
   const abbonamentiAttivi = utenti.value.length;
 
-  // Chilometraggio usato = somma dei km delle corse effettuate
-  const chilometraggioUsato = corseEffettuate.reduce((sum, corseEffettuate) => {
-    return ( sum + (corseEffettuate.km || 0))
-  }, 0).toFixed(2);
+  // Chilometraggio usato = somma dei budget degli utenti
+  const chilometraggioUsato = utenti.value.reduce((sum, utente) => {
+    return ( sum + (utente.budget || 0))
+  }, 0);
   
   return {
     abbonamentiAttivi,
@@ -145,7 +145,7 @@ onMounted(() => {
         </div>
         <div class="col-md-4 mb-3">
           <DashboardCard
-            title="Chilometraggio Usato"
+            title="Chilometraggio disposto agli utenti"
             :value="stats.chilometraggioUsato + ' km'"
             icon="bi bi-speedometer2"
           />
@@ -181,4 +181,3 @@ onMounted(() => {
     </div>
   </HomeLayout>
 </template>
-  

@@ -144,7 +144,7 @@ const getMinTime = () => {
       <div class="col-md-8 col-lg-6">
         <h1>Nuova richiesta corsa</h1>
         <!-- Informazioni aggiuntive -->
-        <div class="card mt-3 mb-3 p-3" style="background-color:  var(--color-background)">
+        <div class="card mt-3 mb-3 p-3 color-background">
             <div >
               <p class="mb-0 small text-center text-muted" style="padding: 0;">
                 Inserisci i dati per effettuare una richiesta di viaggio. <br> 

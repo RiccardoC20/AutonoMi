@@ -146,7 +146,7 @@ onMounted(() => {
                 </div>
                 <div class="progress" style="height: 30px;">
                   <div
-                    class="progress-bar bg-success"
+                    class="progress-bar proggressBar"
                     :style="{ width: stats.percentualeKmUsati + '%' }"
                   >
                   </div>
@@ -266,9 +266,7 @@ onMounted(() => {
 </template>
 
 <style>
-.proggressBar{
-  background-color: var(--color-utente-sideBar);
-}
+
 
 .content-wrapper {
   max-width: 1200px;

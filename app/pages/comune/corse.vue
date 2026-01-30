@@ -131,7 +131,7 @@ onMounted(() => {
 
 
         <!-- Informazioni aggiuntive -->
-        <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
+        <div class="card mt-4 mb-3 p-3 color-background">
             <div >
               <p class="mb-0 small text-center text-muted" style="padding: 0;">
                 In questa pagina visualizzi tutte le richiese corse, corse prenotate e corse effettuate.

@@ -17,19 +17,33 @@ arancione chiaro: FFE6C8
    ========================= */
 
 :root{
---color-background: #fcfcfc;
---color-card: #b1b1b1;
-
 --color-utente-sideBar: #0066CC;
---color-utente-proggresBar: #73a2fc;
+
 
 --color-vettore-sideBar: #e6713e;
---color-vettore-button-hover: #FFB253;
---color-vettore-button: #FFC277;
+
 
 --color-comune-sideBar: #00C383;
 
 
+.proggressBar{
+  background-color: #8dc3fa;
+}
+
+.sidebar.utente{
+   background-color: #0066CC;
+}
+.sidebar.vettore{
+   background-color: #e6713e;
+}
+.sidebar.comune{
+   background-color: #00C383;
+}
+
+
+.color-background{
+   background-color: #fcfcfc;
+}
 
 .pending {
    color: #b45309;
@@ -55,6 +69,21 @@ arancione chiaro: FFE6C8
 .bg-effettuata {
    background: #e7fcec; 
 }
+
+.btn-utente{
+  --bs-btn-bg: #00aaff9b;
+  --bs-btn-hover-bg:  #00AAFF;
+}
+.btn-vettore{
+  --bs-btn-bg: #FFB253;
+  --bs-btn-hover-bg: #FFC277;
+}
+.btn-comune{
+  --bs-btn-bg: #00C383;
+  --bs-btn-hover-bg: #6de8bfc8;
+}
+
+
 
     
 }
