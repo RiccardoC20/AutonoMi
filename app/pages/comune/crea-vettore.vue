@@ -56,7 +56,7 @@ async function handleSubmit() {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center ">
       <div class="content-wrapper p-4 ">
-        <h1>Nuovo vettore</h1>
+        <h1>Registrazione nuovo vettore</h1>
 
           <div class="card-body card shadow-sm">
             <!-- Messaggio di successo -->

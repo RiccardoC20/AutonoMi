@@ -119,7 +119,7 @@ export default {
             { to: '/comune/vettori', label: 'Vettori', icon: 'bi bi-truck' },
             { to: '/comune/corse', label: 'Corse', icon: 'bi bi-car-front' },
             { to: '/comune/candidature', label: 'Candidature', icon: 'bi bi-file-text' },
-            { to: '/comune/crea-vettore', label: 'Crea vettore', icon: 'bi bi-car-front' }
+            { to: '/comune/crea-vettore', label: 'Nuovo vettore', icon: 'bi bi-car-front' }
           ];
 
         default:
