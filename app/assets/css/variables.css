@@ -18,11 +18,7 @@ arancione chiaro: FFE6C8
 
 :root{
 --color-utente-sideBar: #0066CC;
-
-
 --color-vettore-sideBar: #e6713e;
-
-
 --color-comune-sideBar: #00C383;
 
 
@@ -30,6 +26,7 @@ arancione chiaro: FFE6C8
   background-color: #8dc3fa;
 }
 
+/* SideBar */
 .sidebar.utente{
    background-color: #0066CC;
 }
@@ -40,11 +37,11 @@ arancione chiaro: FFE6C8
    background-color: #00C383;
 }
 
-
 .color-background{
    background-color: #fcfcfc;
 }
 
+/* Colori dei components delle corse */
 .pending {
    color: #b45309;
 }
@@ -52,7 +49,6 @@ arancione chiaro: FFE6C8
 .bg-pending {
    background: #fefcf6;
 }
-
 
 .prenotata {
    color: #2c51c9;
@@ -62,7 +58,6 @@ arancione chiaro: FFE6C8
    background: #eaf2fc; 
 }
 
-
 .effettuata {
    color: #166534;
 }
@@ -70,6 +65,8 @@ arancione chiaro: FFE6C8
    background: #e7fcec; 
 }
 
+
+/* Colori per bottoni */
 .btn-utente{
   --bs-btn-bg: #00aaff9b;
   --bs-btn-hover-bg:  #00AAFF;
@@ -87,6 +84,9 @@ arancione chiaro: FFE6C8
 }
 
 
-
+/* Font megrim */
+.font-megrim {
+  font-family: 'Megrim', cursive;
+}
     
 }

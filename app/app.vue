@@ -4,6 +4,9 @@
 </script>
 
 <template>
+  <head>
+    <title>AutonoMi</title>
+  </head>
   <div>
     <!-- NuxtPage renderizza la pagina corrente basata sulla route -->
     <NuxtPage />

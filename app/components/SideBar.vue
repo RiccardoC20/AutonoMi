@@ -1,5 +1,9 @@
 <template>
   <div class="d-flex flex-column min-vh-100 p-3 text-white sidebar" style="z-index: 999; height: 100%;" :class="role" >
+    <h2 class="font-megrim my-4 text-center">
+      AutonoMi
+    </h2>
+    
     <nav class="nav flex-column flex-grow-1">
       <NuxtLink
         v-for="link in links"

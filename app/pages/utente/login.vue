@@ -46,7 +46,7 @@ async function handleLogin() {
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card shadow-sm">
           <div class="card-header text-white text-center " style="background-color: var(--color-utente-sideBar);">
-            <h2 class="h4 mb-0">Login Utente</h2>
+            <h2 class="m-2 font-megrim">AutonoMi</h2>
           </div>
 
           <div class="card-body">

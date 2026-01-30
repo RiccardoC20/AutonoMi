@@ -7,7 +7,7 @@
 
     <div class="flex-grow-1 p-3 color-background">
       <!-- Header con informazioni utente/vettore/comune -->
-      <div class="mb-4">
+      <div class="m-4">
         <!-- Comune -->
         <div v-if="role === 'comune'" class="d-flex align-items-center">
           <h1 class="mb-0 fw-bold">{{ nomeComune }}</h1>
@@ -132,6 +132,9 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap');
+
+
 /* Aggiunge margine sinistro per compensare la sidebar fissa */
 .flex-grow-1 {
   margin-left: 200px;
