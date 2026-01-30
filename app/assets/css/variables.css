@@ -23,13 +23,13 @@ arancione chiaro: FFE6C8
 
 
 /* Colori base */
-.coloreUtente {
+.text-coloreUtente {
    color: var(--color-utente-sideBar);
 }
-.coloreComune {
+.text-coloreComune {
    color: var(--color-comune-sideBar);
 }
-.coloreVettore {
+.text-coloreVettore {
    color: var(--color-vettore-sideBar);
 }
 

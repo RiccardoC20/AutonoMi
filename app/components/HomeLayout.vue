@@ -103,12 +103,11 @@ export default {
             { to: '/utente/prenotazione', label: 'Nuova corsa', icon: 'bi bi-plus' },
             { to: '/utente/richieste-in-sospeso', label: 'Richieste', icon: 'bi bi-clock' },
             { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
-            //{ to: '/invio-candidatura', label: 'Invia Candidatura', icon: 'bi bi-send' },
           ];
 
         case 'vettore':
           return [
-            { to: '/vettore/home', label: 'Corse', icon: 'bi bi-car-front' },
+            { to: '/vettore/home', label: 'Home', icon: 'bi bi-car-front' },
             { to: '/vettore/richieste', label: 'Richieste', icon: 'bi bi-bell' },
             { to: '/vettore/inserisci-corsa', label: 'Nuova corsa', icon: 'bi bi-plus-circle' },
           ];

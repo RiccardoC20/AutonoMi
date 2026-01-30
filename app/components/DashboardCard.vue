@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body text-center">
-      <i :class="icon" class="fs-1 coloreComune mb-2"></i>
+      <i :class="icon" class="fs-1 text-coloreComune mb-2"></i>
       <h3 class="mb-1">{{ value }}</h3>
       <p class="text-muted mb-0">{{ title }}</p>
     </div>

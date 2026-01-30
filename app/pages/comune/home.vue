@@ -162,13 +162,13 @@ onMounted(() => {
             <div class="card-body">
               <div class="row text-center">
                 <div class="col-md-6">
-                  <div class="fs-4 fw-bold coloreComune mb-1">
+                  <div class="fs-4 fw-bold text-coloreComune mb-1">
                     {{ stats.abbonamentiAttivi * 40 }}€
                   </div>
                   <small class="text-muted">Ricavi Abbonamenti</small>
                 </div>
                 <div class="col-md-6">
-                  <div class="fs-4 fw-bold coloreComune mb-1">
+                  <div class="fs-4 fw-bold text-coloreComune mb-1">
                     40€
                   </div>
                   <small class="text-muted">Ricavo per Abbonamento</small>
