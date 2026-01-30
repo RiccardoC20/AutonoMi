@@ -1,11 +1,8 @@
 import connectDB from "../../../utils/mongo";
 import Corsa from "../../../models/corsa.model";
-import useAuth from "../../../utils/useAuth";
 
 export default defineEventHandler(async (event) => {
   try {
-    // Verifica autenticazione JWT e ottiene il payload
-    const { payload } = await useAuth(event);
 
     await connectDB();
 
