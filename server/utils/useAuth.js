@@ -21,8 +21,7 @@ export default async function useAuth(event) {
 
   try {
     const payload = jwt.verify(token, jwtSecret);
-    event.context.authPayload = payload;
-    return { ok: true, payload };
+    return { ok: true};
   } catch (err) {
     return { ok: false };
   }

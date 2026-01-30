@@ -81,8 +81,6 @@ export default {
 }
 
 
-
-
 .nav-link:hover {
   background-color: #0000001f;
 }

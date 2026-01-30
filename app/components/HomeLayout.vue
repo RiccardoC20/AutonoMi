@@ -108,7 +108,7 @@ export default {
 
         case 'vettore':
           return [
-            { to: '/vettore/corse', label: 'Corse', icon: 'bi bi-car-front' },
+            { to: '/vettore/home', label: 'Corse', icon: 'bi bi-car-front' },
             { to: '/vettore/richieste', label: 'Richieste', icon: 'bi bi-bell' },
             { to: '/vettore/inserisci-corsa', label: 'Nuova corsa', icon: 'bi bi-plus-circle' },
           ];

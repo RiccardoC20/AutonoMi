@@ -27,7 +27,7 @@ async function handleLogin() {
     if (response.success && response.token) {
       localStorage.setItem('auth_token', response.token);
       localStorage.setItem('user_data', JSON.stringify(response.user));
-      navigateTo('/vettore/corse');
+      navigateTo('/vettore/home');
     } else {
       error.value = 'Credenziali non valide';
     }

@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   if (!ok) {
     throw createError({
       statusCode: 401,
-      statusMessage: "Unauthorized – JWT mancante o non valido"
+      statusMessage: "Unauthorized – JWT mancante o non valido: loggati di nuovo"
     });
   }
 });

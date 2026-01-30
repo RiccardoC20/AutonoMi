@@ -6,7 +6,7 @@ export default defineNuxtPlugin(() => {
   
   // Questo viene eseguito OGNI volta che cambi pagina
   router.beforeEach((to) => {
-    console.log("middleware frontend - SOLO CLIENT");
+    console.log("plugin lato client - controllo dominio in base all'attore");
     
     // Se sto andando in uno dei path di login non avvengono controlli
     if (Object.values(LOGIN_BY_ROLE).includes(to.path)) {
@@ -14,18 +14,20 @@ export default defineNuxtPlugin(() => {
     }
     
     const token = localStorage.auth_token;
-    const pathRole = to.path.split('/')[1];
+    const pathRole = to.path.split('/')[1] || 'utente';
+
 
     if (!token) {
-      if(to.path === '/')
-        return navigateTo( 'utente/login')
+      localStorage.removeItem('user_data');
       return navigateTo(`/${pathRole}/login`);
     }
     
     const tokenRole = jwtDecode(token).role;
     
     if (tokenRole != pathRole) {
-      return navigateTo(`/${tokenRole}/home`);
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      return navigateTo(`/${tokenRole}/login`);
     }
   });
 });
