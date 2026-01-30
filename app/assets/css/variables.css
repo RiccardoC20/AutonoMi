@@ -22,9 +22,19 @@ arancione chiaro: FFE6C8
 --color-comune-sideBar: #00C383;
 
 
-.proggressBar{
-  background-color: #8dc3fa;
+/* Colori base */
+.coloreUtente {
+   color: var(--color-utente-sideBar);
 }
+.coloreComune {
+   color: var(--color-comune-sideBar);
+}
+.coloreVettore {
+   color: var(--color-vettore-sideBar);
+}
+
+
+
 
 /* SideBar */
 .sidebar.utente{
@@ -83,8 +93,12 @@ arancione chiaro: FFE6C8
    background-color: #007A52;
 }
 
+/* Extra */
+.proggressBar{
+  background-color: #8dc3fa;
+}
 
-/* Font megrim */
+/* Font mergin */
 .font-megrim {
   font-family: 'Megrim', cursive;
 }

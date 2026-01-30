@@ -78,7 +78,7 @@ onMounted(() => {
 
         
         <!-- Lista Vettori -->
-        <div class="card">
+        <div class="card mt-3">
           <div class="card-header">
             <h5 class="card-title mb-0">
               <i class="bi bi-truck me-2"></i>
