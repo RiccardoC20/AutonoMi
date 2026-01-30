@@ -132,7 +132,7 @@ onMounted(() => {
         <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
             <div >
               <p class="mb-0 small text-center text-muted" style="padding: 0;">
-                In questa pagina visualizzi tutte le richieste di corsa, da te create, ancora in sospeso. Starà al vettore approvarle o no.
+                Lista dei vettori iscritti.
               </p>
             </div>
         </div>

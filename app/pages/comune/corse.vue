@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import HomeLayout from '../../components/HomeLayout.vue';
 import Corsa from '../../components/CorsaPrenotataVettore.vue';
-import { type CorsaType } from '~~/composables/dataType';
+import { type CorsaType, type RichiestaCorsaType } from '~~/composables/dataType';
 
 const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
+const richiesteCorsa = ref<RichiestaCorsaType[]>([]);
 const loading = ref(false);
 
 
@@ -41,8 +42,36 @@ const loadData = async () =>{
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
     console.error('Errore loadData:', err);
   } finally {
+    loading.value = false; 
+  }
+
+  loading.value = true;
+
+  try {
+    const response = await $fetch<{
+      success: boolean;
+      data: CorsaType[];
+    }>('/api/richieste-corsa/comune/get', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.success) {
+      richiesteCorsa.value = response.data;
+    } else {
+      error.value = "Errore durante il caricamento delle richieste";
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || "Errore durante il caricamento dei dati";
+    console.error('Errore loadRichiesteCorsa:', err);
+  } finally {
     loading.value = false;
   }
+  
+
+  
 };
 
 const corseFiltrate = computed(() => {
@@ -91,7 +120,7 @@ onMounted(() => {
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center">
       <div class="content-wrapper p-4">
-        <h1>Monitoraggio corse</h1>
+        <h1>Monitoraggio</h1>
 
         <!-- Messaggio di errore -->
         <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -105,7 +134,7 @@ onMounted(() => {
         <div class="card mt-4 mb-3 p-3" style="background-color:  var(--color-background)">
             <div >
               <p class="mb-0 small text-center text-muted" style="padding: 0;">
-                In questa pagina visualizzi tutte le corse confermato
+                In questa pagina visualizzi tutte le richiese corse, corse prenotate e corse effettuate.
               </p>
             </div>
         </div> 
@@ -116,7 +145,7 @@ onMounted(() => {
             <div class="card-header">
               <h5 class="card-title mb-0">
                 <i class="bi bi-calendar-check me-2"></i>
-                Corse ({{ corse.length }})
+                Tutte le corse ({{ corse.length + richiesteCorsa.length }})
               </h5>
             </div>
             <div class="card-body">
@@ -125,6 +154,17 @@ onMounted(() => {
                 <p class="text-muted">Nessuna corsa prenotata</p>
               </div>
               <div v-else class="d-flex flex-column gap-3">
+                <RichiestaCorsa
+                  v-for="richiesta in richiesteCorsa"
+                  :key="richiesta._id"
+                  :partenza="richiesta.partenza"
+                  :arrivo="richiesta.arrivo"
+                  :data="richiesta.data"
+                  :km="richiesta.km"
+                  :codiceUtente="richiesta.codiceUtente"
+                  :codiceVettore="richiesta.codiceVettore"
+                  :status="true"
+                />
                 <CorsaPrenotata
                   v-for="corsa in corseFiltrate.prenotate"
                   :key="corsa._id"
@@ -133,7 +173,8 @@ onMounted(() => {
                   :data="corsa.data"
                   :km="corsa.km"
                   :codiceUtente="corsa.codiceUtente"
-                  @corsaEffettuata="corsaEffettuata(corsa._id)"
+                  :codiceVettore="corsa.codiceVettore"
+                  :status="true"
                 />
                 <CorsaEffettuata
                   v-for="corsa in corseFiltrate.effettuate"
@@ -143,6 +184,8 @@ onMounted(() => {
                   :data="corsa.data"
                   :km="corsa.km"
                   :codiceUtente="corsa.codiceUtente"
+                  :codiceVettore="corsa.codiceVettore"
+                  :status="true"
                 />
               </div>
             </div>

@@ -27,7 +27,7 @@ const stats = computed(() => {
     chilometraggioUsato
   };
 });
-console.log("chilometraggio" + stats.value.chilometraggioUsato)
+
 // Carica utenti
 const getUtenti = async (token: string) => {
   try {

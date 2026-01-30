@@ -45,6 +45,10 @@ COSE DA FARE NEL PROGETTO:
 - info 
 - rinnovo abbonamento? 
 
+- eliminare pagine non utilizzate
+- component Utente e Vettore da sistemare
+- le candidature sono da cambiare graficamente
+- alcune api sono fatte con cursor e provano ancora a fare l'autenticazione senza middleware
 - STAMPA ANCORA LE PASSWORD in CHIARO
 - aggiornare il valore di ritorno delle chiamate api con un DataType specifico 
 - in Richieste corse la variabile usata è "corse" da cambiare

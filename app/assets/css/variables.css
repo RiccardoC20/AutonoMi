@@ -17,17 +17,44 @@ arancione chiaro: FFE6C8
    ========================= */
 
 :root{
-   --color-background: #fcfcfc;
-   --color-card: #b1b1b1;
+--color-background: #fcfcfc;
+--color-card: #b1b1b1;
 
-    --color-utente-sideBar: #0066CC;
-    --color-utente-proggresBar: #73a2fc;
+--color-utente-sideBar: #0066CC;
+--color-utente-proggresBar: #73a2fc;
 
-    --color-vettore-sideBar: #e6713e;
-    --color-vettore-button-hover: #FFB253;
-    --color-vettore-button: #FFC277;
+--color-vettore-sideBar: #e6713e;
+--color-vettore-button-hover: #FFB253;
+--color-vettore-button: #FFC277;
 
-    --color-comune-sideBar: #00C383;
+--color-comune-sideBar: #00C383;
+
+
+
+.pending {
+   color: #b45309;
+}
+
+.bg-pending {
+   background: #fefcf6;
+}
+
+
+.prenotata {
+   color: #2c51c9;
+}
+
+.bg-prenotata {
+   background: #eaf2fc; 
+}
+
+
+.effettuata {
+   color: #166534;
+}
+.bg-effettuata {
+   background: #e7fcec; 
+}
 
     
 }
