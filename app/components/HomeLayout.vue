@@ -5,7 +5,7 @@
       :role="role"
     />
 
-    <div class="flex-grow-1 p-3" style="background-color:  var(--color-background)">
+    <div class="flex-grow-1 p-3 color-background">
       <!-- Header con informazioni utente/vettore/comune -->
       <div class="mb-4">
         <!-- Comune -->

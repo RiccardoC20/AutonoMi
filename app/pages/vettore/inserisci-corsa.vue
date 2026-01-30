@@ -113,7 +113,7 @@ const getMinTime = () => {
       <div class="col-md-8 col-lg-6">
         <h1>Prenota per utente</h1>
         <!-- Informazioni aggiuntive -->
-        <div class="card mt-3 mb-3 p-3" style="background-color:  var(--color-background)">
+        <div class="card mt-3 mb-3 p-3 color-background">
             <div >
               <p class="mb-0 small text-center text-muted" style="padding: 0;">
                 Prenotazione in chiamata della corsa di un utente. 
@@ -251,12 +251,3 @@ const getMinTime = () => {
     </div>
   </HomeLayout>
 </template>
-
-<style>
-.btn-vettore{
-  --bs-btn-bg: var(--color-vettore-button);
-
-  --bs-btn-hover-bg: var(--color-vettore-button-hover);
-}
-
-</style>

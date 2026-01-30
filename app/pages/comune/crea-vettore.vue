@@ -147,7 +147,7 @@ async function handleSubmit() {
               <div class="d-grid gap-2">
                 <button
                   type="submit"
-                  class="btn button-color text-white"
+                  class="btn btn-comune text-white"
                   :disabled="loading || !nome.trim() || !email.trim() || !numeroTelefono.trim() || !sede.trim()"
                 >
                   <span v-if="loading">
@@ -182,7 +182,5 @@ async function handleSubmit() {
   max-width: 1200px;
   width: 50%;
 }
-.button-color{
-  background-color: var(--color-comune-sideBar);
-}
+
 </style>

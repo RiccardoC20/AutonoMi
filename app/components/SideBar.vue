@@ -26,7 +26,7 @@
   </div>
 
 <!-- Modal Logout -->
-<div class="modal fade" id="logoutBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="logoutBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -38,7 +38,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="logout()">Conferma</button>
+        <button type="button" :class="['btn', `btn-${role}`]" data-bs-dismiss="modal" @click="logout()">Conferma</button>
       </div>
     </div>  
   </div>
@@ -80,15 +80,8 @@ export default {
   width: 200px;
 }
 
-.sidebar.comune{
-  background-color: var(--color-comune-sideBar);
-}
-.sidebar.vettore{
-  background-color: var(--color-vettore-sideBar);
-}
-.sidebar.utente{
-  background-color: var(--color-utente-sideBar);
-}
+
+
 
 .nav-link:hover {
   background-color: #0000001f;
