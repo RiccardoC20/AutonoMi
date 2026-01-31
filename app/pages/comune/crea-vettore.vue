@@ -55,7 +55,7 @@ async function handleSubmit() {
 <template>
   <HomeLayout role="comune">
     <div class="d-flex justify-content-center ">
-      <div class="content-wrapper p-4 ">
+      <div class="p-4" style="  max-width: 1200px;width: 50%;">
         <h1>Registrazione nuovo vettore</h1>
 
           <div class="card-body card shadow-sm">
@@ -176,11 +176,3 @@ async function handleSubmit() {
       </div>
   </HomeLayout>
 </template>
-
-<style scoped>
-.content-wrapper {
-  max-width: 1200px;
-  width: 50%;
-}
-
-</style>

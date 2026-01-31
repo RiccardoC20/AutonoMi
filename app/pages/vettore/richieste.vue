@@ -248,6 +248,7 @@ onMounted(() => {
                       :arrivo="richiesta.arrivo"
                       :data="richiesta.data"
                       :km="richiesta.km"
+                      :codiceUtente="richiesta.codiceUtente"
                     />
                   </div>
                   <div class="d-flex gap-2">
@@ -397,10 +398,3 @@ onMounted(() => {
     ></div>
   </HomeLayout>
 </template>
-
-<style scoped>
-.content-wrapper {
-  max-width: 1200px;
-  width: 100%;
-}
-</style>

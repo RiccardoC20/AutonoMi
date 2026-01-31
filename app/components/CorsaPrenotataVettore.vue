@@ -2,30 +2,41 @@
 
 <template>
 <div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto">
-  <div class="text-truncate fw-bold" style="width: 15rem;">
-    <i class="bi bi-house-door-fill me-1"></i>
-    {{ partenza }}
+
+  <div class="col-1">
+    <div class="row-top">
+      <strong>Partenza </strong>
+    </div>
+    <div class="row-bottom">
+      <strong>Arrivo </strong>
+    </div>
   </div>
-  <div class="text-truncate fw-bold" style="width: 15rem;">
-    <i class="bi bi-flag-fill me-1"></i>
-    {{ arrivo }}
+
+  <div class="col-2">
+    <div class="row-top text-truncate">
+      {{ partenza }}
+    </div>
+    <div class="row-bottom text-truncate">
+      {{ arrivo }}
+    </div>
   </div>
-  <div class="text-truncate" style="width: 8rem;">
-    <i class="bi bi-calendar-event me-1"></i>
-    {{ dataCorsa }}
+
+  <div class="col-1">
+    <strong>Ora e data:</strong>
   </div>
-  <div class="text-truncate" style="width: 8rem;">
-    <i class="bi bi-clock me-1"></i>
-    {{ oraCorsa }}
+  <div class="col-2">
+    {{ oraCorsa }} - {{dataCorsa}}
   </div>
-  <div v-if="km" class="text-truncate fw-bold " style="width: 5rem;">
+
+  <div class="col text-truncate fw-bold " style="width: 5rem;">
     {{ km }} km
   </div>
-  
   <!-- Campi opzionali -->
-  <div v-if="codiceUtente" class="text-truncate text-muted" style="width: 4rem;">
-    <i class="bi bi-person me-1"></i>
-    {{ codiceUtente }}
+  <div v-if="codiceUtente" class="col-1">
+      <strong>Utente </strong>
+  </div>
+  <div v-if="codiceUtente" class="col-2">
+      #{{ codiceUtente }}
   </div>
 
   <!-- Bottone per completare la corsa -->

@@ -75,7 +75,7 @@ async function handleLogin() {
                   v-model="codiceUtente"
                   type="text"
                   class="form-control"
-                  placeholder="Inserisci il tuo codice"
+                  placeholder="Inserisci il tuo codice utente           "
                   :disabled="loading"
                   autocomplete="username"
                 />

@@ -264,13 +264,3 @@ onMounted(() => {
     </div>
   </HomeLayout>
 </template>
-
-<style>
-
-
-.content-wrapper {
-  max-width: 1200px;
-  width: 100%;
-}
-</style>
-  

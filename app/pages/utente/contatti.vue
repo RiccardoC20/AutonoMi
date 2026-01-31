@@ -92,11 +92,21 @@ onMounted(() => {
                 :key="vettore._id"
                 class="list-group-item d-flex justify-content-between align-items-center"
               >
-                <div>
-                  <h6 class="mb-1">{{ vettore.nome }}</h6>
+                <div class="col">
+                  <h6 class="mb-1">
+                    {{ vettore.nome }}
+                  </h6>
+                </div>
+                <div class="col">
                   <a  class="text-decoration-none" >
                     <i class="bi bi-telephone-fill me-2 text-primary"></i>
                     {{ vettore.numeroTelefono }}
+                  </a>
+                </div>
+                <div class="col-3">
+                  <a  class="text-decoration-none" >
+                    <i class="bi bi-envelope-fill me-2 "></i>
+                    {{ vettore.email }}
                   </a>
                 </div>
               </div>
@@ -107,10 +117,3 @@ onMounted(() => {
     </div>
   </HomeLayout>
 </template>
-
-<style scoped>
-.content-wrapper {
-  max-width: 1200px;
-  width: 100%;
-}
-</style>

@@ -38,13 +38,13 @@ arancione chiaro: FFE6C8
 
 /* SideBar */
 .sidebar.utente{
-   background-color: #0066CC;
+   background-color: var(--color-utente-sideBar);
 }
 .sidebar.vettore{
-   background-color: #e6713e;
+   background-color: var(--color-vettore-sideBar);
 }
 .sidebar.comune{
-   background-color: #00C383;
+   background-color: var(--color-comune-sideBar);
 }
 
 .color-background{
@@ -102,5 +102,10 @@ arancione chiaro: FFE6C8
 .font-megrim {
   font-family: 'Megrim', cursive;
 }
-    
+
+/*contenuto pagina */
+.content-wrapper {
+  min-width: 100%;
+  width: 100%;
+}
 }
