@@ -143,6 +143,7 @@ onMounted(() => {
                 :_id="utente._id"
                 :nome="utente.nome"
                 :cognome="utente.cognome"
+                :email="utente.email"
                 :codiceUtente="utente.codiceUtente"
                 @richiedi-eliminazione="apriModalElimina"
               />

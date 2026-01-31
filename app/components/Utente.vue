@@ -4,15 +4,20 @@
 <div class="d-flex align-items-center gap-2 gap-md-3 p-2 p-md-3 bg-light border rounded-3 w-100">
   
   <!-- Nome e Cognome - Responsive -->
-  <div class="d-flex  min-w-0">
-    <div class="text-truncate" style="min-width: 10rem;">{{ nome }}</div>
-    <div class="text-truncate d-none d-sm-block" style="min-width: 10rem;">{{ cognome }}</div>
+  <div class="d-flex  min-w-0 col">
+    <div class="text-truncate col-3">{{ nome }}</div>
+    <div class="text-truncate d-none d-sm-block col-3">{{ cognome }}</div>
   </div>
+  <div class="text-truncate col" >{{ email }}</div>
 
-  <!-- Codice Utente - Priorità alta, sempre visibile -->
-  <div class="text-truncate  flex-shrink-0" style="min-width: 6rem; max-width:12rem;">
-    #{{ codiceUtente }}
-  </div>
+  <!-- Codice Utente -->
+    <div class="col-1 text-truncate">
+      Utente: 
+    </div>
+    <div class="col-1">
+      #{{ codiceUtente }}
+    </div>
+  
 
   <!-- Elimina -->
   <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto flex-shrink-0">
@@ -44,6 +49,7 @@
     },
       nome: String,
       cognome: String,
+      email: String,
       codiceUtente: String
     },
     emits: ['richiedi-eliminazione'],

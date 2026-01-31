@@ -42,7 +42,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" :class="['btn', `btn-${role}`]" data-bs-dismiss="modal" @click="logout()">Conferma</button>
+        <button type="button" :class="['btn', `btn-${role}`]" class="text-white" data-bs-dismiss="modal" @click="logout()">Conferma</button>
       </div>
     </div>  
   </div>

@@ -45,7 +45,7 @@ async function handleLogin() {
     <div class="row justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card shadow-sm">
-          <div class="card-header text-white text-center " style="background-color: var(--color-utente-sideBar);">
+          <div class="card-header text-white text-center utente-color-base">
             <h2 class="m-2 font-megrim">AutonoMi</h2>
           </div>
 
@@ -99,8 +99,7 @@ async function handleLogin() {
               <div class="d-grid">
                 <button
                   type="submit"
-                  class="btn text-white"
-                  style="background-color: var(--color-utente-sideBar);"
+                  class="btn text-white utente-color-base"
                   :disabled="loading || !codiceUtente.trim() || !password"
                 >
                   <span v-if="loading">

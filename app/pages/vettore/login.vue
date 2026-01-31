@@ -99,8 +99,7 @@ async function handleLogin() {
               <div class="d-grid">
                 <button
                   type="submit"
-                  class="btn text-white"
-                  style="background-color: var(--color-vettore-sideBar)"
+                  class="btn text-white vettore-color-base"
                   :disabled="loading || !codiceVettore.trim() || !password"
                 >
                   <span v-if="loading">

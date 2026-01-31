@@ -147,7 +147,7 @@ async function handleSubmit() {
               <div class="d-grid gap-2">
                 <button
                   type="submit"
-                  class="btn btn-comune text-white btn-comune-crea-vettore"
+                  class="btn text-white btn-comune-crea-vettore"
                   :disabled="loading || !nome.trim() || !email.trim() || !numeroTelefono.trim() || !sede.trim()"
                 >
                   <span v-if="loading">

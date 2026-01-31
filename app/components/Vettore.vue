@@ -2,9 +2,16 @@
 
 <template>
 <div class="d-flex align-items-center  p-3 bg-light border rounded-3 w-auto">
-  <div class="text-truncate" style="width: 12rem;">{{ nome }}</div>
-  <div class="text-truncate" style="width: 17rem;">{{ email }}</div>
-  <div class="text-truncate" style="width: 8rem;">#{{ codiceVettore }}</div>
+  <div class="text-truncate col" >{{ nome }}</div>
+  <div class="text-truncate col" >{{ email }}</div>
+
+    <div class="col-1 text-truncate">
+      Vettore: 
+    </div>
+    <div class="col-1">
+      #{{ codiceVettore }}
+    </div>
+  
   
   <div class="d-flex align-items-center gap-3 ms-auto">
     <button

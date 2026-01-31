@@ -17,34 +17,43 @@ arancione chiaro: FFE6C8
    ========================= */
 
 :root{
---color-utente-sideBar: #0066CC;
---color-vettore-sideBar: #e6713e;
---color-comune-sideBar: #00C383;
+--color-utente: #0066CC;
+--color-vettore: #e6713e;
+/* coloro comune vecchio 27cd5e*/
+--color-comune: #35c411;
 
 
 /* Colori base */
 .text-coloreUtente {
-   color: var(--color-utente-sideBar);
+   color: var(--color-utente);
 }
 .text-coloreComune {
-   color: var(--color-comune-sideBar);
+   color: var(--color-comune);
 }
 .text-coloreVettore {
-   color: var(--color-vettore-sideBar);
+   color: var(--color-vettore);
 }
 
-
+.utente-color-base{
+   background-color: var(--color-utente);
+}
+.vettore-color-base{
+   background-color: var(--color-vettore);
+}
+.comune-color-base{
+   background-color: var(--color-comune);
+}
 
 
 /* SideBar */
 .sidebar.utente{
-   background-color: var(--color-utente-sideBar);
+   background-color: var(--color-utente);
 }
 .sidebar.vettore{
-   background-color: var(--color-vettore-sideBar);
+   background-color: var(--color-vettore);
 }
 .sidebar.comune{
-   background-color: var(--color-comune-sideBar);
+   background-color: var(--color-comune);
 }
 
 .color-background{
@@ -78,16 +87,16 @@ arancione chiaro: FFE6C8
 
 /* Colori per bottoni */
 .btn-utente{
-  --bs-btn-bg: #00aaff9b;
-  --bs-btn-hover-bg:  #00AAFF;
+  --bs-btn-bg: #0099ff;
+  --bs-btn-hover-bg:  #0044FF;
 }
 .btn-vettore{
-  --bs-btn-bg: #FFB253;
-  --bs-btn-hover-bg: #FFC277;
+  --bs-btn-bg: #ffaa77;
+  --bs-btn-hover-bg: #ff8133;
 }
 .btn-comune{
-  --bs-btn-bg: #00C383;
-  --bs-btn-hover-bg: #6de8bf;
+  --bs-btn-bg: #6de8a4;
+  --bs-btn-hover-bg: #00c34b;
 }
 .btn-comune-crea-vettore{
    background-color: #007A52;
