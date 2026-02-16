@@ -12,8 +12,8 @@
             data-bs-target="#infoUtenteBackdrop"
             @click="visualizza"
         >
-          info utente
-          <i class="bi bi-eye"></i>
+          <i class="bi bi-info-circle p-1"></i>
+            info
         </button>
         <button class="btn btn-outline-secondary btn-sm" 
             data-bs-toggle="modal"
