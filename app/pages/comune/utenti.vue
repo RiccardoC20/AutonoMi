@@ -48,7 +48,6 @@ const getUtenti = async () => {
 
 const apriModalElimina = (id: string) => {
   utenteDaEliminare.value = id;
-  console.log("id: " + id)
 };
 
 const confermaEliminazione = async () => {

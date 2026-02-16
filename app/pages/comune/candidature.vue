@@ -1,30 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import Candidatura from '~/components/Candidatura.vue';
+import type { UtenteType, CandidaturaType} from '~~/composables/dataType';
 
-interface Candidatura {
-  _id: string;
-  utente: {
-    nome: string;
-    cognome: string;
-    email: string;
-    dataNascita: string;
-    cellulare: string;
-    codiceFiscale: string;
-  };
-  pdfUrl?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
 
-const candidature = ref<Candidatura[]>([]);
+const candidature = ref<CandidaturaType[]>([]);
+const candidatura = ref<CandidaturaType>();
+
 const loading = ref(false);
 const error = ref<string | null>(null);
 const deletingId = ref<string | null>(null);
-const expandedIds = ref<Set<string>>(new Set());
-const showConfirmModal = ref(false);
-const confirmAction = ref<'accetta' | 'rifiuta' | null>(null);
-const confirmCandidaturaId = ref<string | null>(null);
-const confirmCandidaturaNome = ref<string>('');
+
 
 async function loadCandidature() {
   loading.value = true;
@@ -35,7 +21,7 @@ async function loadCandidature() {
     
     const response = await $fetch<{
       success: boolean;
-      data: Candidatura[];
+      data: CandidaturaType[];
       count: number;
     }>('/api/candidatura/get', {
       method: 'GET',
@@ -55,31 +41,7 @@ async function loadCandidature() {
   }
 }
 
-function openConfirmModal(action: 'accetta' | 'rifiuta', candidaturaId: string, nome: string) {
-  confirmAction.value = action;
-  confirmCandidaturaId.value = candidaturaId;
-  confirmCandidaturaNome.value = nome;
-  showConfirmModal.value = true;
-}
 
-function closeConfirmModal() {
-  showConfirmModal.value = false;
-  confirmAction.value = null;
-  confirmCandidaturaId.value = null;
-  confirmCandidaturaNome.value = '';
-}
-
-async function confirmActionHandler() {
-  if (!confirmCandidaturaId.value || !confirmAction.value) return;
-
-  if (confirmAction.value === 'rifiuta') {
-    await executeRifiuta(confirmCandidaturaId.value);
-  } else if (confirmAction.value === 'accetta') {
-    await executeAccetta(confirmCandidaturaId.value);
-  }
-
-  closeConfirmModal();
-}
 
 async function executeRifiuta(candidaturaId: string) {
   deletingId.value = candidaturaId;
@@ -177,12 +139,23 @@ async function executeAccetta(candidaturaId: string) {
   }
 }
 
-function handleRifiuta(candidaturaId: string, nome: string) {
-  openConfirmModal('rifiuta', candidaturaId, nome);
+function getCandidatura(candidaturaId: string){
+  const cand = candidature.value.find(c => c._id === candidaturaId);
+  if (cand && cand.utente) {
+    candidatura.value = cand;
+  }
 }
 
-function handleAccetta(candidaturaId: string, nome: string) {
-  openConfirmModal('accetta', candidaturaId, nome);
+function handleRifiuta(candidaturaId: string) {
+  getCandidatura(candidaturaId);
+}
+
+function handleAccetta(candidaturaId: string) {
+  getCandidatura(candidaturaId);
+}
+
+function handleInfoUtente(candidaturaId: string) {
+  getCandidatura(candidaturaId);
 }
 
 function handlePdf(candidaturaId: string) {
@@ -192,34 +165,6 @@ function handlePdf(candidaturaId: string) {
   } else {
     error.value = 'PDF non disponibile per questa candidatura';
   }
-}
-
-function formatDate(dateString: string | undefined): string {
-  if (!dateString) return 'N/A';
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('it-IT', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-  } catch {
-    return 'N/A';
-  }
-}
-
-function toggleDetails(candidaturaId: string) {
-  if (expandedIds.value.has(candidaturaId)) {
-    expandedIds.value.delete(candidaturaId);
-  } else {
-    expandedIds.value.add(candidaturaId);
-  }
-  // Trigger reactivity
-  expandedIds.value = new Set(expandedIds.value);
-}
-
-function isExpanded(candidaturaId: string): boolean {
-  return expandedIds.value.has(candidaturaId);
 }
 
 onMounted(() => {
@@ -256,86 +201,24 @@ onMounted(() => {
         </div>
 
         <!-- Lista candidature -->
-        <div v-else-if="candidature.length > 0">
+        <div v-else-if="candidature.length > 0" id="accordion">
           <div
             v-for="candidatura in candidature"
             :key="candidatura._id"
-            class="candidatura-card card shadow-sm mb-2"
-            :class="{ 'expanded': isExpanded(candidatura._id) }"
           >
-            <div class="card-body">
-              <!-- Header compatto -->
-              <div 
-                class="candidatura-header d-flex justify-content-between align-items-center"
-                @click="toggleDetails(candidatura._id)"
-                style="cursor: pointer;"
-              >
-                <div class="d-flex align-items-center">
-                  <h6 class="card-title mb-0 me-3">
-                    {{ candidatura.utente.nome }} {{ candidatura.utente.cognome }}
-                  </h6>
-                  <i 
-                    class="bi"
-                    :class="isExpanded(candidatura._id) ? 'bi-chevron-up' : 'bi-chevron-down'"
-                  ></i>
-                </div>
-                <div class="d-flex align-items-center gap-2" @click.stop>
-                  <button
-                    type="button"
-                    class="btn btn-outline-secondary btn-sm"
-                    @click="handlePdf(candidatura._id)"
-                    title="Visualizza documenti PDF"
-                  >
-                    <i class="bi bi-file-pdf me-1"></i>
-                    PDF
-                  </button>
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm"
-                      @click="handleAccetta(candidatura._id, `${candidatura.utente.nome} ${candidatura.utente.cognome}`)"
-                    >
-                      <i class="bi bi-check-circle me-1"></i>
-                      Accetta
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm"
-                      @click="handleRifiuta(candidatura._id, `${candidatura.utente.nome} ${candidatura.utente.cognome}`)"
-                      :disabled="deletingId === candidatura._id"
-                    >
-                      <span
-                        v-if="deletingId === candidatura._id"
-                        class="spinner-border spinner-border-sm me-1"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      <i v-else class="bi bi-x-circle me-1"></i>
-                      Rifiuta
-                    </button>
-                  </div>
-                </div>
-              </div>
+          <Candidatura 
+            :_id="candidatura._id"
+            :nome="candidatura.utente.nome"
+            :cognome="candidatura.utente.cognome"
+            @visualizza="handleInfoUtente"
+            @apriPdf="handlePdf"
+            @approva="handleAccetta"
+            @rifiuta="handleRifiuta"
 
-              <!-- Dettagli espandibili -->
-              <div class="candidatura-details" :class="{ 'expanded': isExpanded(candidatura._id) }">
-                <hr class="my-3">
-                <dl class="row mb-0">
-                  <dt class="col-sm-4">Email:</dt>
-                  <dd class="col-sm-8">{{ candidatura.utente.email }}</dd>
 
-                  <dt class="col-sm-4">Data di Nascita:</dt>
-                  <dd class="col-sm-8">{{ formatDate(candidatura.utente.dataNascita) }}</dd>
-
-                  <dt class="col-sm-4">Cellulare:</dt>
-                  <dd class="col-sm-8">{{ candidatura.utente.cellulare }}</dd>
-
-                  <dt class="col-sm-4">Codice Fiscale:</dt>
-                  <dd class="col-sm-8">{{ candidatura.utente.codiceFiscale }}</dd>
-                </dl>
-              </div>
-            </div>
+            />
           </div>
+
         </div>
 
         <!-- Nessuna candidatura -->
@@ -346,114 +229,92 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
-    <!-- Modal di conferma -->
-    <div
-      class="modal fade"
-      :class="{ 'show': showConfirmModal }"
-      :style="{ display: showConfirmModal ? 'block' : 'none' }"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header" :class="confirmAction === 'accetta' ? 'bg-success text-white' : 'bg-danger text-white'">
-            <h5 class="modal-title" id="confirmModalLabel">
-              <i 
-                class="bi me-2"
-                :class="confirmAction === 'accetta' ? 'bi-check-circle' : 'bi-x-circle'"
-              ></i>
-              Conferma {{ confirmAction === 'accetta' ? 'Accettazione' : 'Rifiuto' }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              @click="closeConfirmModal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p>
-              Sei sicuro di voler 
-              <strong>{{ confirmAction === 'accetta' ? 'accettare' : 'rifiutare' }}</strong> 
-              la candidatura di <strong>{{ confirmCandidaturaNome }}</strong>?
-            </p>
-            <p v-if="confirmAction === 'rifiuta'" class="text-danger mb-0">
-              <small><i class="bi bi-exclamation-triangle me-1"></i>Questa operazione non può essere annullata.</small>
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeConfirmModal"
-            >
-              Annulla
-            </button>
-            <button
-              type="button"
-              class="btn"
-              :class="confirmAction === 'accetta' ? 'btn-success' : 'btn-danger'"
-              @click="confirmActionHandler"
-              :disabled="deletingId === confirmCandidaturaId"
-            >
-              <span
-                v-if="deletingId === confirmCandidaturaId"
-                class="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Conferma
-            </button>
-          </div>
-        </div>
+<!-- Modal per eliminare la candidatura -->
+<div class="modal fade" id="rifiutaCandidaturaBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Rifiuta Candidatura</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Conferma il rifiuto della candidatura di:
+        {{ candidatura?.utente.nome }}
+        {{ candidatura?.utente.cognome }}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          @click="executeRifiuta(candidatura._id)"
+        >
+          Conferma
+        </button>
       </div>
     </div>
-    <!-- Backdrop del modal -->
-    <div
-      v-if="showConfirmModal"
-      class="modal-backdrop fade show"
-      @click="closeConfirmModal"
-    ></div>
+  </div>
+</div>
+
+<!-- Modal per accettare la candidatura -->
+<div class="modal fade" id="accettaCandidaturaBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Accetta Candidatura</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Conferma l'accettazione della candidatura di:
+        {{ candidatura?.utente.nome }}
+        {{ candidatura?.utente.cognome }}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          @click="executeAccetta(candidatura._id)"
+        >
+          Conferma
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal per info utente -->
+<div class="modal fade" id="infoUtenteBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Info Utente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Email:</dt>
+          <dd class="col-sm-8">{{ candidatura?.utente.email }}</dd>
+
+          <dt class="col-sm-4">Data di Nascita:</dt>
+          <dd class="col-sm-8">{{ candidatura?.utente.dataNascita }}</dd>
+
+          <dt class="col-sm-4">Cellulare:</dt>
+          <dd class="col-sm-8">{{ candidatura?.utente.cellulare }}</dd>
+
+          <dt class="col-sm-4">Codice Fiscale:</dt>
+          <dd class="col-sm-8">{{ candidatura?.utente.codiceFiscale }}</dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </HomeLayout>
 </template>
 
 <style scoped>
-.candidatura-card {
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.candidatura-header {
-  padding: 0.5rem 0;
-}
-
-.candidatura-details {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
-  margin: 0;
-}
-
-.candidatura-details.expanded {
-  max-height: 500px;
-  opacity: 1;
-  margin-top: 0;
-}
-
-.candidatura-card.expanded {
-  margin-bottom: 1rem;
-}
-
-.candidatura-card:hover {
-  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15) !important;
-}
-
-.modal.show {
-  display: block !important;
-}
 
 </style>

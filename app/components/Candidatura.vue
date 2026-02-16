@@ -1,53 +1,73 @@
 <script setup lang="ts"></script>
 
 <template>
-<div class="d-flex align-items-center gap-3 p-3 bg-light border rounded-3 w-auto">
-  <div class="text-truncate fw-bold" style="width: 8rem;">{{ codiceCandidatura }}</div>
-  <div class="text-truncate" style="width: 12rem;">{{ nome }} {{ cognome }}</div>
-  <div class="text-truncate" style="width: 15rem;">{{ email }}</div>
-  <div class="text-truncate" style="width: 8rem;">
+  <div class="card">
+    <div class="card-body d-flex align-items-center">
+      <h6 class="mb-0 text-truncate fw-bold text-capitalize">
+        {{ nome }} {{ cognome }}
+      </h6>
+      <div class="ms-auto d-flex gap-3">
+        <button class="btn btn-outline-primary btn-sm" 
+            data-bs-toggle="modal"
+            data-bs-target="#infoUtenteBackdrop"
+            @click="visualizza"
+        >
+          info utente
+          <i class="bi bi-eye"></i>
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" 
+            data-bs-toggle="modal"
+            data-bs-target="#apriPdfBackdrop"
+            @click="apriPdf"
+        >
+          apri pdf
+          <i class="bi bi-file-pdf"></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm" 
+            data-bs-toggle="modal"
+            data-bs-target="#accettaCandidaturaBackdrop"
+            @click="approva"
+        >
+          accetta
+          <i class="bi bi-check-lg"></i>
+        </button>
+        <button class="btn btn-outline-danger btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#rifiutaCandidaturaBackdrop"
+            @click="rifiuta"
+        >
+          rifiuta
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
   </div>
-
-  <div class="d-flex align-items-center gap-3 ms-auto">
-    <button class="btn btn-outline-info btn-sm" @click="$emit('visualizza')">
-      <i class="bi bi-eye me-1"></i>
-      Dettagli
-    </button>
-    <button
-      v-if="documentazionePdf"
-      class="btn btn-outline-primary btn-sm"
-      @click="$emit('scarica-pdf', documentazionePdf)"
-    >
-      <i class="bi bi-download me-1"></i>
-      PDF
-    </button>
-    <button class="btn btn-outline-success btn-sm" @click="$emit('approva')">
-      <i class="bi bi-check-circle me-1"></i>
-      Approva
-    </button>
-    <button class="btn btn-outline-danger btn-sm" @click="$emit('rifiuta')">
-      <i class="bi bi-x-circle me-1"></i>
-      Rifiuta
-    </button>
-  </div>
-</div>
 </template>
 
 <script>
   export default {
     name: "Candidatura",
     props:{
-      codiceCandidatura: String,
+      _id: {
+        type: String,
+        required: true
+      },
       nome: String,
       cognome: String,
-      email: String,
-      tipoInvalidita: String,
-      stato: {
-        type: String,
-        default: 'In Attesa'
-      },
-      documentazionePdf: String
     },
-    emits: ['visualizza', 'scarica-pdf', 'approva', 'rifiuta']
+    methods: {
+      visualizza() {
+        this.$emit('visualizza', this._id);
+      },
+      apriPdf() {
+        this.$emit('apriPdf', this._id);
+      },
+      approva() {
+        this.$emit('approva', this._id);
+      },
+      rifiuta() {
+        this.$emit('rifiuta', this._id);
+      }
+    }
   }
 </script>

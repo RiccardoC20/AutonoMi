@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
             break;
           case 'codiceFiscale':
             codiceFiscale = value;
+            codiceFiscale = codiceFiscale.toUpperCase();
             break;
           case 'codiceUtente':
             codiceUtente = value || null;

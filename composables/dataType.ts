@@ -7,15 +7,12 @@ export interface UtenteType {
   dataNascita: string;
   cellulare: string;
   budget: number;
+  codiceFiscale?: String;
 }
 export interface CandidaturaType {
   _id: string;
-  codiceCandidatura: string;
-  nome: string;
-  cognome: string;
-  email: string;
-  dataNascita: string;
-  cellulare: string;
+  utente: UtenteType;
+  pdfUrl?: string;
 }
 export interface CorsaType {
   _id: string;
@@ -43,8 +40,6 @@ export interface VettoreType {
   email: string;
   numeroTelefono?: string;
   sede?: string;
-  createdAt?: string;
-  updatedAt?: string;
 }
 export interface ComuneType {
   name: string;
