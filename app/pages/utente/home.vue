@@ -44,7 +44,7 @@ const stats = computed( () => {
   const chilimetraggioUsato =  corse.value.reduce((sum, corse) => {
     return ( sum + (corse.km || 0))
   }, 0);
-  const percentualeKmUsati = (chilometriTotali / chilimetraggioUsato).toFixed(1);
+  const percentualeKmUsati = (chilimetraggioUsato === 0? 0 : (chilometriTotali / chilimetraggioUsato).toFixed(1));
   return {
     chilimetraggioUsato,
     chilometriTotali,
