@@ -9,13 +9,8 @@ const corse = ref<RichiestaCorsaType[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-// Filtri di ricerca e ordinamento
-const sortBy = ref('data-desc'); // 'data-desc', 'data-asc'
-const dateFrom = ref('');
-const dateTo = ref('');
-
 // Funzione per caricare le corse dal backend
-const caricaCorse = async () => {
+const getCorse = async () => {
   loading.value = true;
   error.value = null;
 
@@ -56,7 +51,7 @@ const caricaCorse = async () => {
 
 // Carica le corse al mount del componente
 onMounted(() => {
-  caricaCorse();
+  getCorse();
 });
 </script>
 
@@ -120,7 +115,7 @@ onMounted(() => {
                   :arrivo="corsa.arrivo"
                   :data="corsa.data"
                   :km="corsa.km"
-                  :nomeVettore="corsa.codiceVettore"
+                  :codiceVettore="corsa.codiceVettore"
                 />
               </div>
             </div>

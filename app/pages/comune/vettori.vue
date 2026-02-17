@@ -62,7 +62,6 @@ const loadData = async () => {
 };
 const apriModalElimina = (id: string) => {
   vettoreDaEliminare.value = id;
-  console.log("id: " + id)
 };
 
 const confermaEliminazione = async () => {
@@ -165,15 +164,15 @@ onMounted(() => {
       </div>
     </div>
   </HomeLayout>
-<div class="modal fade" id="removeUtenteBackdrop" tabindex="-1">
+<div class="modal fade" id="removeVettoreBackdrop" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Elimina Utente</h5>
+        <h5 class="modal-title">Elimina Vettore</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        Vuoi eliminare questo utente?
+        Vuoi eliminare questo vettore?
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>

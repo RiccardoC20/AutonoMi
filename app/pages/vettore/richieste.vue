@@ -255,7 +255,8 @@ onMounted(() => {
                     <button
                       class="btn btn-success btn-sm"
                       @click="apriAccettaModal(richiesta)"
-                      :disabled="processing"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confermaAccettazioneRichiestaCorsaBackdrop"
                     >
                       <i class="bi bi-check-circle me-1"></i>
                       Accetta
@@ -263,7 +264,8 @@ onMounted(() => {
                     <button
                       class="btn btn-danger btn-sm"
                       @click="apriRifiutaModal(richiesta)"
-                      :disabled="processing"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confermaRifiutoRichiestaCorsaBackdrop"
                     >
                       <i class="bi bi-x-circle me-1"></i>
                       Rifiuta
@@ -278,123 +280,52 @@ onMounted(() => {
     </div>
 
     <!-- Modal di conferma Accetta -->
-    <div
-      class="modal fade"
-      :class="{ show: showAccettaModal }"
-      :style="{ display: showAccettaModal ? 'block' : 'none' }"
-      tabindex="-1"
-      role="dialog"
-    >
-      <div class="modal-dialog" role="document">
+    <div class="modal fade" id="confermaAccettazioneRichiestaCorsaBackdrop" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header bg-success text-white">
-            <h5 class="modal-title">
-              <i class="bi bi-check-circle me-2"></i>
-              Conferma Accettazione
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              @click="showAccettaModal = false"
-              aria-label="Close"
-            ></button>
+          <div class="modal-header">
+            <h5 class="modal-title">Conferma Accettazione</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <p>Sei sicuro di voler accettare questa richiesta di corsa?</p>
-            <div v-if="richiestaSelezionata" class="small text-muted">
-              <strong>Partenza:</strong> {{ richiestaSelezionata.partenza }}<br>
-              <strong>Arrivo:</strong> {{ richiestaSelezionata.arrivo }}<br>
-              <strong>Data:</strong> {{ richiestaSelezionata.data?.toLocaleDateString() }}<br>
-              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}<br>
-              <strong>Km:</strong> {{ richiestaSelezionata.km }}              
-            </div>
+            Sei sicuro di voler accettare questa richiesta di corsa?
           </div>
           <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
             <button
-              type="button"
-              class="btn btn-secondary"
-              @click="showAccettaModal = false"
-            >
-              Annulla
-            </button>
-            <button
-              type="button"
               class="btn btn-success"
+              data-bs-dismiss="modal"
               @click="accettaRichiesta"
             >
-              <i class="bi bi-check-circle me-1"></i>
-              Conferma Accettazione
+              Conferma
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="showAccettaModal"
-      class="modal-backdrop fade show"
-      @click="showAccettaModal = false"
-    ></div>
-
     <!-- Modal di conferma Rifiuta -->
-    <div
-      class="modal fade"
-      :class="{ show: showRifiutaModal }"
-      :style="{ display: showRifiutaModal ? 'block' : 'none' }"
-      tabindex="-1"
-      role="dialog"
-    >
-      <div class="modal-dialog" role="document">
+    <div class="modal fade" id="confermaRifiutoRichiestaCorsaBackdrop" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title">
-              <i class="bi bi-exclamation-triangle me-2"></i>
-              Conferma Rifiuto
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              @click="showRifiutaModal = false"
-              aria-label="Close"
-            ></button>
+          <div class="modal-header">
+            <h5 class="modal-title">Conferma rifiuto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <p><strong>Attenzione!</strong> Sei sicuro di voler rifiutare questa richiesta di corsa?</p>
-            <p class="text-danger mb-0">Questa azione eliminerà definitivamente la richiesta dal database.</p>
-            <div v-if="richiestaSelezionata" class="small text-muted mt-3">
-              <strong>Partenza:</strong> {{ richiestaSelezionata.partenza }}<br>
-              <strong>Arrivo:</strong> {{ richiestaSelezionata.arrivo }}<br>
-              <strong>Data:</strong> {{ richiestaSelezionata.data?.toLocaleDateString() }}<br>
-              <strong>Orario:</strong> {{ richiestaSelezionata.data?.toLocaleTimeString() }}<br>
-              <strong>Km:</strong> {{ richiestaSelezionata.km }}              
-            </div>
+            Sei sicuro di voler rifiutare questa richiesta di corsa?
           </div>
           <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
             <button
-              type="button"
-              class="btn btn-secondary"
-              @click="showRifiutaModal = false"
-              :disabled="processing"
-            >
-              Annulla
-            </button>
-            <button
-              type="button"
               class="btn btn-danger"
+              data-bs-dismiss="modal"
               @click="rifiutaRichiesta"
-              :disabled="processing"
             >
-              <span v-if="processing" class="spinner-border spinner-border-sm me-2"></span>
-              <i v-else class="bi bi-x-circle me-1"></i>
-              {{ processing ? 'Eliminazione...' : 'Conferma Rifiuto' }}
+              Conferma
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="showRifiutaModal"
-      class="modal-backdrop fade show"
-      @click="showRifiutaModal = false"
-    ></div>
   </HomeLayout>
 </template>

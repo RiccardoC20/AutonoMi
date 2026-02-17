@@ -17,7 +17,7 @@
     <button
       class="btn btn-outline-danger btn-sm"
       data-bs-toggle="modal"
-      data-bs-target="#removeUtenteBackdrop"
+      data-bs-target="#removeVettoreBackdrop"
       @click="elimina"
     >
       <i class="bi bi-trash"></i>
