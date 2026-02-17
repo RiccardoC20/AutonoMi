@@ -7,11 +7,6 @@ const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
 const loading = ref(false);
 
-// Dati chilometri (default, verranno aggiornati con i dati reali)
-// const chilometriTotali = ref(1000);
-// const chilometriRimanenti = computed(() => chilometriTotali.value - chilometriUsati.value);
-
-
 // Carica corse prenotate
 const getCorse = async () => {
   try {
@@ -22,8 +17,6 @@ const getCorse = async () => {
       loading.value = false;
       return;
     }
-
-
     const response = await $fetch<{
       success: boolean;
       data: CorsaType[];
@@ -38,11 +31,11 @@ const getCorse = async () => {
       // Converti le date da stringhe a Date objects
       corse.value = response.data;
     } else {
-      error.value = "Errore durante il caricamento delle corse prenotate";
+      error.value = "Errore durante il caricamento delle corse ";
     }
   } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento delle corse prenotate";
-    console.error('Errore getCorsePrenotate:', err);
+    error.value = err.data?.message || "Errore durante il caricamento delle corse +";
+    console.error('Errore getCorse:', err);
   }
 };
 
@@ -58,7 +51,6 @@ const stats = computed( () => {
     percentualeKmUsati
   }
 })
-// // Carica corse effettuate
 // const getCorseEffettuate = async (token: string) => {
 //   try {
 //     const response = await $fetch<{
@@ -198,13 +190,6 @@ onMounted(() => {
             Corse Prenotate ({{ corseFiltrate.prenotate.length }})
           </h5>
         </div>
-        <!-- Loading -->
-        <!-- <div v-if="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Caricamento...</span>
-        </div>
-        <p class="mt-3 text-muted">Caricamento corse...</p>
-        </div> -->
         <div class="card-body">
           <div v-if="corseFiltrate.prenotate.length === 0" class="text-center py-4">
             <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
@@ -234,13 +219,6 @@ onMounted(() => {
             Corse effettuate ({{ corseFiltrate.effettuate.length }})
           </h5>
         </div>
-        <!-- Loading -->
-        <!-- <div v-if="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Caricamento...</span>
-        </div>
-        <p class="mt-3 text-muted">Caricamento corse...</p>
-        </div> -->
         <div class="card-body">
           <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
             <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>

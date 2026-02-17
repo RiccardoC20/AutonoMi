@@ -275,7 +275,7 @@ const getMinTime = () => {
                   class="btn btn-primary btn-lg"
                   :disabled="isLoading"
                 >
-                  <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
                   {{ isLoading ? 'Prenotazione in corso...' : 'Invia richiesta' }}
                 </button>

@@ -10,7 +10,7 @@ const loading = ref(false);
 
 
 //carica corse
-const loadData = async () =>{
+const getCorse = async () =>{
 
   const token = localStorage.getItem('auth_token');
   if (!token) {
@@ -81,38 +81,9 @@ const corseFiltrate = computed(() => {
   }
 })
 
-const corsaEffettuata = async (vettoreId: string) => {
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    error.value = "Token non trovato. Effettua il login.";
-    return;
-  }
-
-  try {
-    const response = await $fetch<{
-      success: boolean;
-      message: string;
-    }>(`/api/utente/${vettoreId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (response.success) {
-      // Ricarica la lista dei vettori
-      await loadData();
-    } else {
-      error.value = "Errore durante l'eliminazione dell'utente";
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante l'eliminazione dell'utente";
-    console.error('Errore eliminaUtente:', err);
-  }
-};
 // Carica dati al mount
 onMounted(() => {
-  loadData();
+  getCorse();
 });
 </script>
 

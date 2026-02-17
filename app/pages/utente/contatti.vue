@@ -7,10 +7,19 @@ const vettori = ref<VettoreType[]>([]);
 const comune = ref<ComuneType>();
 const loading = ref(false);
 
-//Carica vettori
-const getVettori = async (token: string) => {
+// Carica dati iniziali
+const getVettori = async () => {
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    error.value = "Token non trovato. Effettua il login.";
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
   try {
-    const response = await $fetch<{
+      const response = await $fetch<{
       success: boolean;
       data: VettoreType[];
       count: number;
@@ -29,37 +38,13 @@ const getVettori = async (token: string) => {
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei vettori";
     console.error('Errore getVettori:', err);
-  }
-};
-
-// Carica dati iniziali
-const loadData = async () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    error.value = "Token non trovato. Effettua il login.";
-    return;
-  }
-
-  loading.value = true;
-  error.value = null;
-
-  try {
-      await getVettori(token);
-
-  } catch (err: any) {
-    error.value = err.data?.message || "Errore durante il caricamento dei dati";
-    console.error('Errore loadData:', err);
   } finally {
     loading.value = false;
   }
 };
 // Carica dati 
 onMounted(() => {
-  loadData();
+  getVettori();
 });
 </script>
 

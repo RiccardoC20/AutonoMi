@@ -12,7 +12,7 @@ const error = ref<string | null>(null);
 const deletingId = ref<string | null>(null);
 
 
-async function loadCandidature() {
+async function getCandidature() {
   loading.value = true;
   error.value = null;
 
@@ -40,8 +40,6 @@ async function loadCandidature() {
     loading.value = false;
   }
 }
-
-
 
 async function executeRifiuta(candidaturaId: string) {
   deletingId.value = candidaturaId;
@@ -168,7 +166,7 @@ function handlePdf(candidaturaId: string) {
 }
 
 onMounted(() => {
-  loadCandidature();
+  getCandidature();
 });
 </script>
 

@@ -81,7 +81,6 @@ const promuoviCorsa = async (id : string) => {
 
 const apriModalEffettua = (id : string) => {
   corsaDaEffettuare.value = id;
-  console.log("modal aperto con: " + id)
 };
 
 // Carica le corse al mount del componente
@@ -113,10 +112,6 @@ onMounted(() => {
           ></button>
         </div>
 
-        
-
-     
-
         <!-- Lista corse prenotate -->
         <div class="card mb-4">
           <div class="card-header">
@@ -125,13 +120,7 @@ onMounted(() => {
               Corse Prenotate ({{ corseFiltrate.prenotate.length }})
             </h5>
           </div>
-          <!-- Loading -->
-          <!-- <div v-if="loading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-          </div>
-          <p class="mt-3 text-muted">Caricamento corse...</p>
-          </div> -->
+
           <div class="card-body">
             <div v-if="corseFiltrate.prenotate.length === 0" class="text-center py-4">
               <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
@@ -161,13 +150,6 @@ onMounted(() => {
               Corse effettuate ({{ corseFiltrate.effettuate.length }})
             </h5>
           </div>
-          <!-- Loading -->
-          <!-- <div v-if="loading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-          </div>
-          <p class="mt-3 text-muted">Caricamento corse...</p>
-          </div> -->
           <div class="card-body">
             <div v-if="corseFiltrate.effettuate.length === 0" class="text-center py-4">
               <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
