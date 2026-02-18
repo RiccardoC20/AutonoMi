@@ -11,7 +11,7 @@ const formData = ref({
   ora: ''
 });
 
-const isLoading = ref(false);
+const loading = ref(false);
 const message = ref('');
 const vettori = ref<VettoreType[]>([]);
 const loadingVettori = ref(false);
@@ -77,7 +77,7 @@ const prenotaCorsa = async () => {
     return;
   }
 
-  isLoading.value = true;
+  loading.value = true;
   message.value = '';
 
   try {
@@ -119,7 +119,7 @@ const prenotaCorsa = async () => {
     message.value = error.data?.message || 'Errore durante la prenotazione. Riprova.';
     console.error('Errore prenotazione:', error);
   } finally {
-    isLoading.value = false;
+    loading.value = false;
   }
 };
 
@@ -273,11 +273,11 @@ const getMinTime = () => {
                 <button
                   type="submit"
                   class="btn btn-primary btn-lg"
-                  :disabled="isLoading"
+                  :disabled="loading"
                 >
-                <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
-                  {{ isLoading ? 'Prenotazione in corso...' : 'Invia richiesta' }}
+                  {{ loading ? 'Prenotazione in corso...' : 'Invia richiesta' }}
                 </button>
               </div>
             </form>

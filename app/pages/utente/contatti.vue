@@ -4,8 +4,7 @@ import { type VettoreType , type ComuneType} from '~~/composables/dataType';
 
 const error = ref<string | null>(null);
 const vettori = ref<VettoreType[]>([]);
-const comune = ref<ComuneType>();
-const loading = ref(false);
+
 
 // Carica dati iniziali
 const getVettori = async () => {
@@ -15,7 +14,6 @@ const getVettori = async () => {
     return;
   }
 
-  loading.value = true;
   error.value = null;
 
   try {
@@ -38,8 +36,6 @@ const getVettori = async () => {
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei vettori";
     console.error('Errore getVettori:', err);
-  } finally {
-    loading.value = false;
   }
 };
 // Carica dati 

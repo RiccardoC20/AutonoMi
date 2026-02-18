@@ -6,8 +6,6 @@ import { type CorsaType, type RichiestaCorsaType } from '~~/composables/dataType
 const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
 const richiesteCorsa = ref<RichiestaCorsaType[]>([]);
-const loading = ref(false);
-
 
 //carica corse
 const getCorse = async () =>{
@@ -18,7 +16,6 @@ const getCorse = async () =>{
     return;
   }
 
-  loading.value = true;
   error.value = null;
   try {
     //carica corse
@@ -41,11 +38,7 @@ const getCorse = async () =>{
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
     console.error('Errore loadData:', err);
-  } finally {
-    loading.value = false; 
-  }
-
-  loading.value = true;
+  } 
 
   try {
     const response = await $fetch<{
@@ -66,11 +59,7 @@ const getCorse = async () =>{
   } catch (err: any) {
     error.value = err.data?.message || "Errore durante il caricamento dei dati";
     console.error('Errore loadRichiesteCorsa:', err);
-  } finally {
-    loading.value = false;
   }
-  
-
   
 };
 

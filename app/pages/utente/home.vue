@@ -5,7 +5,7 @@ import { type UtenteType , type CorsaType} from '../../../composables/dataType';
 
 const error = ref<string | null>(null);
 const corse = ref<CorsaType[]>([]);
-const loading = ref(false);
+
 
 // Carica corse prenotate
 const getCorse = async () => {
@@ -14,7 +14,6 @@ const getCorse = async () => {
     const token = localStorage.getItem('auth_token');
     if (!token) {
       error.value = 'Devi effettuare il login per visualizzare le corse';
-      loading.value = false;
       return;
     }
     const response = await $fetch<{
@@ -51,51 +50,6 @@ const stats = computed( () => {
     percentualeKmUsati
   }
 })
-// const getCorseEffettuate = async (token: string) => {
-//   try {
-//     const response = await $fetch<{
-//       success: boolean;
-//       corse: CorsaType[];
-//     }>('/api/corse/utente/get', {
-//       method: 'GET',
-//       headers: {
-//         'Authorization': `Bearer ${token}`
-//       }
-//     });
-    
-//     if (response.success) {
-//       corseEffettuate.value = response.corse;
-//     } else {
-//       error.value = "Errore durante il caricamento delle corse effettuate";
-//     }
-//   } catch (err: any) {
-//     error.value = err.data?.message || "Errore durante il caricamento delle corse effettuate";
-//     console.error('Errore getCorseEffettuate:', err);
-//   }
-// };
-
-// Carica dati utente
-// const getCorse = async () => {
-//   const token = localStorage.getItem('auth_token');
-//   if (!token) {
-//     error.value = "Token non trovato. Effettua il login.";
-//     return;
-//   }
-
-//   loading.value = true;
-//   error.value = null;
-
-//   getCorsePrenotate(token);
-//   getCorseEffettuate(token);
-
-//   loading.value = false;
-  
-// };
-
-// Calcola chilometri utilizzati dalle corse effettuate
-// const chilometriUsati = computed(() => {
-//   return corse.value.reduce((total, corsa) => total + (corsa.kmEffettivi || corsa.stimaKm), 0);
-// });
 
 // le corse vengono divise in effettuate e prenotate
 const corseFiltrate = computed(() => {

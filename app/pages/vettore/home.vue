@@ -5,14 +5,12 @@ import { ref, computed, onMounted } from 'vue';
 
 // Stato delle corse
 const corse = ref<CorsaType[]>([]);
-const loading = ref(false);
 const error = ref<string | null>(null);
 const corsaDaEffettuare = ref<string | null>(null);
 
 
 // Funzione per caricare le corse dal backend
 const caricaCorse = async () => {
-  loading.value = true;
   error.value = null;
 
   try {
@@ -20,7 +18,6 @@ const caricaCorse = async () => {
     const token = localStorage.getItem('auth_token');
     if (!token) {
       error.value = 'Devi effettuare il login per visualizzare le corse';
-      loading.value = false;
       return;
     }
 
@@ -47,8 +44,6 @@ const caricaCorse = async () => {
   } catch (err: any) {
     error.value = err.data?.message || 'Errore durante il caricamento delle corse';
     console.error('Errore caricamento corse:', err);
-  } finally {
-    loading.value = false;
   }
 };
 // Funzione per dividere le corse in efffettuate e prenotate

@@ -10,7 +10,7 @@ const formData = ref({
   ora: ''
 });
 
-const isLoading = ref(false);
+const loading = ref(false);
 const message = ref('');
 
 // Funzione per prenotare una corsa per conto dell'utente
@@ -43,7 +43,7 @@ const prenotaPerUtente = async () => {
     return;
   }
 
-  isLoading.value = true;
+  loading.value = true;
   message.value = '';
 
   try {
@@ -88,7 +88,7 @@ const prenotaPerUtente = async () => {
     message.value = error.data?.message || 'Errore durante la creazione della prenotazione. Riprova.';
     console.error('Errore prenotazione per utente:', error);
   } finally {
-    isLoading.value = false;
+    loading.value = false;
   }
 };
 
@@ -236,11 +236,11 @@ const getMinTime = () => {
                 <button
                   type="submit"
                   class="btn btn-vettore btn-lg"
-                  :disabled="isLoading"
+                  :disabled="loading"
                 >
-                  <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   <i v-else class="bi bi-check-circle me-2"></i>
-                  {{ isLoading ? 'Creazione in corso...' : 'Prenota per Utente' }}
+                  {{ loading ? 'Creazione in corso...' : 'Prenota per Utente' }}
                 </button>
               </div>
             </form>
