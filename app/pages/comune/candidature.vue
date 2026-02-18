@@ -6,7 +6,7 @@ import type { UtenteType, CandidaturaType} from '~~/composables/dataType';
 
 const candidature = ref<CandidaturaType[]>([]);
 const candidatura = ref<CandidaturaType>();
-
+const data = ref<string>();
 const loading = ref(false);
 const error = ref<string | null>(null);
 const deletingId = ref<string | null>(null);
@@ -137,11 +137,23 @@ async function executeAccetta(candidaturaId: string) {
   }
 }
 
+function dataRichiesta(data: string) {
+        if (!data) return ''
+        const d = new Date(data)
+
+        return new Intl.DateTimeFormat('it-IT', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        }).format(new Date(d))
+}
+
 function getCandidatura(candidaturaId: string){
   const cand = candidature.value.find(c => c._id === candidaturaId);
   if (cand && cand.utente) {
     candidatura.value = cand;
   }
+  data.value = dataRichiesta(candidatura.value?.utente.dataNascita || "0");
 }
 
 function handleRifiuta(candidaturaId: string) {
@@ -164,6 +176,8 @@ function handlePdf(candidaturaId: string) {
     error.value = 'PDF non disponibile per questa candidatura';
   }
 }
+
+
 
 onMounted(() => {
   getCandidature();
@@ -245,7 +259,7 @@ onMounted(() => {
         <button
           class="btn btn-danger"
           data-bs-dismiss="modal"
-          @click="executeRifiuta(candidatura._id)"
+          @click="executeRifiuta(candidatura?._id || '0')"
         >
           Conferma
         </button>
@@ -272,7 +286,7 @@ onMounted(() => {
         <button
           class="btn btn-success"
           data-bs-dismiss="modal"
-          @click="executeAccetta(candidatura._id)"
+          @click="executeAccetta(candidatura?._id || '0')"
         >
           Conferma
         </button>
@@ -294,7 +308,7 @@ onMounted(() => {
           <dd class="col-sm-8">{{ candidatura?.utente.email }}</dd>
 
           <dt class="col-sm-4">Data di Nascita:</dt>
-          <dd class="col-sm-8">{{ candidatura?.utente.dataNascita }}</dd>
+          <dd class="col-sm-8">{{ data}}</dd>
 
           <dt class="col-sm-4">Cellulare:</dt>
           <dd class="col-sm-8">{{ candidatura?.utente.cellulare }}</dd>
