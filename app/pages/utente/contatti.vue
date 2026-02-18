@@ -71,7 +71,7 @@ onMounted(() => {
               <div
                 v-for="vettore in vettori"
                 :key="vettore._id"
-                class="list-group-item d-flex justify-content-between align-items-center"
+                class="list-group-item d-flex justify-content-between align-items-center m-1"
               >
                 <div class="col">
                   <h6 class="mb-1">
