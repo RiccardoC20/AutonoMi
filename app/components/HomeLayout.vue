@@ -100,7 +100,7 @@ export default {
         case 'utente':
           return [
             ...baseLinks,
-            { to: '/utente/prenotazione', label: 'Richiesta', icon: 'bi bi-plus' },
+            { to: '/utente/prenotazione', label: 'Nuova Corsa', icon: 'bi bi-plus' },
             { to: '/utente/richieste-in-sospeso', label: 'Richieste', icon: 'bi bi-clock' },
             { to: '/utente/contatti', label: 'Contatti', icon: 'bi bi-telephone' },
           ];
@@ -109,7 +109,7 @@ export default {
           return [
             { to: '/vettore/home', label: 'Home', icon: 'bi bi-car-front' },
             { to: '/vettore/richieste', label: 'Richieste', icon: 'bi bi-bell' },
-            { to: '/vettore/inserisci-corsa', label: 'Corsa', icon: 'bi bi-plus' },
+            { to: '/vettore/inserisci-corsa', label: 'Nuova Corsa', icon: 'bi bi-plus' },
           ];
 
         case 'comune':
