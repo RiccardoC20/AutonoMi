@@ -217,6 +217,7 @@ onMounted(() => {
           <div
             v-for="candidatura in candidature"
             :key="candidatura._id"
+            class="mb-3"
           >
           <Candidatura 
             :_id="candidatura._id"
