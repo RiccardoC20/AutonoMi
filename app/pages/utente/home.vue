@@ -44,6 +44,7 @@ const stats = computed( () => {
     return ( sum + (corse.km || 0))
   }, 0);
   const percentualeKmUsati = (chilimetraggioUsato === 0? 0 : (chilometriTotali / chilimetraggioUsato).toFixed(1));
+  
   return {
     chilimetraggioUsato,
     chilometriTotali,
@@ -108,7 +109,7 @@ onMounted(() => {
               <div class="row text-center mt-4">
                 <div class="col-md-3">
                   <div class="border rounded p-3">
-                    <div class="fs-4 fw-bold text-primary">{{ stats.chilimetraggioUsato}}</div>
+                    <div class="fs-4 fw-bold text-primary">{{ stats.chilimetraggioUsato.toFixed(1)}}</div>
                     <small class="text-muted">Km da corse effettuate</small>
                   </div>
                 </div>
